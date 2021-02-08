@@ -6,11 +6,11 @@ namespace Hexarc.Rpc.Protocol.TypeReferences
     {
         public override String Kind { get; } = TypeReferenceKind.Nullable;
 
-        public Guid TypeId { get; }
+        public Guid? TypeId { get; }
 
         public TypeReference ResultType { get; }
 
-        public TaskTypeReference(Guid typeId, TypeReference resultType) =>
+        public TaskTypeReference(Guid? typeId, TypeReference resultType) =>
             (this.TypeId, this.ResultType) = (typeId, resultType);
     }
 }
