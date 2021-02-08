@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="RIDER_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$USER_HOME$/.nuget/packages/microsoft.net.test.sdk/16.5.0/build/netcoreapp2.1" />
+    <content url="file://$USER_HOME$/.nuget/packages/nunit3testadapter/3.16.1/build/netcoreapp2.1/NUnit3.TestAdapter.dll" />
+    <content url="file://$USER_HOME$/.nuget/packages/nunit3testadapter/3.16.1/build/netcoreapp2.1/NUnit3.TestAdapter.pdb" />
+    <content url="file://$USER_HOME$/.nuget/packages/nunit3testadapter/3.16.1/build/netcoreapp2.1/nunit.engine.api.dll" />
+    <content url="file://$USER_HOME$/.nuget/packages/nunit3testadapter/3.16.1/build/netcoreapp2.1/nunit.engine.dll" />
+    <content url="file://$MODULE_DIR$/../..">
+      <excludeFolder url="file://$MODULE_DIR$/../../Hexarc.Rpc.Client.Generator/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Hexarc.Rpc.Client/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Hexarc.Rpc.Protocol/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Hexarc.Rpc.Protocol/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Hexarc.Rpc.Server/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Hexarc.Rpc.Server/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../Hexarc.Rpc.Tests/obj" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
