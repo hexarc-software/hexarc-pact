@@ -4,7 +4,7 @@ namespace Hexarc.Rpc.Protocol.Api
 {
     public class Client
     {
-        public String Namespace { get; }
+        public String? Namespace { get; }
 
         public String Name { get; }
 
@@ -12,7 +12,7 @@ namespace Hexarc.Rpc.Protocol.Api
 
         public Controller[] Controllers { get; }
 
-        public Client(String @namespace, String name, String baseAddress, Controller[] controllers)
+        public Client(String? @namespace, String name, String baseAddress, Controller[] controllers)
         {
             this.Namespace = @namespace;
             this.Name = name;

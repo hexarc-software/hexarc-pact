@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+using Hexarc.Rpc.Protocol.Types;
 
 namespace Hexarc.Rpc.Protocol.Api
 {
@@ -7,12 +6,9 @@ namespace Hexarc.Rpc.Protocol.Api
     {
         public Client Client { get; }
 
-        public Dictionary<Guid, Type> Types { get; }
+        public DistinctType[] DistinctTypes { get; }
 
-        public Schema(Client client, Dictionary<Guid, Type> types)
-        {
-            this.Client = client;
-            this.Types = types;
-        }
+        public Schema(Client client, DistinctType[] distinctTypes) =>
+            (this.Client, this.DistinctTypes) = (client, distinctTypes);
     }
 }

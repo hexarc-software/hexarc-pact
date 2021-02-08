@@ -3,7 +3,7 @@ using System;
 namespace Hexarc.Rpc.Protocol.Types
 {
     /// <summary>
-    /// Describes an task type that can be provided by the Hexarc RPC protocol.
+    /// Describes a task type that can be provided by the Hexarc RPC protocol.
     /// </summary>
     public sealed class TaskType : Type
     {
