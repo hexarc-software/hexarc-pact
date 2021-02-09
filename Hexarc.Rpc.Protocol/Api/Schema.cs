@@ -4,11 +4,11 @@ namespace Hexarc.Rpc.Protocol.Api
 {
     public class Schema
     {
-        public Client Client { get; }
+        public Controller[] Controllers { get; }
 
         public DistinctType[] DistinctTypes { get; }
 
-        public Schema(Client client, DistinctType[] distinctTypes) =>
-            (this.Client, this.DistinctTypes) = (client, distinctTypes);
+        public Schema(Controller[] controllers, DistinctType[] distinctTypes) =>
+            (this.Controllers, this.DistinctTypes) = (controllers, distinctTypes);
     }
 }
