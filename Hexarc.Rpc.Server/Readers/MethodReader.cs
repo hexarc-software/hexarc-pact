@@ -18,11 +18,15 @@ namespace Hexarc.Rpc.Server.Readers
         public MethodReader(TypeChecker typeChecker, TypeReferenceReader typeReferenceReader) =>
             (this.TypeChecker, this.TypeReferenceReader) = (typeChecker, typeReferenceReader);
 
-        public Method Read(MethodInfo methodInfo, HttpMethodAttribute methodAttribute) =>
-            new(methodInfo.Name, methodAttribute.Template,
+        public Method Read(MethodInfo methodInfo, HttpMethodAttribute methodAttribute, RouteAttribute routeAttribute) =>
+            new(methodInfo.Name,
+                this.ReadPath(routeAttribute),
                 this.ReadHttpMethod(methodAttribute),
                 this.ReadReturnType(methodInfo.ReturnType),
                 this.ReadMethodParameters(methodInfo.GetParameters()));
+
+        private String ReadPath(RouteAttribute routeAttribute) =>
+            routeAttribute.Template.StartsWith("/") ? routeAttribute.Template : $"/{routeAttribute.Template}";
 
         private TypeReference ReadReturnType(Type returnType) =>
             this.TypeChecker.IsTaskType(returnType)
