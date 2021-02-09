@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexarc.Rpc.Client.Generator
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexarc.Rpc.Tests", "Hexarc.Rpc.Tests\Hexarc.Rpc.Tests.csproj", "{06ED7EBB-EB2B-4EFC-84F3-8CD12B274E0F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexarc.Rpc.Demo.Api", "Hexarc.Rpc.Demo.Api\Hexarc.Rpc.Demo.Api.csproj", "{C5F21773-4B2D-4EDD-A558-C92B51CB00EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{06ED7EBB-EB2B-4EFC-84F3-8CD12B274E0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06ED7EBB-EB2B-4EFC-84F3-8CD12B274E0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06ED7EBB-EB2B-4EFC-84F3-8CD12B274E0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5F21773-4B2D-4EDD-A558-C92B51CB00EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5F21773-4B2D-4EDD-A558-C92B51CB00EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5F21773-4B2D-4EDD-A558-C92B51CB00EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5F21773-4B2D-4EDD-A558-C92B51CB00EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

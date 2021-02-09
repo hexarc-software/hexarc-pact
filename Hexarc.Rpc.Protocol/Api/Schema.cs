@@ -6,9 +6,9 @@ namespace Hexarc.Rpc.Protocol.Api
     {
         public Controller[] Controllers { get; }
 
-        public DistinctType[] DistinctTypes { get; }
+        public Type[] DistinctTypes { get; }
 
-        public Schema(Controller[] controllers, DistinctType[] distinctTypes) =>
+        public Schema(Controller[] controllers, Type[] distinctTypes) =>
             (this.Controllers, this.DistinctTypes) = (controllers, distinctTypes);
     }
 }

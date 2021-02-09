@@ -48,10 +48,10 @@ namespace Hexarc.Rpc.Server.Readers
                 type.GetCustomAttribute<ApiControllerAttribute>(),
                 type.GetCustomAttribute<RouteAttribute>());
 
-        private DistinctType[] ReadDistinctTypes() =>
+        private Type[] ReadDistinctTypes() =>
             this.EnumerateDistinctTypes().ToArray();
 
-        private IEnumerable<DistinctType> EnumerateDistinctTypes()
+        private IEnumerable<Type> EnumerateDistinctTypes()
         {
             while (this.DistinctTypeQueue.TryDequeue(out var type))
             {

@@ -15,7 +15,7 @@ namespace Hexarc.Rpc.Server.Models
         public RouteAttribute? RouteAttribute { get; }
 
         public Boolean IsRpcCompatible =>
-            this.Type.IsInstanceOfType(typeof(ControllerBase)) &&
+            this.Type.IsSubclassOf(typeof(ControllerBase)) &&
             this.IgnoreAttribute is null &&
             this.ApiControllerAttribute is not null &&
             this.RouteAttribute is not null;

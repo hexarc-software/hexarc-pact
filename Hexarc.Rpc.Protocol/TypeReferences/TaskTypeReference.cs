@@ -4,7 +4,7 @@ namespace Hexarc.Rpc.Protocol.TypeReferences
 {
     public sealed class TaskTypeReference : TypeReference
     {
-        public override String Kind { get; } = TypeReferenceKind.Nullable;
+        public override String Kind { get; } = TypeReferenceKind.Task;
 
         public Guid? TypeId { get; }
 
