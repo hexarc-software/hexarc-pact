@@ -1,8 +1,8 @@
-using Hexarc.Rpc.Demo.Api.Middlewares;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Hexarc.Serialization.Union;
 
 namespace Hexarc.Rpc.Demo.Api
 {
