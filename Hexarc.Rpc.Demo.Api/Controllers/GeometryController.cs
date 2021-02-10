@@ -1,6 +1,6 @@
 using System;
-using Hexarc.Rpc.Demo.Api.Models;
 using Microsoft.AspNetCore.Mvc;
+using Hexarc.Rpc.Demo.Api.Models;
 
 namespace Hexarc.Rpc.Demo.Api.Controllers
 {
@@ -8,9 +8,6 @@ namespace Hexarc.Rpc.Demo.Api.Controllers
     public sealed class GeometryController : ControllerBase
     {
         [HttpPost, Route(nameof(Area))]
-        public Double Area(Triangle triangle)
-        {
-            return triangle.CalculateArea();
-        }
+        public Double Area(Triangle triangle) => triangle.CalculateArea();
     }
 }

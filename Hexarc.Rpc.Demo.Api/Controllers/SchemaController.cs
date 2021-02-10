@@ -22,10 +22,9 @@ namespace Hexarc.Rpc.Demo.Api.Controllers
             var typeChecker = new TypeChecker(primitiveTypeProvider, arrayLikeTypeProvider, dictionaryTypeProvider, taskTypeProvider);
             var typeReferenceReader = new TypeReferenceReader(typeChecker, distinctTypeQueue);
             var distinctTypeReader = new DistinctTypeReader(typeChecker, typeReferenceReader);
-            var methodReader = new MethodReader(typeChecker,typeReferenceReader);
+            var methodReader = new MethodReader(typeChecker, typeReferenceReader);
             var controllerReader = new ControllerReader(methodReader);
-
-            var schemaReader = new SchemaReader(controllerReader, distinctTypeQueue, distinctTypeReader);
+            var schemaReader = new SchemaReader(distinctTypeQueue, distinctTypeReader, controllerReader);
             return schemaReader.Read(Assembly.GetExecutingAssembly());
         }
     }

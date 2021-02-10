@@ -7,9 +7,6 @@ namespace Hexarc.Rpc.Demo.Api.Controllers
     public sealed class MiscController : ControllerBase
     {
         [HttpGet, Route(nameof(Ping))]
-        public String Ping([FromQuery]String message)
-        {
-            return $"Hello, {message}";
-        }
+        public String Ping([FromQuery]String message) => $"Hello, {message}";
     }
 }

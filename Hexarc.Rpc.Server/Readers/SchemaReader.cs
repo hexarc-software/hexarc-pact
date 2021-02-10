@@ -13,20 +13,20 @@ namespace Hexarc.Rpc.Server.Readers
 {
     public sealed class SchemaReader
     {
-        private ControllerReader ControllerReader { get; }
-
         private DistinctTypeQueue DistinctTypeQueue { get; }
 
         private DistinctTypeReader DistinctTypeReader { get; }
 
+        private ControllerReader ControllerReader { get; }
+
         public SchemaReader(
-            ControllerReader controllerReader,
             DistinctTypeQueue distinctTypeQueue,
-            DistinctTypeReader distinctTypeReader)
+            DistinctTypeReader distinctTypeReader,
+            ControllerReader controllerReader)
         {
-            this.ControllerReader = controllerReader;
             this.DistinctTypeQueue = distinctTypeQueue;
             this.DistinctTypeReader = distinctTypeReader;
+            this.ControllerReader = controllerReader;
         }
 
         public Schema Read(Assembly assembly) =>
