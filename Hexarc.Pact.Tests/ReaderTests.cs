@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Hexarc.Annotations;
-using Hexarc.Rpc.Protocol.TypeProviders;
-using Hexarc.Rpc.Server.Internals;
-using Hexarc.Rpc.Server.Readers;
+using Hexarc.Pact.Protocol.TypeProviders;
+using Hexarc.Pact.AspNetCore.Internals;
+using Hexarc.Pact.AspNetCore.Readers;
 
-namespace Hexarc.Rpc.Tests
+namespace Hexarc.Pact.Tests
 {
     [TestFixture]
     public class ReaderTests
@@ -26,7 +26,7 @@ namespace Hexarc.Rpc.Tests
             var types = new[]
             {
                 // typeof(Registry<>),
-                typeof(Hexarc.Rpc.Protocol.Types.Type)
+                typeof(Hexarc.Pact.Protocol.Types.Type)
             };
 
             foreach (var t in types)

@@ -2,16 +2,16 @@ using System;
 using System.Linq;
 using System.Reflection;
 using Hexarc.Annotations;
-using Hexarc.Rpc.Protocol.Types;
-using Hexarc.Rpc.Protocol.TypeReferences;
-using Hexarc.Rpc.Server.Models;
-using Hexarc.Rpc.Server.Extensions;
-using Hexarc.Rpc.Server.Internals;
+using Hexarc.Pact.AspNetCore.Extensions;
+using Hexarc.Pact.AspNetCore.Internals;
+using Hexarc.Pact.AspNetCore.Models;
+using Hexarc.Pact.Protocol.TypeReferences;
+using Hexarc.Pact.Protocol.Types;
 
-namespace Hexarc.Rpc.Server.Readers
+namespace Hexarc.Pact.AspNetCore.Readers
 {
     /// <summary>
-    /// This class provides an ability to read distinct types of the Hexarc RPC protocol.
+    /// This class provides an ability to read distinct types of the Hexarc Pact protocol.
     /// </summary>
     public sealed class DistinctTypeReader
     {
@@ -22,23 +22,23 @@ namespace Hexarc.Rpc.Server.Readers
         /// <summary>
         /// Creates an instance of the DistinctTypeReader class.
         /// </summary>
-        /// <param name="typeChecker">The type checker to determine what a target Hexarc RPC type for a given one.</param>
+        /// <param name="typeChecker">The type checker to determine what a target Hexarc Pact type for a given one.</param>
         /// <param name="typeReferenceReader">The type reference reader used during type reading.</param>
         public DistinctTypeReader(TypeChecker typeChecker, TypeReferenceReader typeReferenceReader) =>
             (this.TypeChecker, this.TypeReferenceReader) = (typeChecker, typeReferenceReader);
 
         /// <summary>
-        /// Reads a Hexarc RPC distinct type from a .NET system type.
+        /// Reads a Hexarc Pact distinct type from a .NET system type.
         /// </summary>
         /// <param name="type">The .NET system type to read from.</param>
-        /// <returns>The Hexarc RPC distinct type read from the given .NET system type.</returns>
+        /// <returns>The Hexarc Pact distinct type read from the given .NET system type.</returns>
         public DistinctType Read(System.Type type) => type switch
         {
             var x when this.TypeChecker.IsEnumType(x) => this.ReadEnumType(x),
             var x when this.TypeChecker.IsUnionType(x) => this.ReadUnionType(x),
             var x when this.TypeChecker.IsStructType(x) => this.ReadStructType(x),
             var x when this.TypeChecker.IsClassType(x) => this.ReadClassType(x),
-            _ => throw new InvalidOperationException($"Could not read a Hexarc RPC type from {type}")
+            _ => throw new InvalidOperationException($"Could not read a Hexarc Pact type from {type}")
         };
 
         private EnumType ReadEnumType(System.Type type) =>

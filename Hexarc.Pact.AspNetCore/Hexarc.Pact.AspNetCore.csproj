@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hexarc.Rpc.Protocol\Hexarc.Rpc.Protocol.csproj" />
+    <ProjectReference Include="..\Hexarc.Pact.Protocol\Hexarc.Pact.Protocol.csproj" />
   </ItemGroup>
 
 </Project>

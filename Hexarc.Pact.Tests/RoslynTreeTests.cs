@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using NUnit.Framework;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Hexarc.Rpc.Tests
+namespace Hexarc.Pact.Tests
 {
     [TestFixture]
     public class RoslynTreeTests
