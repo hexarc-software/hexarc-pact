@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Hexarc.Serialization.Union;
+using Hexarc.Rpc.Server.Middlewares;
 
 namespace Hexarc.Rpc.Demo.Api
 {
@@ -21,11 +22,13 @@ namespace Hexarc.Rpc.Demo.Api
                     configure.JsonSerializerOptions.Converters.Add(new UnionConverterFactory());
                     configure.JsonSerializerOptions.IgnoreNullValues = true;
                 });
+            services.AddHexarcRpcGeneration();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseHttpsRedirection();
+            app.UseHexarcRpc();
             app.UseRouting();
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

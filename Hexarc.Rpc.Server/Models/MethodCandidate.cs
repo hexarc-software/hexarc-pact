@@ -6,7 +6,7 @@ using Hexarc.Rpc.Server.Attributes;
 
 namespace Hexarc.Rpc.Server.Models
 {
-    public sealed class MethodCandidate
+    internal sealed class MethodCandidate
     {
         public MethodInfo MethodInfo { get; }
 

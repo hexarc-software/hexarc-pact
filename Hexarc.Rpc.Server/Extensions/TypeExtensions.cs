@@ -6,7 +6,7 @@ namespace Hexarc.Rpc.Server.Extensions
     /// <summary>
     /// Extensions for the System.Type class.
     /// </summary>
-    public static class TypeExtensions
+    internal static class TypeExtensions
     {
         /// <summary>
         /// Extracts the instance public properties from the type instance.

@@ -4,7 +4,7 @@ using Hexarc.Rpc.Server.Attributes;
 
 namespace Hexarc.Rpc.Server.Models
 {
-    public sealed class ControllerCandidate
+    internal sealed class ControllerCandidate
     {
         public Type Type { get; }
 

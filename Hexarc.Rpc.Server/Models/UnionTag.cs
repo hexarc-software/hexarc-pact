@@ -5,7 +5,7 @@ namespace Hexarc.Rpc.Server.Models
     /// <summary>
     /// The type describes a union tag used in a discriminated union case.
     /// </summary>
-    public sealed class UnionTag
+    internal sealed class UnionTag
     {
         /// <summary>
         /// Gets the union tag property name.

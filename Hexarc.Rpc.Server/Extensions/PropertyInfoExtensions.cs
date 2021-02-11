@@ -7,7 +7,7 @@ namespace Hexarc.Rpc.Server.Extensions
     /// <summary>
     /// Extensions for the PropertyInfo class.
     /// </summary>
-    public static class PropertyInfoExtensions
+    internal static class PropertyInfoExtensions
     {
         /// <summary>
         /// Checks if a given property info is a union tag.
