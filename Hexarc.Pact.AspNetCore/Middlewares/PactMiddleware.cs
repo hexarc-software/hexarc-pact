@@ -1,12 +1,12 @@
 using System;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Hexarc.Pact.AspNetCore.Readers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Template;
+using Hexarc.Pact.AspNetCore.Readers;
 
 namespace Hexarc.Pact.AspNetCore.Middlewares
 {

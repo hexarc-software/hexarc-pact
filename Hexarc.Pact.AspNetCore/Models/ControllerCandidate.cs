@@ -1,6 +1,6 @@
 using System;
-using Hexarc.Pact.AspNetCore.Attributes;
 using Microsoft.AspNetCore.Mvc;
+using Hexarc.Pact.AspNetCore.Attributes;
 
 namespace Hexarc.Pact.AspNetCore.Models
 {

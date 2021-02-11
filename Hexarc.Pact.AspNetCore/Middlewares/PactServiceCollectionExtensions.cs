@@ -1,7 +1,7 @@
+using Microsoft.Extensions.DependencyInjection;
 using Hexarc.Pact.AspNetCore.Internals;
 using Hexarc.Pact.AspNetCore.Readers;
 using Hexarc.Pact.Protocol.TypeProviders;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Hexarc.Pact.AspNetCore.Middlewares
 {

@@ -1,8 +1,8 @@
 using System;
 using System.Reflection;
-using Hexarc.Pact.AspNetCore.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Hexarc.Pact.AspNetCore.Attributes;
 
 namespace Hexarc.Pact.AspNetCore.Models
 {
