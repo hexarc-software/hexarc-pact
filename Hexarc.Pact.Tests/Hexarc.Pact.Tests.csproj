@@ -18,6 +18,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Hexarc.Pact.AspNetCore\Hexarc.Pact.AspNetCore.csproj" />
     <ProjectReference Include="..\Hexarc.Pact.Protocol\Hexarc.Pact.Protocol.csproj" />
-    <ProjectReference Include="..\Hexarc.Pact.Server\Hexarc.Pact.AspNetCore.csproj" />
   </ItemGroup>
 </Project>
