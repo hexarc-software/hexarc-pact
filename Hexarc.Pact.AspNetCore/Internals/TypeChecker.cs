@@ -10,6 +10,8 @@ namespace Hexarc.Pact.AspNetCore.Internals
     {
         private IReadOnlySet<Guid> PrimitiveTypeIds { get; }
 
+        private IReadOnlySet<Guid> DynamicTypeIds { get; }
+
         private IReadOnlySet<Guid> ArrayLikeTypeIds { get; }
 
         private IReadOnlySet<Guid> DictionaryTypeIds { get; }
@@ -18,11 +20,13 @@ namespace Hexarc.Pact.AspNetCore.Internals
 
         public TypeChecker(
             PrimitiveTypeProvider primitiveTypeProvider,
+            DynamicTypeProvider dynamicTypeProvider,
             ArrayLikeTypeProvider arrayLikeTypeProvider,
             DictionaryTypeProvider dictionaryTypeProvider,
             TaskTypeProvider taskTypeProvider)
         {
             this.PrimitiveTypeIds = primitiveTypeProvider.TypeIds;
+            this.DynamicTypeIds = dynamicTypeProvider.TypeIds;
             this.ArrayLikeTypeIds = arrayLikeTypeProvider.TypeIds;
             this.DictionaryTypeIds = dictionaryTypeProvider.TypeIds;
             this.TaskTypeIds = taskTypeProvider.TypeIds;
@@ -34,6 +38,8 @@ namespace Hexarc.Pact.AspNetCore.Internals
         public Boolean IsNullableValueType(Type type) => Nullable.GetUnderlyingType(type) is not null;
 
         public Boolean IsPrimitiveType(Type type) => this.PrimitiveTypeIds.Contains(type.GUID);
+
+        public Boolean IsDynamicType(Type type) => this.DynamicTypeIds.Contains(type.GUID);
 
         public Boolean IsArrayType(Type type) => type.IsArray;
 

@@ -14,6 +14,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
     [UnionCase(typeof(NullableTypeReference), TypeReferenceKind.Nullable)]
     [UnionCase(typeof(TaskTypeReference), TypeReferenceKind.Task)]
     [UnionCase(typeof(PrimitiveTypeReference), TypeReferenceKind.Primitive)]
+    [UnionCase(typeof(DynamicTypeReference), TypeReferenceKind.Dynamic)]
     [UnionCase(typeof(LiteralTypeReference), TypeReferenceKind.Literal)]
     public abstract class TypeReference
     {

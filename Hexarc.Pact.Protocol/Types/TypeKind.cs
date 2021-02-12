@@ -13,6 +13,11 @@ namespace Hexarc.Pact.Protocol.Types
         public const String Primitive = nameof(Primitive);
 
         /// <summary>
+        /// The dynamic type literal.
+        /// </summary>
+        public const String Dynamic = nameof(Dynamic);
+
+        /// <summary>
         /// The array-like type literal.
         /// </summary>
         public const String ArrayLike = nameof(ArrayLike);

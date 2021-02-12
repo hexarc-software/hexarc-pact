@@ -28,6 +28,11 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         public const String Primitive = nameof(Primitive);
 
         /// <summary>
+        /// The dynamic type reference literal.
+        /// </summary>
+        public const String Dynamic = nameof(Dynamic);
+
+        /// <summary>
         /// The array type reference literal.
         /// </summary>
         public const String Array = nameof(Array);

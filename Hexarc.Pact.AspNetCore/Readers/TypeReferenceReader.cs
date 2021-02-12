@@ -24,6 +24,7 @@ namespace Hexarc.Pact.AspNetCore.Readers
             var x when this.TypeChecker.IsArrayLikeType(x) => this.ReadArrayLikeTypeReference(x),
             var x when this.TypeChecker.IsDictionaryType(x) => this.ReadDictionaryTypeReference(x),
             var x when this.TypeChecker.IsPrimitiveType(x) => this.ReadPrimitiveTypeReference(x),
+            var x when this.TypeChecker.IsDynamicType(x) => this.ReadDynamicTypeReference(x),
             var x => this.ReadDistinctTypeReference(x)
         };
 
@@ -46,6 +47,9 @@ namespace Hexarc.Pact.AspNetCore.Readers
             new(type.GUID, type.GetGenericArguments().Select(this.Read).ToArray());
 
         private PrimitiveTypeReference ReadPrimitiveTypeReference(Type type) =>
+            new(type.GUID);
+
+        private DynamicTypeReference ReadDynamicTypeReference(Type type) =>
             new(type.GUID);
 
         private TypeReference[]? ReadGenericArguments(Type[] genericTypes) =>

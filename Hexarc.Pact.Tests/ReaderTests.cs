@@ -16,6 +16,7 @@ namespace Hexarc.Pact.Tests
         {
             var typeChecker = new TypeChecker(
                 new PrimitiveTypeProvider(),
+                new DynamicTypeProvider(),
                 new ArrayLikeTypeProvider(),
                 new DictionaryTypeProvider(),
                 new TaskTypeProvider());
