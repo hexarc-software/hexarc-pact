@@ -11,6 +11,7 @@ namespace Hexarc.Pact.AspNetCore.Middlewares
         {
             services.AddScoped<DistinctTypeQueue>();
             services.AddScoped<PrimitiveTypeProvider>();
+            services.AddScoped<DynamicTypeProvider>();
             services.AddScoped<ArrayLikeTypeProvider>();
             services.AddScoped<DictionaryTypeProvider>();
             services.AddScoped<TaskTypeProvider>();
