@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexarc.Pact.Protocol", "Hexarc.Pact.Protocol\Hexarc.Pact.Protocol.csproj", "{C1F5BDB2-808C-4A12-9F39-8EABF6209A1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexarc.Pact.Client", "Hexarc.Pact.Client\Hexarc.Pact.Client.csproj", "{31335BC5-F70B-4D78-9179-78BCBA8CE734}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexarc.Pact.Tool", "Hexarc.Pact.Tool\Hexarc.Pact.Tool.csproj", "{FD722221-2C30-48D5-AEAB-CB51F48D03F4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexarc.Pact.Tests", "Hexarc.Pact.Tests\Hexarc.Pact.Tests.csproj", "{1EBE01EA-BAFF-420E-8558-1A02D96FD2B8}"
@@ -13,6 +11,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexarc.Pact.AspNetCore", "Hexarc.Pact.AspNetCore\Hexarc.Pact.AspNetCore.csproj", "{8AAA91FE-0E2D-463D-9825-1E9C6A655BF8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexarc.Pact.Demo.Client", "Hexarc.Pact.Demo.Client\Hexarc.Pact.Demo.Client.csproj", "{11B80EF7-7378-437E-A1A3-3D5218EE0447}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hexarc.Pact.Client", "Hexarc.Pact.Client\Hexarc.Pact.Client.csproj", "{17174B5B-941E-4BF2-8B48-8DD907693890}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,10 +24,6 @@ Global
 		{C1F5BDB2-808C-4A12-9F39-8EABF6209A1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1F5BDB2-808C-4A12-9F39-8EABF6209A1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1F5BDB2-808C-4A12-9F39-8EABF6209A1F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{31335BC5-F70B-4D78-9179-78BCBA8CE734}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{31335BC5-F70B-4D78-9179-78BCBA8CE734}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{31335BC5-F70B-4D78-9179-78BCBA8CE734}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{31335BC5-F70B-4D78-9179-78BCBA8CE734}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FD722221-2C30-48D5-AEAB-CB51F48D03F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FD722221-2C30-48D5-AEAB-CB51F48D03F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD722221-2C30-48D5-AEAB-CB51F48D03F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -48,5 +44,9 @@ Global
 		{11B80EF7-7378-437E-A1A3-3D5218EE0447}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11B80EF7-7378-437E-A1A3-3D5218EE0447}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11B80EF7-7378-437E-A1A3-3D5218EE0447}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17174B5B-941E-4BF2-8B48-8DD907693890}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17174B5B-941E-4BF2-8B48-8DD907693890}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17174B5B-941E-4BF2-8B48-8DD907693890}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17174B5B-941E-4BF2-8B48-8DD907693890}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -4,7 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
     <OutputType>Exe</OutputType>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -12,10 +12,6 @@
     <ToolCommandName>pact</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="nupkg" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Hexarc.Serialization.Union" Version="1.0.0" />
@@ -27,10 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Bootstrap\ClientBase.cs" />
-    <EmbeddedResource Include="Bootstrap\ClientBase.cs" />
-    <Compile Remove="Bootstrap\ControllerBase.cs" />
-    <EmbeddedResource Include="Bootstrap\ControllerBase.cs" />
+    <Folder Include="Emitters" />
   </ItemGroup>
 
 </Project>
