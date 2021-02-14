@@ -1,5 +1,6 @@
 bin
 obj
+nupkg
 
 *.DotSettings.user
 .DS_Store

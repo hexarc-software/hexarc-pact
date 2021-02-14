@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Hexarc.Serialization.Union;
 using Hexarc.Pact.AspNetCore.Middlewares;
+using Hexarc.Pact.Demo.Api.Middlewares;
 
 namespace Hexarc.Pact.Demo.Api
 {
@@ -27,6 +28,8 @@ namespace Hexarc.Pact.Demo.Api
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseForwardedHeaders();
+            app.EnforceSslForForwardedProto();
             app.UsePact();
             app.UseRouting();
             app.UseEndpoints(endpoints => endpoints.MapControllers());
