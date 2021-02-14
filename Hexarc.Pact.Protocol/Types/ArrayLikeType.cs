@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 using Hexarc.Pact.Protocol.Internals;
 
 namespace Hexarc.Pact.Protocol.Types
@@ -16,6 +17,7 @@ namespace Hexarc.Pact.Protocol.Types
         /// <param name="id">The unique type id.</param>
         /// <param name="namespace">The type namespace.</param>
         /// <param name="name">The type name.</param>
+        [JsonConstructor]
         public ArrayLikeType(Guid id, String? @namespace, String name) :
             base(id, @namespace, name) { }
 

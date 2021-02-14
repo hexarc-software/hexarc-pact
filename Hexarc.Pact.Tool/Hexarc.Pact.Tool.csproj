@@ -26,4 +26,11 @@
     <ProjectReference Include="..\Hexarc.Pact.Protocol\Hexarc.Pact.Protocol.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Bootstrap\ClientBase.cs" />
+    <EmbeddedResource Include="Bootstrap\ClientBase.cs" />
+    <Compile Remove="Bootstrap\ControllerBase.cs" />
+    <EmbeddedResource Include="Bootstrap\ControllerBase.cs" />
+  </ItemGroup>
+
 </Project>
