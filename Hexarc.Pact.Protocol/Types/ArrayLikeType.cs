@@ -1,4 +1,5 @@
 using System;
+using Hexarc.Pact.Protocol.Internals;
 
 namespace Hexarc.Pact.Protocol.Types
 {
@@ -23,6 +24,6 @@ namespace Hexarc.Pact.Protocol.Types
         /// </summary>
         /// <param name="type">The native .NET type to create the class instance from.</param>
         public ArrayLikeType(System.Type type) :
-            this(type.GUID, type.Namespace, type.Name) { }
+            this(type.GUID, type.Namespace, type.NameWithoutGenericArity()) { }
     }
 }

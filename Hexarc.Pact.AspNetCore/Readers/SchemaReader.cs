@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Hexarc.Pact.Protocol.Api;
 using Hexarc.Pact.Protocol.Types;
+using Hexarc.Pact.Protocol.TypeProviders;
 using Hexarc.Pact.AspNetCore.Attributes;
 using Hexarc.Pact.AspNetCore.Internals;
 using Hexarc.Pact.AspNetCore.Models;
@@ -19,21 +20,41 @@ namespace Hexarc.Pact.AspNetCore.Readers
 
         private ControllerReader ControllerReader { get; }
 
+        private PrimitiveTypeProvider PrimitiveTypeProvider { get; }
+
+        private DynamicTypeProvider DynamicTypeProvider { get; }
+
+        private ArrayLikeTypeProvider ArrayLikeTypeProvider { get; }
+
+        private DictionaryTypeProvider DictionaryTypeProvider { get; }
+
+        private TaskTypeProvider TaskTypeProvider { get; }
+
         public SchemaReader(
             DistinctTypeQueue distinctTypeQueue,
             DistinctTypeReader distinctTypeReader,
-            ControllerReader controllerReader)
+            ControllerReader controllerReader,
+            PrimitiveTypeProvider primitiveTypeProvider,
+            DynamicTypeProvider dynamicTypeProvider,
+            ArrayLikeTypeProvider arrayLikeTypeProvider,
+            DictionaryTypeProvider dictionaryTypeProvider,
+            TaskTypeProvider taskTypeProvider)
         {
             this.DistinctTypeQueue = distinctTypeQueue;
             this.DistinctTypeReader = distinctTypeReader;
             this.ControllerReader = controllerReader;
+            this.PrimitiveTypeProvider = primitiveTypeProvider;
+            this.DynamicTypeProvider = dynamicTypeProvider;
+            this.ArrayLikeTypeProvider = arrayLikeTypeProvider;
+            this.DictionaryTypeProvider = dictionaryTypeProvider;
+            this.TaskTypeProvider = taskTypeProvider;
         }
 
         public Schema Read(Assembly assembly) =>
-            new(this.ReadControllers(assembly.GetTypes()), this.ReadDistinctTypes());
+            new(this.ReadControllers(assembly.GetTypes()), this.ReadTypes());
 
         public Schema Read(System.Type[] controllerTypes) =>
-            new(this.ReadControllers(controllerTypes), this.ReadDistinctTypes());
+            new(this.ReadControllers(controllerTypes), this.ReadTypes());
 
         private Controller[] ReadControllers(System.Type[] types) => types
             .Select(this.ReadControllerCandidate)
@@ -48,8 +69,14 @@ namespace Hexarc.Pact.AspNetCore.Readers
                 type.GetCustomAttribute<ApiControllerAttribute>(),
                 type.GetCustomAttribute<RouteAttribute>());
 
-        private Type[] ReadDistinctTypes() =>
-            this.EnumerateDistinctTypes().ToArray();
+        private Type[] ReadTypes() =>
+            this.EnumerateDistinctTypes()
+                .Union(this.PrimitiveTypeProvider.Enumerate())
+                .Union(this.DynamicTypeProvider.Enumerate())
+                .Union(this.ArrayLikeTypeProvider.Enumerate())
+                .Union(this.DictionaryTypeProvider.Enumerate())
+                .Union(this.TaskTypeProvider.Enumerate())
+                .ToArray();
 
         private IEnumerable<Type> EnumerateDistinctTypes()
         {

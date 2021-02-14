@@ -1,4 +1,5 @@
 using System;
+using Hexarc.Pact.Protocol.Internals;
 
 namespace Hexarc.Pact.Protocol.Types
 {
@@ -7,7 +8,7 @@ namespace Hexarc.Pact.Protocol.Types
     /// </summary>
     public sealed class DictionaryType : Type
     {
-        public override String Kind { get; } = TypeKind.ArrayLike;
+        public override String Kind { get; } = TypeKind.Dictionary;
 
         /// <summary>
         /// Creates an instance of the DictionaryType class.
@@ -23,6 +24,6 @@ namespace Hexarc.Pact.Protocol.Types
         /// </summary>
         /// <param name="type">The native .NET type to create the class instance from.</param>
         public DictionaryType(System.Type type) :
-            this(type.GUID, type.Namespace, type.Name) { }
+            this(type.GUID, type.Namespace, type.NameWithoutGenericArity()) { }
     }
 }

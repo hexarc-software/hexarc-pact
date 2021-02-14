@@ -8,6 +8,7 @@ namespace Hexarc.Pact.Protocol.Types
     /// </summary>
     [UnionTag(nameof(Kind))]
     [UnionCase(typeof(PrimitiveType), TypeKind.Primitive)]
+    [UnionCase(typeof(DynamicType), TypeKind.Dynamic)]
     [UnionCase(typeof(ArrayLikeType), TypeKind.ArrayLike)]
     [UnionCase(typeof(DictionaryType), TypeKind.Dictionary)]
     [UnionCase(typeof(TaskType), TypeKind.Task)]
