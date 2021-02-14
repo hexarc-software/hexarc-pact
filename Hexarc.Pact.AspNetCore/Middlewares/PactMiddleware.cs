@@ -1,11 +1,11 @@
 using System;
-using System.Runtime.CompilerServices;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Template;
+using Hexarc.Serialization.Union;
 using Hexarc.Pact.AspNetCore.Readers;
 
 namespace Hexarc.Pact.AspNetCore.Middlewares
@@ -18,11 +18,19 @@ namespace Hexarc.Pact.AspNetCore.Middlewares
 
         private readonly TemplateMatcher _requestMatcher;
 
+        private readonly JsonSerializerOptions _jsonOptions;
+
         public PactMiddleware(RequestDelegate next, PactOptions options)
         {
             this._next = next;
             this._options = options;
             this._requestMatcher = new TemplateMatcher(TemplateParser.Parse(options.Route), new RouteValueDictionary());
+            this._jsonOptions = new JsonSerializerOptions
+            {
+                Converters = { new UnionConverterFactory() },
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                IgnoreNullValues = true
+            };
         }
 
         public async Task Invoke(HttpContext httpContext, SchemaReader schemaReader)
@@ -34,11 +42,7 @@ namespace Hexarc.Pact.AspNetCore.Middlewares
             }
 
             var schema = schemaReader.Read(this._options.AssemblyWithControllers);
-            var result = new OkObjectResult(schema);
-            var routeData = httpContext.GetRouteData();
-            var actionDescriptor = new ActionDescriptor();
-            var actionContext = new ActionContext(httpContext, routeData, actionDescriptor);
-            await result.ExecuteResultAsync(actionContext);
+            await httpContext.Response.WriteAsJsonAsync(schema, this._jsonOptions);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

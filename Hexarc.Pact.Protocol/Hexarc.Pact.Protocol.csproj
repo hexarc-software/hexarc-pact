@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hexarc.Annotations" Version="1.2.0" />
+    <PackageReference Include="Hexarc.Annotations" Version="[1.2.0,2.0.0)" />
   </ItemGroup>
 
 </Project>

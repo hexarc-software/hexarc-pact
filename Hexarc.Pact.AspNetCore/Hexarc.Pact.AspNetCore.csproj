@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Hexarc.Serialization.Union" Version="[1.0.0,2.0.0)" />
   </ItemGroup>
 
   <ItemGroup>

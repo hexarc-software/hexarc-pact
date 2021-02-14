@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hexarc.Serialization.Union" Version="1.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Hexarc.Pact.AspNetCore\Hexarc.Pact.AspNetCore.csproj" />
   </ItemGroup>
 
