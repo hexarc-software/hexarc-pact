@@ -28,7 +28,7 @@ namespace Hexarc.Pact.Tool
             var schemaReader = new SchemaReader(options);
             foreach (var clientSettings in clientSettingsCollection)
             {
-                var schema = await schemaReader.ReadAsync(clientSettings.SchemaUrl);
+                var schema = await schemaReader.ReadAsync(clientSettings.SchemaUri);
                 if (schema is null) continue;
                 Console.WriteLine(ObjectDumper.Dump(schema));
 

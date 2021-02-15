@@ -4,7 +4,7 @@ namespace Hexarc.Pact.Tool.Models
 {
     public sealed class ClientSettings
     {
-        public String SchemaUrl { get; }
+        public String SchemaUri { get; }
 
         public String ClientClassName { get; }
 
@@ -12,9 +12,9 @@ namespace Hexarc.Pact.Tool.Models
 
         public String OutputDirectory { get; }
 
-        public ClientSettings(String schemaUrl, String clientClassName, String? clientClassNamespace, String outputDirectory)
+        public ClientSettings(String schemaUri, String clientClassName, String? clientClassNamespace, String outputDirectory)
         {
-            this.SchemaUrl = schemaUrl;
+            this.SchemaUri = schemaUri;
             this.ClientClassName = clientClassName;
             this.ClientClassNamespace = clientClassNamespace;
             this.OutputDirectory = outputDirectory;
