@@ -1,10 +1,11 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Hexarc.Serialization.Union;
-using Hexarc.Pact.Protocol.Types;
+using Hexarc.Pact.Tool.Emitters;
 using Hexarc.Pact.Tool.Internals;
 
 namespace Hexarc.Pact.Tool
@@ -26,27 +27,39 @@ namespace Hexarc.Pact.Tool
             if (clientSettingsCollection is null) return;
 
             var schemaReader = new SchemaReader(options);
+
+
             foreach (var clientSettings in clientSettingsCollection)
             {
                 var schema = await schemaReader.ReadAsync(clientSettings.SchemaUri);
                 if (schema is null) continue;
-                Console.WriteLine(ObjectDumper.Dump(schema));
+                // Console.WriteLine(ObjectDumper.Dump(schema));
 
                 DirectoryOperations.CreateOrClear(clientSettings.OutputDirectory);
                 Directory.CreateDirectory(Path.Combine(clientSettings.OutputDirectory, "Models"));
                 Directory.CreateDirectory(Path.Combine(clientSettings.OutputDirectory, "Controllers"));
 
-                foreach (var type in schema.Types.OfType<DistinctType>())
+                var typeRegistry = TypeRegistry.FromTypes(schema.Types);
+                var typeReferenceEmitter = new TypeReferenceEmitter(typeRegistry);
+                var typeEmitter = new DistinctTypeEmitter(typeReferenceEmitter);
+
+                foreach (var distinctType in typeRegistry.EnumerateDistinctTypes())
                 {
-                    File.Create(
-                        Path.Combine(Path.Combine(clientSettings.OutputDirectory, "Models", $"{type.Name}.cs")));
+                    var emitted = typeEmitter.Emit(distinctType);
+                    Console.WriteLine(SyntaxFactory.CompilationUnit().WithMembers(emitted.MembersDeclarations).NormalizeWhitespace().GetText());
                 }
 
-                foreach (var controller in schema.Controllers)
-                {
-                    File.Create(
-                        Path.Combine(Path.Combine(clientSettings.OutputDirectory, "Controllers", $"{controller.Name}.cs")));
-                }
+                // foreach (var type in schema.Types.OfType<DistinctType>())
+                // {
+                //     File.Create(
+                //         Path.Combine(Path.Combine(clientSettings.OutputDirectory, "Models", $"{type.Name}.cs")));
+                // }
+                //
+                // foreach (var controller in schema.Controllers)
+                // {
+                //     File.Create(
+                //         Path.Combine(Path.Combine(clientSettings.OutputDirectory, "Controllers", $"{controller.Name}.cs")));
+                // }
             }
         }
     }

@@ -3,7 +3,9 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.CSharp;
 using Hexarc.Pact.Protocol.TypeReferences;
+using Hexarc.Pact.Tool.Extensions;
 using Hexarc.Pact.Tool.Internals;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using Type = Hexarc.Pact.Protocol.Types.Type;
@@ -31,16 +33,16 @@ namespace Hexarc.Pact.Tool.Emitters
             _ => throw new InvalidOperationException($"Could not emit a Hexarc Pact type reference from {typeReference}")
         };
 
-        private IEnumerable<TypeSyntax> EmitMany(IEnumerable<TypeReference> typeReferences, String? currentNamespace = default) =>
-            typeReferences.Select(typeReference => this.Emit(typeReference, currentNamespace));
+        private IEnumerable<SyntaxNodeOrToken> EmitMany(IEnumerable<TypeReference> typeReferences, String? currentNamespace = default) =>
+            typeReferences.Select(typeReference => (SyntaxNodeOrToken)this.Emit(typeReference, currentNamespace));
 
-        private TypeSyntax EmitPrimitiveTypeReference(PrimitiveTypeReference reference, String? currentNamespace) =>
+        private NameSyntax EmitPrimitiveTypeReference(PrimitiveTypeReference reference, String? currentNamespace) =>
             this.EmitTypeName(this.TypeRegistry.GetPrimitiveType(reference.TypeId), currentNamespace);
 
-        private TypeSyntax EmitDynamicTypeReference(DynamicTypeReference reference, String? currentNamespace) =>
+        private NameSyntax EmitDynamicTypeReference(DynamicTypeReference reference, String? currentNamespace) =>
             this.EmitTypeName(this.TypeRegistry.GetDynamicTypeType(reference.TypeId), currentNamespace);
 
-        private TypeSyntax EmitNullableTypeReference(NullableTypeReference reference, String? currentNamespace) =>
+        private NullableTypeSyntax EmitNullableTypeReference(NullableTypeReference reference, String? currentNamespace) =>
             NullableType(this.Emit(reference.UnderlyingType, currentNamespace));
 
         private TypeSyntax EmitArrayTypeReference(ArrayTypeReference reference, String? currentNamespace) =>
@@ -50,31 +52,31 @@ namespace Hexarc.Pact.Tool.Emitters
                 var (arrayLikeTypeId, elementType) => this.EmitArrayLikeTypeReference(arrayLikeTypeId.Value, elementType, currentNamespace)
             };
 
-        private TypeSyntax EmitPureArrayTypeReference(TypeReference elementType, String? currentNamespace) =>
-            ArrayType(this.Emit(elementType, currentNamespace))
+        private ArrayTypeSyntax EmitPureArrayTypeReference(TypeReference elementType, String? currentNamespace) =>
+            ArrayType(this.Emit(elementType, currentNamespace)!)
                 .WithRankSpecifiers(
                     SingletonList(
                         ArrayRankSpecifier(
                             SingletonSeparatedList<ExpressionSyntax>(
                                 OmittedArraySizeExpression()))));
 
-        private TypeSyntax EmitArrayLikeTypeReference(Guid arrayLikeTypeId, TypeReference elementType, String? currentNamespace) =>
+        private GenericNameSyntax EmitArrayLikeTypeReference(Guid arrayLikeTypeId, TypeReference elementType, String? currentNamespace) =>
             this.EmitGenericTypeName(this.TypeRegistry.GetArrayLikeType(arrayLikeTypeId), elementType, currentNamespace);
 
-        private TypeSyntax EmitDictionaryTypeReference(DictionaryTypeReference reference, String? currentNamespace) =>
+        private GenericNameSyntax EmitDictionaryTypeReference(DictionaryTypeReference reference, String? currentNamespace) =>
             this.EmitGenericTypeName(
                 this.TypeRegistry.GetDictionaryType(reference.TypeId),
                 new[] { reference.KeyType, reference.ValueType },
                 currentNamespace);
 
-        private TypeSyntax EmitTaskTypeReference(TaskTypeReference reference, String? currentNamespace) =>
+        private GenericNameSyntax EmitTaskTypeReference(TaskTypeReference reference, String? currentNamespace) =>
             this.EmitGenericTypeName(this.TypeRegistry.GetTaskType(reference.TypeId), reference.ResultType, currentNamespace);
 
-        private TypeSyntax EmitGenericTypeReference(GenericTypeReference reference) =>
+        private NameSyntax EmitGenericTypeReference(GenericTypeReference reference) =>
             ParseName(reference.Name);
 
-        private TypeSyntax EmitLiteralTypeReference() =>
-            ParseName("System.String");
+        private NameSyntax EmitLiteralTypeReference() =>
+            ParseName(typeof(String).FullName!);
 
         private TypeSyntax EmitDistinctTypeReference(DistinctTypeReference reference, String? currentNamespace) =>
             (this.TypeRegistry.GetDistinctType(reference.TypeId), reference.GenericArguments) switch
@@ -83,23 +85,24 @@ namespace Hexarc.Pact.Tool.Emitters
                 var (type, genericArguments) => this.EmitGenericTypeName(type, genericArguments, currentNamespace)
             };
 
-        private TypeSyntax EmitGenericTypeName(Type type, TypeReference[] genericArguments, String? currentNamespace) =>
+        private GenericNameSyntax EmitGenericTypeName(Type type, TypeReference[] genericArguments, String? currentNamespace) =>
             GenericName(this.EmitTypeIdentifier(type, currentNamespace))
                 .WithTypeArgumentList(
                     TypeArgumentList(this.EmitGenericArguments(genericArguments, currentNamespace)));
 
-        private TypeSyntax EmitGenericTypeName(Type type, TypeReference genericArgument, String? currentNamespace) =>
+        private GenericNameSyntax EmitGenericTypeName(Type type, TypeReference genericArgument, String? currentNamespace) =>
             GenericName(this.EmitTypeIdentifier(type, currentNamespace))
                 .WithTypeArgumentList(
                     TypeArgumentList(this.EmitGenericArgument(genericArgument, currentNamespace)));
 
         private SeparatedSyntaxList<TypeSyntax> EmitGenericArgument(TypeReference argument, String? currentNamespace) =>
-            SingletonSeparatedList(this.Emit(argument, currentNamespace));
+            SingletonSeparatedList<TypeSyntax>(this.Emit(argument, currentNamespace));
 
-        private SeparatedSyntaxList<TypeSyntax> EmitGenericArguments(IEnumerable<TypeReference> arguments, String? currentNamespace) =>
-            SeparatedList<TypeSyntax>(this.EmitMany(arguments, currentNamespace));
+        private SeparatedSyntaxList<TypeSyntax> EmitGenericArguments(TypeReference[] arguments, String? currentNamespace) =>
+            SeparatedList<TypeSyntax>(this.EmitMany(arguments, currentNamespace)
+                .Separate(arguments.Length, Token(SyntaxKind.CommaToken)));
 
-        private TypeSyntax EmitTypeName(Type type, String? currentNamespace = default) =>
+        private NameSyntax EmitTypeName(Type type, String? currentNamespace = default) =>
             this.IsSameNamespace(type, currentNamespace) ? ParseName(type.Name) : ParseName(type.FullName);
 
         private SyntaxToken EmitTypeIdentifier(Type type, String? currentNamespace = default) =>

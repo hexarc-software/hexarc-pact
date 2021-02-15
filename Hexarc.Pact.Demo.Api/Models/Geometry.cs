@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Hexarc.Pact.Demo.Api.Models
 {
@@ -21,5 +22,12 @@ namespace Hexarc.Pact.Demo.Api.Models
             (this.V1.X * (this.V2.Y - this.V3.Y) +
              this.V2.X * (this.V3.Y - this.V1.Y) +
              this.V3.X * (this.V1.Y - this.V2.Y)) / 2.0;
+    }
+
+    public class GeometryCollection
+    {
+        public List<Point> Points { get; set; } = default!;
+
+        public Dictionary<Guid, Point> PointsDict { get; set; } = default!;
     }
 }

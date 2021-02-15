@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace Hexarc.Pact.Protocol.TypeReferences
 {
@@ -12,6 +13,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
 
         public TypeReference ValueType { get; }
 
+        [JsonConstructor]
         public DictionaryTypeReference(Guid typeId, TypeReference keyType, TypeReference valueType) =>
             (this.TypeId, this.KeyType, this.ValueType) = (typeId, keyType, valueType);
 

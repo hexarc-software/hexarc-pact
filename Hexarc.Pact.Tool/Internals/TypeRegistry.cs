@@ -94,5 +94,11 @@ namespace Hexarc.Pact.Tool.Internals
             if (this.UnionTypes.TryGetValue(typeId, out var union)) return union;
             throw new KeyNotFoundException();
         }
+
+        public IEnumerable<DistinctType> EnumerateDistinctTypes() =>
+            this.EnumTypes.Values.Cast<DistinctType>()
+                .Union(this.StructTypes.Values)
+                .Union(this.ClassTypes.Values)
+                .Union(this.UnionTypes.Values);
     }
 }
