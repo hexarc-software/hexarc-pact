@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Hexarc.Pact.Protocol.Api;
 
-namespace Hexarc.Pact.Tool.Utils
+namespace Hexarc.Pact.Tool.Internals
 {
     public sealed class SchemaReader
     {

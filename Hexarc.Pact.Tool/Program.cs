@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Hexarc.Serialization.Union;
 using Hexarc.Pact.Protocol.Types;
-using Hexarc.Pact.Tool.Utils;
+using Hexarc.Pact.Tool.Internals;
 
 namespace Hexarc.Pact.Tool
 {

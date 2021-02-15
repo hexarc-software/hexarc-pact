@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Hexarc.Pact.Tool.Extensions;
 using Hexarc.Pact.Tool.Models;
 
-namespace Hexarc.Pact.Tool.Utils
+namespace Hexarc.Pact.Tool.Internals
 {
     public sealed class ClientSettingsReader
     {

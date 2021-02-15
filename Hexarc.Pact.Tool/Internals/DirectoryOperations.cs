@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Hexarc.Pact.Tool.Utils
+namespace Hexarc.Pact.Tool.Internals
 {
     public static class DirectoryOperations
     {

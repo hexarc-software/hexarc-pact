@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 using Hexarc.Annotations;
 
 namespace Hexarc.Pact.Protocol.Types
@@ -37,6 +38,12 @@ namespace Hexarc.Pact.Protocol.Types
         /// Gets the type name.
         /// </summary>
         public String Name { get; }
+
+        /// <summary>
+        /// Gets the full type name.
+        /// </summary>
+        [JsonIgnore]
+        public String FullName => String.IsNullOrEmpty(this.Namespace) ? this.Name : $"{this.Namespace}.{this.Name}";
 
         /// <summary>
         /// Creates an instance of the Type class.

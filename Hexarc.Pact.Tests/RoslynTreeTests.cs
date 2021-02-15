@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -14,7 +15,7 @@ namespace Hexarc.Pact.Tests
         public void BuildTypeFromScratch()
         {
             var xProp = PropertyDeclaration(
-                ParseName("System.Int32"), "X")
+                NullableType(ParseName("System.Int32")), "X")
                 .AddModifiers(Token(SyntaxKind.PublicKeyword))
                 .AddAccessorListAccessors(
                     AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
@@ -95,6 +96,7 @@ namespace Hexarc.Pact.Tests
                 .WithLeadingTrivia(comment)
                 .NormalizeWhitespace();
             var text = unit.GetText();
+            Console.WriteLine(text);
 
             using var file = File.CreateText("Point.cs");
             text.Write(file);
