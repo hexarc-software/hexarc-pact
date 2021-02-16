@@ -4,7 +4,7 @@ using Hexarc.Pact.AspNetCore.Attributes;
 
 namespace Hexarc.Pact.AspNetCore.Models
 {
-    internal sealed class ControllerCandidate
+    public sealed class ControllerCandidate
     {
         public Type Type { get; }
 

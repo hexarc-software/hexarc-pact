@@ -5,7 +5,7 @@ namespace Hexarc.Pact.AspNetCore.Models
     /// <summary>
     /// The type describes a union tag used in a discriminated union case.
     /// </summary>
-    internal sealed class UnionTag
+    public sealed class UnionTag
     {
         /// <summary>
         /// Gets the union tag property name.

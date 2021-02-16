@@ -1,11 +1,12 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Hexarc.Pact.AspNetCore.Internals;
-using Hexarc.Pact.Protocol.Api;
-using Hexarc.Pact.Protocol.TypeReferences;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Hexarc.Pact.AspNetCore.Internals;
+using Hexarc.Pact.AspNetCore.Models;
+using Hexarc.Pact.Protocol.Api;
+using Hexarc.Pact.Protocol.TypeReferences;
 
 namespace Hexarc.Pact.AspNetCore.Readers
 {
@@ -18,15 +19,20 @@ namespace Hexarc.Pact.AspNetCore.Readers
         public MethodReader(TypeChecker typeChecker, TypeReferenceReader typeReferenceReader) =>
             (this.TypeChecker, this.TypeReferenceReader) = (typeChecker, typeReferenceReader);
 
-        public Method Read(MethodInfo methodInfo, HttpMethodAttribute methodAttribute, RouteAttribute routeAttribute) =>
-            new(methodInfo.Name,
-                this.ReadPath(routeAttribute),
-                this.ReadHttpMethod(methodAttribute),
-                this.ReadReturnType(methodInfo.ReturnType),
-                this.ReadMethodParameters(methodInfo.GetParameters()));
+        public Method Read(MethodCandidate methodCandidate) =>
+            new(methodCandidate.MethodInfo.Name,
+                this.ReadPath(methodCandidate.RouteAttribute!),
+                this.ReadHttpMethod(methodCandidate.HttpMethodAttribute!),
+                this.ReadReturnType(methodCandidate.MethodInfo.ReturnType, methodCandidate.IsNullableReferenceResult),
+                this.ReadMethodParameters(methodCandidate.MethodInfo.GetParameters()));
 
         private String ReadPath(RouteAttribute routeAttribute) =>
             routeAttribute.Template.StartsWith("/") ? routeAttribute.Template : $"/{routeAttribute.Template}";
+
+        private TypeReference ReadReturnType(Type returnType, Boolean isNullableReferenceResult) =>
+            isNullableReferenceResult
+                ? new NullableTypeReference(this.ReadReturnType(returnType))
+                : this.ReadReturnType(returnType);
 
         private TypeReference ReadReturnType(Type returnType) =>
             this.TypeChecker.IsTaskType(returnType)

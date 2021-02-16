@@ -6,7 +6,7 @@ using Hexarc.Pact.AspNetCore.Attributes;
 
 namespace Hexarc.Pact.AspNetCore.Models
 {
-    internal sealed class MethodCandidate
+    public sealed class MethodCandidate
     {
         public MethodInfo MethodInfo { get; }
 
@@ -25,16 +25,20 @@ namespace Hexarc.Pact.AspNetCore.Models
             this.RouteAttribute is not null &&
             this.IsSupportedHttpMethod;
 
+        public Boolean IsNullableReferenceResult { get; }
+
         public MethodCandidate(
             MethodInfo methodInfo,
             IgnoreAttribute? ignoreAttribute,
             HttpMethodAttribute? httpMethodAttribute,
-            RouteAttribute? routeAttribute)
+            RouteAttribute? routeAttribute,
+            Boolean isNullableReferenceResult)
         {
             this.MethodInfo = methodInfo;
             this.IgnoreAttribute = ignoreAttribute;
             this.HttpMethodAttribute = httpMethodAttribute;
             this.RouteAttribute = routeAttribute;
+            this.IsNullableReferenceResult = isNullableReferenceResult;
         }
     }
 }

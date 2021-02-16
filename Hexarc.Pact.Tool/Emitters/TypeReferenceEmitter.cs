@@ -33,7 +33,7 @@ namespace Hexarc.Pact.Tool.Emitters
             _ => throw new InvalidOperationException($"Could not emit a Hexarc Pact type reference from {typeReference}")
         };
 
-        private IEnumerable<SyntaxNodeOrToken> EmitMany(IEnumerable<TypeReference> typeReferences, String? currentNamespace = default) =>
+        private IEnumerable<SyntaxNodeOrToken> EmitMany(IEnumerable<TypeReference> typeReferences, String? currentNamespace) =>
             typeReferences.Select(typeReference => (SyntaxNodeOrToken)this.Emit(typeReference, currentNamespace));
 
         private NameSyntax EmitPrimitiveTypeReference(PrimitiveTypeReference reference, String? currentNamespace) =>
@@ -102,10 +102,10 @@ namespace Hexarc.Pact.Tool.Emitters
             SeparatedList<TypeSyntax>(this.EmitMany(arguments, currentNamespace)
                 .Separate(arguments.Length, Token(SyntaxKind.CommaToken)));
 
-        private NameSyntax EmitTypeName(Type type, String? currentNamespace = default) =>
+        private NameSyntax EmitTypeName(Type type, String? currentNamespace) =>
             this.IsSameNamespace(type, currentNamespace) ? ParseName(type.Name) : ParseName(type.FullName);
 
-        private SyntaxToken EmitTypeIdentifier(Type type, String? currentNamespace = default) =>
+        private SyntaxToken EmitTypeIdentifier(Type type, String? currentNamespace) =>
             this.IsSameNamespace(type, currentNamespace) ? Identifier(type.Name) : Identifier(type.FullName);
 
         private Boolean IsSameNamespace(Type type, String? currentNamespace) =>

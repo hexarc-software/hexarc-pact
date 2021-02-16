@@ -1,11 +1,13 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Hexarc.Pact.AspNetCore.Attributes;
-using Hexarc.Pact.AspNetCore.Models;
-using Hexarc.Pact.Protocol.Api;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Hexarc.Annotations;
+using Hexarc.Pact.AspNetCore.Attributes;
+using Hexarc.Pact.AspNetCore.Extensions;
+using Hexarc.Pact.AspNetCore.Models;
+using Hexarc.Pact.Protocol.Api;
 using Controller = Hexarc.Pact.Protocol.Api.Controller;
 
 namespace Hexarc.Pact.AspNetCore.Readers
@@ -27,13 +29,14 @@ namespace Hexarc.Pact.AspNetCore.Readers
             type.GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .Select(this.ReadMethodCandidate)
                 .Where(x => x.IsPactCompatible)
-                .Select(x => this.MethodReader.Read(x.MethodInfo, x.HttpMethodAttribute!, x.RouteAttribute!))
+                .Select(this.MethodReader.Read)
                 .ToArray();
 
         private MethodCandidate ReadMethodCandidate(MethodInfo methodInfo) =>
             new(methodInfo,
                 methodInfo.GetCustomAttribute<IgnoreAttribute>(),
                 methodInfo.GetCustomAttribute<HttpMethodAttribute>(),
-                methodInfo.GetCustomAttribute<RouteAttribute>());
+                methodInfo.GetCustomAttribute<RouteAttribute>(),
+                methodInfo.IsReturnAttributeDefined<NullableReferenceAttribute>());
     }
 }
