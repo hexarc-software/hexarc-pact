@@ -28,6 +28,7 @@ namespace Hexarc.Pact.Demo.Api.Models
     public static class AnimalKind
     {
         public const String Cat = nameof(Cat);
+
         public const String Dog = nameof(Dog);
     }
 }

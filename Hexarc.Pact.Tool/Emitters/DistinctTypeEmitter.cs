@@ -89,10 +89,11 @@ namespace Hexarc.Pact.Tool.Emitters
                 .WithMembers(
                     this.EmitObjectProperties(type.Properties, type.Namespace));
 
-        private SyntaxList<MemberDeclarationSyntax> EmitUnionTypeSyntaxTree(UnionType type) =>
-            List<MemberDeclarationSyntax>()
-                .Add(this.EmitUnionBaseTypeSyntaxTree(type))
-                .AddRange(type.Cases.Select(x => this.EmitUnionCaseTypeSyntaxTree(x, type.Name)));
+        private MemberDeclarationSyntax[] EmitUnionTypeSyntaxTree(UnionType type) =>
+            Enumerable.Empty<MemberDeclarationSyntax>()
+                .Concat(EnumerableFactory.FromOne(this.EmitUnionBaseTypeSyntaxTree(type)))
+                .Concat(type.Cases.Select(x => this.EmitUnionCaseTypeSyntaxTree(x, type.Name)))
+                .ToArray();
 
         private MemberDeclarationSyntax EmitUnionBaseTypeSyntaxTree(UnionType type) =>
             ClassDeclaration(type.Name)
@@ -235,11 +236,12 @@ namespace Hexarc.Pact.Tool.Emitters
                     .WithMembers(
                         SingletonList<MemberDeclarationSyntax>(member));
 
-        private SyntaxList<MemberDeclarationSyntax> WrapInNamespace(String? @namespace, SyntaxList<MemberDeclarationSyntax> members) =>
+        private MemberDeclarationSyntax[] WrapInNamespace(String? @namespace, MemberDeclarationSyntax[] members) =>
             String.IsNullOrEmpty(@namespace)
-                ? List<MemberDeclarationSyntax>(members)
-                : SingletonList<MemberDeclarationSyntax>(
+                ? members
+                : ArrayFactory.FromOne<MemberDeclarationSyntax>(
                     NamespaceDeclaration(IdentifierName(@namespace))
-                        .WithMembers(members));
+                        .WithMembers(
+                            List<MemberDeclarationSyntax>(members)));
     }
 }

@@ -1,7 +1,5 @@
 using System;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Hexarc.Pact.Tool.Models
 {
@@ -9,12 +7,12 @@ namespace Hexarc.Pact.Tool.Models
     {
         public String Name { get; }
 
-        public SyntaxList<MemberDeclarationSyntax> MembersDeclarations { get; }
+        public MemberDeclarationSyntax[] MemberDeclarations { get; }
 
-        public EmittedDistinctType(String name, MemberDeclarationSyntax membersDeclaration) =>
-            (this.Name, this.MembersDeclarations) = (name, SingletonList(membersDeclaration));
+        public EmittedDistinctType(String name, MemberDeclarationSyntax memberDeclaration) =>
+            (this.Name, this.MemberDeclarations) = (name, new[] { memberDeclaration });
 
-        public EmittedDistinctType(String name, SyntaxList<MemberDeclarationSyntax> membersDeclarations) =>
-            (this.Name, this.MembersDeclarations) = (name, membersDeclarations);
+        public EmittedDistinctType(String name, MemberDeclarationSyntax[] membersDeclarations) =>
+            (this.Name, this.MemberDeclarations) = (name, membersDeclarations);
     }
 }

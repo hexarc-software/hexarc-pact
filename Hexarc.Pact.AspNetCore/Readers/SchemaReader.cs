@@ -71,11 +71,11 @@ namespace Hexarc.Pact.AspNetCore.Readers
 
         private Type[] ReadTypes() =>
             this.EnumerateDistinctTypes()
-                .Union(this.PrimitiveTypeProvider.Enumerate())
-                .Union(this.DynamicTypeProvider.Enumerate())
-                .Union(this.ArrayLikeTypeProvider.Enumerate())
-                .Union(this.DictionaryTypeProvider.Enumerate())
-                .Union(this.TaskTypeProvider.Enumerate())
+                .Concat(this.PrimitiveTypeProvider.Enumerate())
+                .Concat(this.DynamicTypeProvider.Enumerate())
+                .Concat(this.ArrayLikeTypeProvider.Enumerate())
+                .Concat(this.DictionaryTypeProvider.Enumerate())
+                .Concat(this.TaskTypeProvider.Enumerate())
                 .ToArray();
 
         private IEnumerable<Type> EnumerateDistinctTypes()

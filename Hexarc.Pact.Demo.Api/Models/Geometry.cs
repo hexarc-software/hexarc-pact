@@ -29,5 +29,7 @@ namespace Hexarc.Pact.Demo.Api.Models
         public List<Point> Points { get; set; } = default!;
 
         public Dictionary<Guid, Point> PointsDict { get; set; } = default!;
+
+        public Direction Direction { get; set; }
     }
 }

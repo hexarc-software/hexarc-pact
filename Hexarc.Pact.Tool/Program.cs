@@ -2,9 +2,6 @@ using System;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Formatting;
 using Hexarc.Serialization.Union;
 using Hexarc.Pact.Tool.Emitters;
 using Hexarc.Pact.Tool.Internals;
@@ -42,14 +39,14 @@ namespace Hexarc.Pact.Tool
 
                 var typeRegistry = TypeRegistry.FromTypes(schema.Types);
                 var typeReferenceEmitter = new TypeReferenceEmitter(typeRegistry);
-                var typeEmitter = new DistinctTypeEmitter(typeReferenceEmitter);
+                var distinctTypeEmitter = new DistinctTypeEmitter(typeReferenceEmitter);
+                var apiEmitter = new ApiEmitter(typeRegistry, distinctTypeEmitter);
 
-                foreach (var distinctType in typeRegistry.EnumerateDistinctTypes())
+                foreach (var type in apiEmitter.EmitTypes())
                 {
-                    var emitted = typeEmitter.Emit(distinctType);
-                    var unit = SyntaxFactory.CompilationUnit().WithMembers(emitted.MembersDeclarations);
-                    var workspace = new AdhocWorkspace();
-                    Console.WriteLine(Formatter.Format(unit, workspace).GetText());
+                    var path = Path.Combine(Path.Combine(clientSettings.OutputDirectory, "Models", type.FileName));
+                    await using var file = File.CreateText(path);
+                    type.SourceText.Write(file);
                 }
 
                 // foreach (var type in schema.Types.OfType<DistinctType>())
