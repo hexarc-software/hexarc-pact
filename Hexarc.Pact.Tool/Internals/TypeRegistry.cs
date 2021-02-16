@@ -97,8 +97,8 @@ namespace Hexarc.Pact.Tool.Internals
 
         public IEnumerable<DistinctType> EnumerateDistinctTypes() =>
             this.EnumTypes.Values.Cast<DistinctType>()
-                .Union(this.StructTypes.Values)
-                .Union(this.ClassTypes.Values)
-                .Union(this.UnionTypes.Values);
+                .Concat(this.StructTypes.Values)
+                .Concat(this.ClassTypes.Values)
+                .Concat(this.UnionTypes.Values);
     }
 }
