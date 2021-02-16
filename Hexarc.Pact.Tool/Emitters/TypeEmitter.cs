@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Hexarc.Annotations;
 using Hexarc.Pact.Protocol.Types;
 using Hexarc.Pact.Protocol.TypeReferences;
 using Hexarc.Pact.Tool.Extensions;
@@ -75,7 +76,7 @@ namespace Hexarc.Pact.Tool.Emitters
                 .WithMembers(
                     this.EmitObjectProperties(type.Properties, type.Namespace));
 
-        private MemberDeclarationSyntax EmitClassTypeSyntaxTree(ClassType type) =>
+        private ClassDeclarationSyntax EmitClassTypeSyntaxTree(ClassType type) =>
             ClassDeclaration(type.Name)
                 .WithModifiers(
                     TokenList(
@@ -90,18 +91,65 @@ namespace Hexarc.Pact.Tool.Emitters
 
         private SyntaxList<MemberDeclarationSyntax> EmitUnionTypeSyntaxTree(UnionType type) =>
             List<MemberDeclarationSyntax>()
-                .Add(this.EmitBaseUnionTypeSyntaxTree(type))
-                .AddRange(type.Cases.Select(this.EmitClassTypeSyntaxTree));
+                .Add(this.EmitUnionBaseTypeSyntaxTree(type))
+                .AddRange(type.Cases.Select(x => this.EmitUnionCaseTypeSyntaxTree(x, type.Name)));
 
-        private MemberDeclarationSyntax EmitBaseUnionTypeSyntaxTree(UnionType type) =>
+        private MemberDeclarationSyntax EmitUnionBaseTypeSyntaxTree(UnionType type) =>
             ClassDeclaration(type.Name)
                 .WithModifiers(
                     TokenList(
                         Token(SyntaxKind.PublicKeyword),
                         Token(SyntaxKind.AbstractKeyword)))
+                .WithAttributeLists(
+                    this.EmitUnionAttributes(type))
                 .WithMembers(
                     SingletonList<MemberDeclarationSyntax>(
                         this.EmitAbstractUnionTagProperty(type.TagName)));
+
+        private MemberDeclarationSyntax EmitUnionCaseTypeSyntaxTree(ClassType type, String baseTypeName) =>
+            this.EmitClassTypeSyntaxTree(type)
+                .WithBaseList(
+                    BaseList(
+                        SingletonSeparatedList<BaseTypeSyntax>(
+                            SimpleBaseType(
+                                IdentifierName(baseTypeName)))));
+
+        private SyntaxList<AttributeListSyntax> EmitUnionAttributes(UnionType type) =>
+            List<AttributeListSyntax>()
+                .Add(AttributeList(SingletonSeparatedList(this.EmitUnionTagAttribute(type.TagName))))
+                .AddRange(type.Cases.Select(x => AttributeList(SingletonSeparatedList(this.EmitUnionCaseAttribute(x)))));
+
+        private AttributeSyntax EmitUnionTagAttribute(String tagName) =>
+            Attribute(IdentifierName(typeof(UnionTagAttribute).FullName!))
+                .WithArgumentList(
+                    AttributeArgumentList(
+                        SingletonSeparatedList<AttributeArgumentSyntax>(
+                            AttributeArgument(
+                                InvocationExpression(
+                                        IdentifierName("nameof"))
+                                    .WithArgumentList(
+                                        ArgumentList(
+                                            SingletonSeparatedList<ArgumentSyntax>(
+                                                Argument(IdentifierName(tagName)))))))));
+
+        private AttributeSyntax EmitUnionCaseAttribute(ClassType type) =>
+            Attribute(IdentifierName(typeof(UnionCaseAttribute).FullName!))
+                .WithArgumentList(
+                    AttributeArgumentList(
+                        SeparatedList<AttributeArgumentSyntax>(
+                            new SyntaxNodeOrToken[]
+                            {
+                                AttributeArgument(
+                                    TypeOfExpression(IdentifierName(type.Name))),
+                                Token(SyntaxKind.CommaToken),
+                                AttributeArgument(
+                                    LiteralExpression(
+                                        SyntaxKind.StringLiteralExpression,
+                                        Literal(type.Properties
+                                            .Select(x => x.Type)
+                                            .OfType<LiteralTypeReference>()
+                                            .First().Name)))
+                            })));
 
         private TypeParameterListSyntax EmitGenericParameters(String[] genericParameters) =>
             TypeParameterList(

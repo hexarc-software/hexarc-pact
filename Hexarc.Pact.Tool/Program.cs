@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Formatting;
 using Hexarc.Serialization.Union;
 using Hexarc.Pact.Tool.Emitters;
 using Hexarc.Pact.Tool.Internals;
@@ -46,7 +47,9 @@ namespace Hexarc.Pact.Tool
                 foreach (var distinctType in typeRegistry.EnumerateDistinctTypes())
                 {
                     var emitted = typeEmitter.Emit(distinctType);
-                    Console.WriteLine(SyntaxFactory.CompilationUnit().WithMembers(emitted.MembersDeclarations).NormalizeWhitespace().GetText());
+                    var unit = SyntaxFactory.CompilationUnit().WithMembers(emitted.MembersDeclarations);
+                    var workspace = new AdhocWorkspace();
+                    Console.WriteLine(Formatter.Format(unit, workspace).GetText());
                 }
 
                 // foreach (var type in schema.Types.OfType<DistinctType>())

@@ -1,7 +1,7 @@
 using System;
+using Microsoft.AspNetCore.Mvc;
 using Hexarc.Annotations;
 using Hexarc.Pact.Demo.Api.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Hexarc.Pact.Demo.Api.Controllers
 {
