@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Hexarc.Pact.Client
+﻿namespace Hexarc.Pact.Client
 {
     public abstract class ClientBase
     {

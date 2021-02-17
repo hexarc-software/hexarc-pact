@@ -8,8 +8,10 @@ using Hexarc.Annotations;
 using Hexarc.Pact.Protocol.Types;
 using Hexarc.Pact.Protocol.TypeReferences;
 using Hexarc.Pact.Tool.Extensions;
+using Hexarc.Pact.Tool.Internals;
 using Hexarc.Pact.Tool.Models;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Hexarc.Pact.Tool.Internals.SyntaxOperations;
 
 namespace Hexarc.Pact.Tool.Emitters
 {
@@ -30,33 +32,30 @@ namespace Hexarc.Pact.Tool.Emitters
         };
 
         private EmittedDistinctType EmitEnumType(EnumType type) =>
-            new(type.Name,
-                this.WrapInNamespace(
-                    type.Namespace,
-                    this.EmitEnumSyntaxTree(type)));
+            new(type.Name, TryWrapInNamespace(type.Namespace, this.EmitEnumDeclaration(type)));
 
         private EmittedDistinctType EmitStructType(StructType type) =>
-            new(type.Name, this.WrapInNamespace(type.Namespace, this.EmitStructTypeSyntaxTree(type)));
+            new(type.Name, TryWrapInNamespace(type.Namespace, this.EmitStructDeclaration(type)));
 
         private EmittedDistinctType EmitClassType(ClassType type) =>
-            new(type.Name, this.WrapInNamespace(type.Namespace, this.EmitClassTypeSyntaxTree(type)));
+            new(type.Name, TryWrapInNamespace(type.Namespace, this.EmitClassDeclaration(type)));
 
         private EmittedDistinctType EmitUnionType(UnionType type) =>
-            new(type.Name, this.WrapInNamespace(type.Namespace, this.EmitUnionTypeSyntaxTree(type)));
+            new(type.Name, TryWrapInNamespace(type.Namespace, this.EmitUnionDeclaration(type)));
 
-        private MemberDeclarationSyntax EmitEnumSyntaxTree(EnumType type) =>
+        private EnumDeclarationSyntax EmitEnumDeclaration(EnumType type) =>
             EnumDeclaration(type.Name)
                 .WithModifiers(
                     TokenList(
                         Token(SyntaxKind.PublicKeyword)))
                 .WithMembers(
                     SeparatedList<EnumMemberDeclarationSyntax>(
-                        this.EmitEnumMembers(type.Members)));
+                        this.EmitEnumMemberDeclarations(type.Members)));
 
-        private IEnumerable<EnumMemberDeclarationSyntax> EmitEnumMembers(EnumMember[] members) =>
-            members.Select(this.EmitEnumMember);
+        private IEnumerable<EnumMemberDeclarationSyntax> EmitEnumMemberDeclarations(EnumMember[] members) =>
+            members.Select(this.EmitEnumMemberDeclaration);
 
-        private EnumMemberDeclarationSyntax EmitEnumMember(EnumMember member) =>
+        private EnumMemberDeclarationSyntax EmitEnumMemberDeclaration(EnumMember member) =>
             EnumMemberDeclaration(member.Name)
                 .WithEqualsValue(
                     EqualsValueClause(
@@ -64,7 +63,7 @@ namespace Hexarc.Pact.Tool.Emitters
                             SyntaxKind.NumericLiteralExpression,
                             Literal(member.Value))));
 
-        private MemberDeclarationSyntax EmitStructTypeSyntaxTree(StructType type) =>
+        private StructDeclarationSyntax EmitStructDeclaration(StructType type) =>
             StructDeclaration(type.Name)
                 .WithModifiers(
                     TokenList(
@@ -74,9 +73,9 @@ namespace Hexarc.Pact.Tool.Emitters
                         ? this.EmitGenericParameters(type.GenericParameters)
                         : default)
                 .WithMembers(
-                    this.EmitObjectProperties(type.Properties, type.Namespace));
+                    this.EmitObjectPropertyDeclarations(type.Properties, type.Namespace));
 
-        private ClassDeclarationSyntax EmitClassTypeSyntaxTree(ClassType type) =>
+        private ClassDeclarationSyntax EmitClassDeclaration(ClassType type) =>
             ClassDeclaration(type.Name)
                 .WithModifiers(
                     TokenList(
@@ -85,17 +84,17 @@ namespace Hexarc.Pact.Tool.Emitters
                 .WithTypeParameterList(
                     type.GenericParameters is not null
                         ? this.EmitGenericParameters(type.GenericParameters)
-                        : default!) //TODO: False nullability check
+                        : default)
                 .WithMembers(
-                    this.EmitObjectProperties(type.Properties, type.Namespace));
+                    this.EmitObjectPropertyDeclarations(type.Properties, type.Namespace));
 
-        private MemberDeclarationSyntax[] EmitUnionTypeSyntaxTree(UnionType type) =>
+        private MemberDeclarationSyntax[] EmitUnionDeclaration(UnionType type) =>
             Enumerable.Empty<MemberDeclarationSyntax>()
-                .Concat(EnumerableFactory.FromOne(this.EmitUnionBaseTypeSyntaxTree(type)))
-                .Concat(type.Cases.Select(x => this.EmitUnionCaseTypeSyntaxTree(x, type.Name)))
+                .Concat(EnumerableFactory.FromOne(this.EmitUnionBaseDeclaration(type)))
+                .Concat(type.Cases.Select(x => this.EmitUnionCaseDeclaration(x, type.Name)))
                 .ToArray();
 
-        private MemberDeclarationSyntax EmitUnionBaseTypeSyntaxTree(UnionType type) =>
+        private ClassDeclarationSyntax EmitUnionBaseDeclaration(UnionType type) =>
             ClassDeclaration(type.Name)
                 .WithModifiers(
                     TokenList(
@@ -105,10 +104,10 @@ namespace Hexarc.Pact.Tool.Emitters
                     this.EmitUnionAttributes(type))
                 .WithMembers(
                     SingletonList<MemberDeclarationSyntax>(
-                        this.EmitAbstractUnionTagProperty(type.TagName)));
+                        this.EmitAbstractUnionTagPropertyDeclaration(type.TagName)));
 
-        private MemberDeclarationSyntax EmitUnionCaseTypeSyntaxTree(ClassType type, String baseTypeName) =>
-            this.EmitClassTypeSyntaxTree(type)
+        private ClassDeclarationSyntax EmitUnionCaseDeclaration(ClassType type, String baseTypeName) =>
+            this.EmitClassDeclaration(type)
                 .WithBaseList(
                     BaseList(
                         SingletonSeparatedList<BaseTypeSyntax>(
@@ -162,19 +161,19 @@ namespace Hexarc.Pact.Tool.Emitters
         private SyntaxNodeOrToken EmitGenericParameter(String genericParameter) =>
             TypeParameter(Identifier(genericParameter));
 
-        private SyntaxList<MemberDeclarationSyntax> EmitObjectProperties(ObjectProperty[] properties, String? currentNamespace) =>
-            List<MemberDeclarationSyntax>(properties.Select(x => this.EmitObjectProperty(x, currentNamespace)));
+        private SyntaxList<MemberDeclarationSyntax> EmitObjectPropertyDeclarations(ObjectProperty[] properties, String? currentNamespace) =>
+            List<MemberDeclarationSyntax>(properties.Select(x => this.EmitObjectPropertyDeclaration(x, currentNamespace)));
 
-        private PropertyDeclarationSyntax EmitObjectProperty(ObjectProperty property, String? currentNamespace) =>
+        private PropertyDeclarationSyntax EmitObjectPropertyDeclaration(ObjectProperty property, String? currentNamespace) =>
             (property.Type, property.Name) switch
             {
                 var (reference, propertyName) when reference is LiteralTypeReference literal =>
-                    this.EmitImplementedUnionTagProperty(literal, propertyName),
+                    this.EmitConcreteUnionTagPropertyDeclaration(literal, propertyName),
                 var (reference, propertyName) =>
-                    this.EmitObjectProperty(reference, propertyName, currentNamespace)
+                    this.EmitObjectPropertyDeclaration(reference, propertyName, currentNamespace)
             };
 
-        private PropertyDeclarationSyntax EmitAbstractUnionTagProperty(String propertyName) =>
+        private PropertyDeclarationSyntax EmitAbstractUnionTagPropertyDeclaration(String propertyName) =>
             PropertyDeclaration(
                     IdentifierName(typeof(String).FullName!),
                     propertyName)
@@ -189,7 +188,7 @@ namespace Hexarc.Pact.Tool.Emitters
                                 .WithSemicolonToken(
                                     Token(SyntaxKind.SemicolonToken)))));
 
-        private PropertyDeclarationSyntax EmitImplementedUnionTagProperty(LiteralTypeReference reference, String propertyName) =>
+        private PropertyDeclarationSyntax EmitConcreteUnionTagPropertyDeclaration(LiteralTypeReference reference, String propertyName) =>
             PropertyDeclaration(
                     this.TypeReferenceEmitter.Emit(reference),
                     Identifier(propertyName))
@@ -211,7 +210,7 @@ namespace Hexarc.Pact.Tool.Emitters
                 .WithSemicolonToken(
                     Token(SyntaxKind.SemicolonToken));
 
-        private PropertyDeclarationSyntax EmitObjectProperty(TypeReference reference, String propertyName, String? currentNamespace) =>
+        private PropertyDeclarationSyntax EmitObjectPropertyDeclaration(TypeReference reference, String propertyName, String? currentNamespace) =>
             PropertyDeclaration(
                     this.TypeReferenceEmitter.Emit(reference, currentNamespace),
                     Identifier(propertyName))
@@ -228,20 +227,5 @@ namespace Hexarc.Pact.Tool.Emitters
                                 AccessorDeclaration(SyntaxKind.SetAccessorDeclaration)
                                     .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
                             })));
-
-        private MemberDeclarationSyntax WrapInNamespace(String? @namespace, MemberDeclarationSyntax member) =>
-            String.IsNullOrEmpty(@namespace)
-                ? member
-                : NamespaceDeclaration(IdentifierName(@namespace))
-                    .WithMembers(
-                        SingletonList<MemberDeclarationSyntax>(member));
-
-        private MemberDeclarationSyntax[] WrapInNamespace(String? @namespace, MemberDeclarationSyntax[] members) =>
-            String.IsNullOrEmpty(@namespace)
-                ? members
-                : ArrayFactory.FromOne<MemberDeclarationSyntax>(
-                    NamespaceDeclaration(IdentifierName(@namespace))
-                        .WithMembers(
-                            List<MemberDeclarationSyntax>(members)));
     }
 }

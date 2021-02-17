@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Hexarc.Pact.Tool.Extensions
+namespace Hexarc.Pact.Tool.Internals
 {
     public static class EnumerableFactory
     {

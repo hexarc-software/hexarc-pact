@@ -49,12 +49,6 @@ namespace Hexarc.Pact.Tool
                     type.SourceText.Write(file);
                 }
 
-                // foreach (var type in schema.Types.OfType<DistinctType>())
-                // {
-                //     File.Create(
-                //         Path.Combine(Path.Combine(clientSettings.OutputDirectory, "Models", $"{type.Name}.cs")));
-                // }
-                //
                 // foreach (var controller in schema.Controllers)
                 // {
                 //     File.Create(
