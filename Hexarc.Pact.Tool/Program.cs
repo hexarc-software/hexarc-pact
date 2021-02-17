@@ -31,19 +31,12 @@ namespace Hexarc.Pact.Tool
             {
                 var schema = await schemaReader.ReadAsync(clientSettings.SchemaUri);
                 if (schema is null) continue;
-                // Console.WriteLine(ObjectDumper.Dump(schema));
 
                 DirectoryOperations.CreateOrClear(clientSettings.OutputDirectory);
                 Directory.CreateDirectory(Path.Combine(clientSettings.OutputDirectory, "Models"));
                 Directory.CreateDirectory(Path.Combine(clientSettings.OutputDirectory, "Controllers"));
 
-                var typeRegistry = TypeRegistry.FromTypes(schema.Types);
-                var typeReferenceEmitter = new TypeReferenceEmitter(typeRegistry);
-                var distinctTypeEmitter = new DistinctTypeEmitter(typeReferenceEmitter);
-                var methodEmitter = new MethodEmitter(typeReferenceEmitter);
-                var controllerEmitter = new ControllerEmitter(methodEmitter);
-                var clientEmitter = new ClientEmitter();
-                var apiEmitter = new ApiEmitter(typeRegistry, distinctTypeEmitter, controllerEmitter, clientEmitter);
+                var apiEmitter = new ApiEmitter(clientSettings, schema);
 
                 foreach (var type in apiEmitter.EmitTypes())
                 {
@@ -52,18 +45,12 @@ namespace Hexarc.Pact.Tool
                     type.SourceText.Write(file);
                 }
 
-                foreach (var controller in apiEmitter.EmitControllers(schema.Controllers))
+                foreach (var controller in apiEmitter.EmitControllers())
                 {
                     var path = Path.Combine(Path.Combine(clientSettings.OutputDirectory, "Controllers", controller.FileName));
                     await using var file = File.CreateText(path);
                     controller.SourceText.Write(file);
                 }
-
-                // foreach (var controller in schema.Controllers)
-                // {
-                //     File.Create(
-                //         Path.Combine(Path.Combine(clientSettings.OutputDirectory, "Controllers", $"{controller.Name}.cs")));
-                // }
             }
         }
     }

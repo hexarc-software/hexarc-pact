@@ -1,12 +1,15 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.CSharp;
+
 using Hexarc.Pact.Protocol.TypeReferences;
 using Hexarc.Pact.Tool.Extensions;
 using Hexarc.Pact.Tool.Internals;
+
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using Type = Hexarc.Pact.Protocol.Types.Type;
 

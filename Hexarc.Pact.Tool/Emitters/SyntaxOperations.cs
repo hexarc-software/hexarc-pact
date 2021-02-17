@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Hexarc.Pact.Tool.Internals;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Hexarc.Pact.Tool.Internals
+namespace Hexarc.Pact.Tool.Emitters
 {
     public static class SyntaxOperations
     {

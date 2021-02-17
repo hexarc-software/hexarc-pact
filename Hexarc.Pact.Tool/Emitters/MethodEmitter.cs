@@ -6,7 +6,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Hexarc.Pact.Tool.Internals.SyntaxOperations;
 
 namespace Hexarc.Pact.Tool.Emitters
 {
@@ -26,22 +25,26 @@ namespace Hexarc.Pact.Tool.Emitters
                         Token(SyntaxKind.PublicKeyword),
                         Token(SyntaxKind.AsyncKeyword)
                     ))
-                .WithParameterList(
-                    ParameterList(
-                        SeparatedList<ParameterSyntax>(
-                            method.Parameters
-                                .Select(x =>
-                                    (SyntaxNodeOrToken)Parameter(Identifier(x.Name))
-                                        .WithType(this.TypeReferenceEmitter.Emit(x.Type)))
-                                .Separate(method.Parameters.Length, Token(SyntaxKind.CommaToken))
-                        )))
-                .WithBody(
-                    Block(
-                        SingletonList(
-                            ThrowStatement(
-                                ObjectCreationExpression(
-                                        IdentifierName(typeof(NotImplementedException).FullName!))
-                                    .WithArgumentList(
-                                        ArgumentList())))));
+                .WithParameterList(this.EmitMethodParameters(method.Parameters))
+                .WithBody(NotImplementedExceptionBlock);
+
+        private ParameterListSyntax EmitMethodParameters(MethodParameter[] parameters) =>
+            ParameterList(
+                SeparatedList<ParameterSyntax>(parameters
+                    .Select(this.EmitMethodParameter)
+                    .Separate(parameters.Length, Token(SyntaxKind.CommaToken))));
+
+        private SyntaxNodeOrToken EmitMethodParameter(MethodParameter parameter) =>
+            Parameter(Identifier(parameter.Name))
+                .WithType(this.TypeReferenceEmitter.Emit(parameter.Type));
+
+        private static BlockSyntax NotImplementedExceptionBlock { get; } =
+            Block(
+                SingletonList(
+                    ThrowStatement(
+                        ObjectCreationExpression(
+                                IdentifierName(typeof(NotImplementedException).FullName!))
+                            .WithArgumentList(
+                                ArgumentList()))));
     }
 }

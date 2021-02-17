@@ -28,8 +28,20 @@ namespace Hexarc.Pact.Demo.Api.Models
     {
         public List<Point> Points { get; set; } = default!;
 
+        public List<ModelsV2.Point>? PointsV2 { get; set; } = default!;
+
         public Dictionary<Guid, Point> PointsDict { get; set; } = default!;
 
         public Direction Direction { get; set; }
+    }
+}
+
+namespace Hexarc.Pact.Demo.Api.ModelsV2
+{
+    public class Point
+    {
+        public Double X { get; set; }
+
+        public Double Y { get; set; }
     }
 }

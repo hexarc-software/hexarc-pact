@@ -1,11 +1,14 @@
-using System.Collections.Generic;
 using System.Linq;
+using System.Collections.Generic;
+
 using Hexarc.Pact.Protocol.Api;
 using Hexarc.Pact.Tool.Models;
+
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Hexarc.Pact.Tool.Internals.SyntaxOperations;
+using static Hexarc.Pact.Tool.Emitters.SyntaxOperations;
 
 namespace Hexarc.Pact.Tool.Emitters
 {
@@ -16,8 +19,11 @@ namespace Hexarc.Pact.Tool.Emitters
         public ControllerEmitter(MethodEmitter methodEmitter) =>
             this.MethodEmitter = methodEmitter;
 
-        public EmittedDistinctType Emit(Controller controller) =>
-            new(controller.Name, TryWrapInNamespace(controller.Namespace, this.EmitControllerDeclaration(controller)));
+        public EmittedEntity Emit(Controller controller) =>
+            new(controller.Name,
+                TryWrapInNamespace(
+                    controller.Namespace,
+                    this.EmitControllerDeclaration(controller)));
 
         private ClassDeclarationSyntax EmitControllerDeclaration(Controller controller) =>
             ClassDeclaration(

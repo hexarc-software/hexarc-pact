@@ -1,17 +1,20 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+
 using Hexarc.Annotations;
 using Hexarc.Pact.Protocol.Types;
 using Hexarc.Pact.Protocol.TypeReferences;
 using Hexarc.Pact.Tool.Extensions;
 using Hexarc.Pact.Tool.Internals;
 using Hexarc.Pact.Tool.Models;
+
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Hexarc.Pact.Tool.Internals.SyntaxOperations;
+using static Hexarc.Pact.Tool.Emitters.SyntaxOperations;
 
 namespace Hexarc.Pact.Tool.Emitters
 {
@@ -22,7 +25,7 @@ namespace Hexarc.Pact.Tool.Emitters
         public DistinctTypeEmitter(TypeReferenceEmitter typeReferenceEmitter) =>
             this.TypeReferenceEmitter = typeReferenceEmitter;
 
-        public EmittedDistinctType Emit(DistinctType distinctType) => distinctType switch
+        public EmittedEntity Emit(DistinctType distinctType) => distinctType switch
         {
             EnumType @enum => this.EmitEnumType(@enum),
             StructType @struct => this.EmitStructType(@struct),
@@ -31,16 +34,16 @@ namespace Hexarc.Pact.Tool.Emitters
             _ => throw new InvalidOperationException($"Could not emit a Hexarc Pact type from {distinctType}")
         };
 
-        private EmittedDistinctType EmitEnumType(EnumType type) =>
+        private EmittedEntity EmitEnumType(EnumType type) =>
             new(type.Name, TryWrapInNamespace(type.Namespace, this.EmitEnumDeclaration(type)));
 
-        private EmittedDistinctType EmitStructType(StructType type) =>
+        private EmittedEntity EmitStructType(StructType type) =>
             new(type.Name, TryWrapInNamespace(type.Namespace, this.EmitStructDeclaration(type)));
 
-        private EmittedDistinctType EmitClassType(ClassType type) =>
+        private EmittedEntity EmitClassType(ClassType type) =>
             new(type.Name, TryWrapInNamespace(type.Namespace, this.EmitClassDeclaration(type)));
 
-        private EmittedDistinctType EmitUnionType(UnionType type) =>
+        private EmittedEntity EmitUnionType(UnionType type) =>
             new(type.Name, TryWrapInNamespace(type.Namespace, this.EmitUnionDeclaration(type)));
 
         private EnumDeclarationSyntax EmitEnumDeclaration(EnumType type) =>

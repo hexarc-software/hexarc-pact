@@ -1,22 +1,29 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Text;
+
 using Hexarc.Pact.Protocol.Api;
 using Hexarc.Pact.Tool.Internals;
 using Hexarc.Pact.Tool.Models;
+
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Hexarc.Pact.Tool.Internals.SyntaxOperations;
+using static Hexarc.Pact.Tool.Emitters.SyntaxOperations;
 
 namespace Hexarc.Pact.Tool.Emitters
 {
     public sealed class ApiEmitter
     {
         private AdhocWorkspace Workspace { get; } = new();
+
+        private ClientSettings ClientSettings { get; }
+
+        private Schema Schema { get; }
 
         private TypeRegistry TypeRegistry { get; }
 
@@ -26,41 +33,49 @@ namespace Hexarc.Pact.Tool.Emitters
 
         private ClientEmitter ClientEmitter { get; }
 
-        public ApiEmitter(
-            TypeRegistry typeRegistry,
-            DistinctTypeEmitter distinctTypeEmitter,
-            ControllerEmitter controllerEmitter,
-            ClientEmitter clientEmitter)
+        public ApiEmitter(ClientSettings clientSettings, Schema schema)
         {
-            this.TypeRegistry = typeRegistry;
-            this.DistinctTypeEmitter = distinctTypeEmitter;
-            this.ControllerEmitter = controllerEmitter;
-            this.ClientEmitter = clientEmitter;
+            this.ClientSettings = clientSettings;
+            this.Schema = schema;
+            this.TypeRegistry = TypeRegistry.FromTypes(this.Schema.Types);
+
+            var typeReferenceEmitter = new TypeReferenceEmitter(this.TypeRegistry);
+            var methodEmitter = new MethodEmitter(typeReferenceEmitter);
+
+            this.DistinctTypeEmitter = new DistinctTypeEmitter(typeReferenceEmitter);
+            this.ControllerEmitter = new ControllerEmitter(methodEmitter);
+            this.ClientEmitter = new ClientEmitter();
         }
 
+        public EmittedApi Emit() =>
+            new(this.EmitClient(), this.EmitControllers(), this.EmitTypes());
+
         public EmittedSource EmitClient() =>
-            throw new NotImplementedException();
+            this.EmitTypeSource(this.ClientEmitter.Emit());
 
-        public IEnumerable<EmittedSource> EmitControllers(Controller[] controllers) =>
-            controllers.Select(this.ControllerEmitter.Emit)
-                .Select(this.EmitController);
+        public IEnumerable<EmittedSource> EmitControllers() =>
+            this.Schema.Controllers.Select(this.ControllerEmitter.Emit)
+                .Select(this.EmitControllerSource);
 
-        private EmittedSource EmitController(EmittedDistinctType type) =>
-            new(this.EmitCsharpFileName(type.Name), this.EmitSourceText(this.EmitCompilationUnion(type)));
+        private EmittedSource EmitControllerSource(EmittedEntity controllerEntity) =>
+            new(this.EmitCsharpFileName(controllerEntity.Name),
+                this.EmitSourceText(this.EmitCompilationUnion(controllerEntity)));
 
         public IEnumerable<EmittedSource> EmitTypes() =>
             this.TypeRegistry.EnumerateDistinctTypes()
                 .Select(this.DistinctTypeEmitter.Emit)
                 .GroupBy(x => x.Name, x => x.MemberDeclarations)
-                .Select(x => new EmittedDistinctType(x.Key, x.SelectMany(m => m).ToArray()))
-                .Select(this.EmitType);
+                .Select(x => new EmittedEntity(x.Key, x.SelectMany(m => m)))
+                .Select(this.EmitTypeSource);
 
-        private EmittedSource EmitType(EmittedDistinctType type) =>
-            new(this.EmitCsharpFileName(type.Name), this.EmitSourceText(this.EmitCompilationUnion(type)));
+        private EmittedSource EmitTypeSource(EmittedEntity typeEntity) =>
+            new(this.EmitCsharpFileName(typeEntity.Name),
+                this.EmitSourceText(this.EmitCompilationUnion(typeEntity)));
 
-        private CompilationUnitSyntax EmitCompilationUnion(EmittedDistinctType type) =>
+        // TODO: Move compilation unit
+        private CompilationUnitSyntax EmitCompilationUnion(EmittedEntity entity) =>
             CompilationUnit()
-                .WithMembers(List(type.MemberDeclarations))
+                .WithMembers(List(entity.MemberDeclarations))
                 .WithEndOfFileToken(this.EndOfFileToken)
                 .WithLeadingTrivia(this.EmitBeginOfFileTrivia());
 

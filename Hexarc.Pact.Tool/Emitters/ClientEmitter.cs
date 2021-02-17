@@ -1,9 +1,9 @@
-using System;
+using Hexarc.Pact.Tool.Models;
 
 namespace Hexarc.Pact.Tool.Emitters
 {
     public sealed class ClientEmitter
     {
-        public Object Emit() => throw new NotImplementedException();
+        public EmittedEntity Emit() => default!;
     }
 }
