@@ -40,13 +40,23 @@ namespace Hexarc.Pact.Tool
                 var typeRegistry = TypeRegistry.FromTypes(schema.Types);
                 var typeReferenceEmitter = new TypeReferenceEmitter(typeRegistry);
                 var distinctTypeEmitter = new DistinctTypeEmitter(typeReferenceEmitter);
-                var apiEmitter = new ApiEmitter(typeRegistry, distinctTypeEmitter);
+                var methodEmitter = new MethodEmitter(typeReferenceEmitter);
+                var controllerEmitter = new ControllerEmitter(methodEmitter);
+                var clientEmitter = new ClientEmitter();
+                var apiEmitter = new ApiEmitter(typeRegistry, distinctTypeEmitter, controllerEmitter, clientEmitter);
 
                 foreach (var type in apiEmitter.EmitTypes())
                 {
                     var path = Path.Combine(Path.Combine(clientSettings.OutputDirectory, "Models", type.FileName));
                     await using var file = File.CreateText(path);
                     type.SourceText.Write(file);
+                }
+
+                foreach (var controller in apiEmitter.EmitControllers(schema.Controllers))
+                {
+                    var path = Path.Combine(Path.Combine(clientSettings.OutputDirectory, "Controllers", controller.FileName));
+                    await using var file = File.CreateText(path);
+                    controller.SourceText.Write(file);
                 }
 
                 // foreach (var controller in schema.Controllers)

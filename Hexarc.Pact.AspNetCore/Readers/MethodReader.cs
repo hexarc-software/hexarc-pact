@@ -30,13 +30,16 @@ namespace Hexarc.Pact.AspNetCore.Readers
             routeAttribute.Template.StartsWith("/") ? routeAttribute.Template : $"/{routeAttribute.Template}";
 
         private TypeReference ReadReturnType(Type returnType, Boolean isNullableReferenceResult) =>
-            isNullableReferenceResult
-                ? new NullableTypeReference(this.ReadReturnType(returnType))
-                : this.ReadReturnType(returnType);
+            this.TryNullifyReturnType(this.ReadReturnType(returnType), isNullableReferenceResult);
 
-        private TypeReference ReadReturnType(Type returnType) =>
+        private TaskTypeReference TryNullifyReturnType(TaskTypeReference returnType, Boolean isNullableReferenceResult) =>
+            isNullableReferenceResult
+                ? new TaskTypeReference(returnType.TypeId, new NullableTypeReference(returnType.ResultType))
+                : returnType;
+
+        private TaskTypeReference ReadReturnType(Type returnType) =>
             this.TypeChecker.IsTaskType(returnType)
-                ? this.TypeReferenceReader.Read(returnType)
+                ? (TaskTypeReference)this.TypeReferenceReader.Read(returnType)
                 : new TaskTypeReference(default, this.TypeReferenceReader.Read(returnType));
 
         private MethodParameter[] ReadMethodParameters(ParameterInfo[] parameterInfos) =>
