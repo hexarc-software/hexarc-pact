@@ -14,7 +14,7 @@ using Hexarc.Pact.Tool.Internals;
 using Hexarc.Pact.Tool.Models;
 
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Hexarc.Pact.Tool.Emitters.SyntaxOperations;
+using static Hexarc.Pact.Tool.Internals.NamespaceSyntaxFactory;
 
 namespace Hexarc.Pact.Tool.Emitters
 {

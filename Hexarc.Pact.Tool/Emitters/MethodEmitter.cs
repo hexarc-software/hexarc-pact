@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
+using Hexarc.Pact.Client;
 using Hexarc.Pact.Protocol.Api;
+using Hexarc.Pact.Protocol.TypeReferences;
 using Hexarc.Pact.Tool.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -26,7 +28,7 @@ namespace Hexarc.Pact.Tool.Emitters
                         Token(SyntaxKind.AsyncKeyword)
                     ))
                 .WithParameterList(this.EmitMethodParameters(method.Parameters))
-                .WithBody(NotImplementedExceptionBlock);
+                .WithBody(this.EmitMethodBody(method));
 
         private ParameterListSyntax EmitMethodParameters(MethodParameter[] parameters) =>
             ParameterList(
@@ -37,6 +39,47 @@ namespace Hexarc.Pact.Tool.Emitters
         private SyntaxNodeOrToken EmitMethodParameter(MethodParameter parameter) =>
             Parameter(Identifier(parameter.Name))
                 .WithType(this.TypeReferenceEmitter.Emit(parameter.Type));
+
+        private BlockSyntax EmitMethodBody(Method method) => method.HttpMethod switch
+        {
+            HttpMethod.Get => NotImplementedExceptionBlock,
+            HttpMethod.Post => this.EmitPostJsonMethodBody(method),
+            _ => NotImplementedExceptionBlock
+        };
+
+        private BlockSyntax EmitPostJsonMethodBody(Method method) =>
+            Block(
+                SingletonList<StatementSyntax>(
+                    ReturnStatement(
+                        AwaitExpression(
+                            InvocationExpression(
+                                    MemberAccessExpression(
+                                        SyntaxKind.SimpleMemberAccessExpression,
+                                        ThisExpression(),
+                                        GenericName(
+                                                Identifier("PostJson"))
+                                            .WithTypeArgumentList(
+                                                TypeArgumentList(
+                                                    SeparatedList<TypeSyntax>(
+                                                        new SyntaxNodeOrToken[]
+                                                        {
+                                                            this.TypeReferenceEmitter.Emit(method.Parameters.First().Type),
+                                                            Token(SyntaxKind.CommaToken),
+                                                            this.TypeReferenceEmitter.Emit(((TaskTypeReference)method.ResultType).ResultType)
+                                                        })))))
+                                .WithArgumentList(
+                                    ArgumentList(
+                                        SeparatedList<ArgumentSyntax>(
+                                            new SyntaxNodeOrToken[]
+                                            {
+                                                Argument(
+                                                    LiteralExpression(
+                                                        SyntaxKind.StringLiteralExpression,
+                                                        Literal(method.Path))),
+                                                Token(SyntaxKind.CommaToken),
+                                                Argument(
+                                                    IdentifierName(method.Parameters.First().Name))
+                                            })))))));
 
         private static BlockSyntax NotImplementedExceptionBlock { get; } =
             Block(

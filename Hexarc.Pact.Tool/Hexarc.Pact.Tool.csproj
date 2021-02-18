@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Hexarc.Pact.Client\Hexarc.Pact.Client.csproj" />
     <ProjectReference Include="..\Hexarc.Pact.Protocol\Hexarc.Pact.Protocol.csproj" />
   </ItemGroup>
 
