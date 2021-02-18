@@ -27,5 +27,8 @@ namespace Hexarc.Pact.AspNetCore.Extensions
             var index = name.IndexOf("`", StringComparison.Ordinal);
             return index == -1 ? name : name.Substring(0, index);
         }
+
+        public static Boolean IsReferenceSemantic(this Type type) =>
+            type.IsClass || type.IsInterface;
     }
 }

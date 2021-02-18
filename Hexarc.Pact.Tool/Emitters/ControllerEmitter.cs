@@ -1,14 +1,15 @@
 using System;
-using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
+
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+
 using Hexarc.Pact.Client;
 using Hexarc.Pact.Protocol.Api;
 using Hexarc.Pact.Tool.Internals;
 using Hexarc.Pact.Tool.Models;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Hexarc.Pact.Tool.Internals.NamespaceSyntaxFactory;

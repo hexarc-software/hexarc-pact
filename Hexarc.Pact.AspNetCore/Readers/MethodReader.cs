@@ -1,12 +1,15 @@
 using System;
 using System.Linq;
 using System.Reflection;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Hexarc.Pact.AspNetCore.Internals;
-using Hexarc.Pact.AspNetCore.Models;
+
 using Hexarc.Pact.Protocol.Api;
 using Hexarc.Pact.Protocol.TypeReferences;
+using Hexarc.Pact.AspNetCore.Internals;
+using Hexarc.Pact.AspNetCore.Models;
+using Hexarc.Pact.AspNetCore.Extensions;
 
 namespace Hexarc.Pact.AspNetCore.Readers
 {
@@ -23,24 +26,26 @@ namespace Hexarc.Pact.AspNetCore.Readers
             new(methodCandidate.MethodInfo.Name,
                 this.ReadPath(methodCandidate.RouteAttribute!),
                 this.ReadHttpMethod(methodCandidate.HttpMethodAttribute!),
-                this.ReadReturnType(methodCandidate.MethodInfo.ReturnType, methodCandidate.IsNullableReferenceResult),
+                this.ReadMethodResult(methodCandidate.MethodInfo.ReturnType, methodCandidate.IsNullableReferenceResult),
                 this.ReadMethodParameters(methodCandidate.MethodInfo.GetParameters()));
 
         private String ReadPath(RouteAttribute routeAttribute) =>
             routeAttribute.Template.StartsWith("/") ? routeAttribute.Template : $"/{routeAttribute.Template}";
 
-        private TypeReference ReadReturnType(Type returnType, Boolean isNullableReferenceResult) =>
-            this.TryNullifyReturnType(this.ReadReturnType(returnType), isNullableReferenceResult);
+        private MethodResult ReadMethodResult(Type returnType, Boolean isNullableReferenceResult) =>
+            this.TryNullifyMethodResult(this.ReadMethodResult(returnType), isNullableReferenceResult);
 
-        private TaskTypeReference TryNullifyReturnType(TaskTypeReference returnType, Boolean isNullableReferenceResult) =>
+        private MethodResult TryNullifyMethodResult(MethodResult result, Boolean isNullableReferenceResult) =>
             isNullableReferenceResult
-                ? new TaskTypeReference(returnType.TypeId, new NullableTypeReference(returnType.ResultType))
-                : returnType;
+                ? new MethodResult(
+                    new TaskTypeReference(result.Type.TypeId, new NullableTypeReference(result.Type.ResultType, true)),
+                    result.IsReference)
+                : result;
 
-        private TaskTypeReference ReadReturnType(Type returnType) =>
+        private MethodResult ReadMethodResult(Type returnType) =>
             this.TypeChecker.IsTaskType(returnType)
-                ? (TaskTypeReference)this.TypeReferenceReader.Read(returnType)
-                : new TaskTypeReference(default, this.TypeReferenceReader.Read(returnType));
+                ? new MethodResult((TaskTypeReference)this.TypeReferenceReader.Read(returnType), returnType.GetGenericArguments().First().IsReferenceSemantic())
+                : new MethodResult(new TaskTypeReference(default, this.TypeReferenceReader.Read(returnType)), returnType.IsReferenceSemantic());
 
         private MethodParameter[] ReadMethodParameters(ParameterInfo[] parameterInfos) =>
             parameterInfos.Select(this.ReadMethodParameter).ToArray();
@@ -52,7 +57,7 @@ namespace Hexarc.Pact.AspNetCore.Readers
         {
             HttpGetAttribute => HttpMethod.Get,
             HttpPostAttribute => HttpMethod.Post,
-            _ => throw new NotSupportedException($"No supported attribute {methodAttribute}")
+            _ => throw new NotSupportedException($"Not supported attribute {methodAttribute}")
         };
     }
 }

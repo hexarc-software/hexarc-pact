@@ -1,12 +1,13 @@
 using System;
 using System.Linq;
-using Hexarc.Pact.Client;
-using Hexarc.Pact.Protocol.Api;
-using Hexarc.Pact.Protocol.TypeReferences;
-using Hexarc.Pact.Tool.Extensions;
+
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+
+using Hexarc.Pact.Protocol.Api;
+using Hexarc.Pact.Tool.Extensions;
+
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Hexarc.Pact.Tool.Emitters
@@ -20,7 +21,7 @@ namespace Hexarc.Pact.Tool.Emitters
 
         public MethodDeclarationSyntax Emit(Method method) =>
             MethodDeclaration(
-                    this.TypeReferenceEmitter.Emit(method.ResultType),
+                    this.TypeReferenceEmitter.Emit(method.Result.Type),
                     Identifier(method.Name))
                 .WithModifiers(
                     TokenList(
@@ -65,7 +66,7 @@ namespace Hexarc.Pact.Tool.Emitters
                                                         {
                                                             this.TypeReferenceEmitter.Emit(method.Parameters.First().Type),
                                                             Token(SyntaxKind.CommaToken),
-                                                            this.TypeReferenceEmitter.Emit(((TaskTypeReference)method.ResultType).ResultType)
+                                                            this.TypeReferenceEmitter.Emit(method.Result.Type.ResultType)
                                                         })))))
                                 .WithArgumentList(
                                     ArgumentList(
