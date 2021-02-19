@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Hexarc.Pact.Tool.Internals;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Hexarc.Pact.Tool.Internals
+namespace Hexarc.Pact.Tool.SyntaxFactories
 {
     public static class NamespaceSyntaxFactory
     {

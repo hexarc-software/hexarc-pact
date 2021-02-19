@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using Hexarc.Pact.Tool.SyntaxFactories;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -11,6 +12,24 @@ namespace Hexarc.Pact.Tests
     [TestFixture]
     public class RoslynTreeTests
     {
+        [Test]
+        public void NameOf()
+        {
+            Assert.AreEqual("nameof(Object)", NameOfSyntaxFactory
+                .NameOfExpression("Object")
+                .NormalizeWhitespace()
+                .ToFullString());
+        }
+
+        [Test]
+        public void EmptyArray()
+        {
+            Assert.AreEqual("System.Array.Empty<System.Object>()", ArraySyntaxFactory
+                .ArrayEmptyExpression(typeof(Object))
+                .NormalizeWhitespace()
+                .ToFullString());
+        }
+
         [Test]
         public void BuildTypeFromScratch()
         {

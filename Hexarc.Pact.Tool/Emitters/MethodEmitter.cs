@@ -5,10 +5,13 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
+using Hexarc.Pact.Client;
 using Hexarc.Pact.Protocol.Api;
 using Hexarc.Pact.Tool.Extensions;
 
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Hexarc.Pact.Tool.SyntaxFactories.ArraySyntaxFactory;
+using static Hexarc.Pact.Tool.SyntaxFactories.NameOfSyntaxFactory;
 
 namespace Hexarc.Pact.Tool.Emitters
 {
@@ -43,10 +46,13 @@ namespace Hexarc.Pact.Tool.Emitters
 
         private BlockSyntax EmitMethodBody(Method method) => method.HttpMethod switch
         {
-            HttpMethod.Get => NotImplementedExceptionBlock,
+            HttpMethod.Get => this.EmitGetJsonMethodBody(method),
             HttpMethod.Post => this.EmitPostJsonMethodBody(method),
             _ => NotImplementedExceptionBlock
         };
+
+        private BlockSyntax EmitGetJsonMethodBody(Method method) =>
+            Block();
 
         private BlockSyntax EmitPostJsonMethodBody(Method method) =>
             Block(
@@ -62,25 +68,37 @@ namespace Hexarc.Pact.Tool.Emitters
                                             .WithTypeArgumentList(
                                                 TypeArgumentList(
                                                     SeparatedList<TypeSyntax>(
-                                                        new SyntaxNodeOrToken[]
-                                                        {
-                                                            this.TypeReferenceEmitter.Emit(method.Parameters.First().Type),
+                                                        new SyntaxNodeOrTokenList(
+                                                            this.TypeReferenceEmitter.Emit(method.Parameters.First()
+                                                                .Type),
                                                             Token(SyntaxKind.CommaToken),
-                                                            this.TypeReferenceEmitter.Emit(method.Result.Type.ResultType)
-                                                        })))))
+                                                            this.TypeReferenceEmitter.Emit(
+                                                                method.Result.Type.ResultType)))))))
                                 .WithArgumentList(
                                     ArgumentList(
                                         SeparatedList<ArgumentSyntax>(
-                                            new SyntaxNodeOrToken[]
-                                            {
+                                            new SyntaxNodeOrTokenList(
                                                 Argument(
                                                     LiteralExpression(
                                                         SyntaxKind.StringLiteralExpression,
                                                         Literal(method.Path))),
                                                 Token(SyntaxKind.CommaToken),
                                                 Argument(
-                                                    IdentifierName(method.Parameters.First().Name))
-                                            })))))));
+                                                    IdentifierName(method.Parameters.First().Name))))))))));
+
+        private ImplicitArrayCreationExpressionSyntax EmitGetMethodParameters(MethodParameter[] parameters) =>
+            NewImplicitArrayExpression(parameters.Select(this.EmitGetMethodParameter).ToArray());
+
+        private SyntaxNodeOrToken EmitGetMethodParameter(MethodParameter parameter) =>
+            ObjectCreationExpression(
+                    IdentifierName(typeof(GetMethodParameter).FullName!))
+                .WithArgumentList(
+                    ArgumentList(
+                        SeparatedList<ArgumentSyntax>(
+                            new SyntaxNodeOrTokenList(
+                                Argument(NameOfExpression(parameter.Name)),
+                                Token(SyntaxKind.CommaToken),
+                                Argument(IdentifierName(parameter.Name))))));
 
         private static BlockSyntax NotImplementedExceptionBlock { get; } =
             Block(
