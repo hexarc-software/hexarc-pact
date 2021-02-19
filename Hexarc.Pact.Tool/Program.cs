@@ -51,6 +51,10 @@ namespace Hexarc.Pact.Tool
                     await using var file = File.CreateText(path);
                     controller.SourceText.Write(file);
                 }
+
+                var clientType = apiEmitter.EmitClient();
+                await using var clientFile = File.CreateText(Path.Combine(clientSettings.OutputDirectory, clientType.FileName));
+                clientType.SourceText.Write(clientFile);
             }
         }
     }

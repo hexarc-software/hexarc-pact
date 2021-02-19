@@ -51,40 +51,38 @@ namespace Hexarc.Pact.Tool.Emitters
                 .Concat(this.EmitMethods(controller.Methods));
 
         private ConstructorDeclarationSyntax EmitConstructor(Controller controller) =>
-            ConstructorDeclaration(
-                    Identifier(controller.Name))
-                .WithModifiers(
-                    TokenList(
-                        Token(SyntaxKind.PublicKeyword)))
-                .WithParameterList(
-                    ParameterList(
-                        SeparatedList<ParameterSyntax>(
-                            new SyntaxNodeOrToken[]
-                            {
-                                Parameter(Identifier("client"))
-                                    .WithType(IdentifierName(typeof(ClientBase).FullName!)),
-                                Token(SyntaxKind.CommaToken),
-                                Parameter(Identifier("controllerPath"))
-                                    .WithType(IdentifierName(typeof(String).FullName!))
-                                    .WithDefault(
-                                        EqualsValueClause(
-                                            LiteralExpression(
-                                                SyntaxKind.StringLiteralExpression,
-                                                Literal(controller.Path))))
-                            })))
-                .WithInitializer(
-                    ConstructorInitializer(
-                        SyntaxKind.BaseConstructorInitializer,
-                        ArgumentList(
-                            SeparatedList<ArgumentSyntax>(
-                                new SyntaxNodeOrToken[]
-                                {
-                                    Argument(IdentifierName("client")),
-                                    Token(SyntaxKind.CommaToken),
-                                    Argument(IdentifierName("controllerPath"))
-                                }))))
-                .WithBody(
-                    Block());
+            ConstructorDeclaration(Identifier(controller.Name))
+                .WithModifiers(TokenList(Token(SyntaxKind.PublicKeyword)))
+                .WithParameterList(this.EmitConstructorParameters(controller))
+                .WithInitializer(this.EmitConstructorInitializer())
+                .WithBody(Block());
+
+        private ParameterListSyntax EmitConstructorParameters(Controller controller) =>
+            ParameterList(
+                SeparatedList<ParameterSyntax>(
+                    new SyntaxNodeOrTokenList(
+                        Parameter(Identifier("client"))
+                            .WithType(IdentifierName(typeof(ClientBase).FullName!)),
+                        Token(SyntaxKind.CommaToken),
+                        Parameter(Identifier("controllerPath"))
+                            .WithType(IdentifierName(typeof(String).FullName!))
+                            .WithDefault(
+                                EqualsValueClause(
+                                    LiteralExpression(
+                                        SyntaxKind.StringLiteralExpression,
+                                        Literal(controller.Path))))
+                    )));
+
+        private ConstructorInitializerSyntax EmitConstructorInitializer() =>
+            ConstructorInitializer(
+                SyntaxKind.BaseConstructorInitializer,
+                ArgumentList(
+                    SeparatedList<ArgumentSyntax>(
+                        new SyntaxNodeOrTokenList(
+                            Argument(IdentifierName("client")),
+                            Token(SyntaxKind.CommaToken),
+                            Argument(IdentifierName("controllerPath"))
+                        ))));
 
         private IEnumerable<MethodDeclarationSyntax> EmitMethods(Method[] methods) =>
             methods.Select(this.MethodEmitter.Emit);

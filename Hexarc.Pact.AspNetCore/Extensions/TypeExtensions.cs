@@ -28,6 +28,11 @@ namespace Hexarc.Pact.AspNetCore.Extensions
             return index == -1 ? name : name.Substring(0, index);
         }
 
+        /// <summary>
+        /// Checks the type has the reference semantic or not.
+        /// </summary>
+        /// <param name="type">The type to check.</param>
+        /// <returns>Returns true if the type has the reference semantic either false.</returns>
         public static Boolean IsReferenceSemantic(this Type type) =>
             type.IsClass || type.IsInterface;
     }
