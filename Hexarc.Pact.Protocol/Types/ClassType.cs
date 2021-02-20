@@ -18,6 +18,6 @@ namespace Hexarc.Pact.Protocol.Types
         /// <param name="genericParameters">The class generic parameters.</param>
         /// <param name="properties">The class properties.</param>
         public ClassType(Guid id, String? @namespace, String name, String[]? genericParameters, ObjectProperty[] properties) :
-            base(id, @namespace, name, genericParameters, properties) { }
+            base(id, @namespace, name, true, genericParameters, properties) { }
     }
 }

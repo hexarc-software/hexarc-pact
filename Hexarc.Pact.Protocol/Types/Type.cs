@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json.Serialization;
 using Hexarc.Annotations;
+using Hexarc.Pact.Protocol.Extensions;
 
 namespace Hexarc.Pact.Protocol.Types
 {
@@ -40,6 +41,11 @@ namespace Hexarc.Pact.Protocol.Types
         public String Name { get; }
 
         /// <summary>
+        /// Gets the type reference semantic marker.
+        /// </summary>
+        public Boolean IsReference { get; }
+
+        /// <summary>
         /// Gets the full type name.
         /// </summary>
         [JsonIgnore]
@@ -51,7 +57,20 @@ namespace Hexarc.Pact.Protocol.Types
         /// <param name="id">The unique type id.</param>
         /// <param name="namespace">The type namespace.</param>
         /// <param name="name">The type name.</param>
-        protected Type(Guid id, String? @namespace, String name) =>
-            (this.Id, this.Namespace, this.Name) = (id, @namespace, name);
+        /// <param name="isReference">The type reference semantic marker.</param>
+        protected Type(Guid id, String? @namespace, String name, Boolean isReference)
+        {
+            this.Id = id;
+            this.Namespace = @namespace;
+            this.Name = name;
+            this.IsReference = isReference;
+        }
+
+        /// <summary>
+        /// Creates an instance of the Type class.
+        /// </summary>
+        /// <param name="type">The System.Type object to build the Hexarc Type data.</param>
+        protected Type(System.Type type) :
+            this(type.GUID, type.Namespace, type.NameWithoutGenericArity(), type.IsReference()) { }
     }
 }

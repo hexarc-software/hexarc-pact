@@ -18,6 +18,6 @@ namespace Hexarc.Pact.Protocol.Types
         /// <param name="genericParameters">The struct generic parameters.</param>
         /// <param name="properties">The struct properties.</param>
         public StructType(Guid id, String? @namespace, String name, String[]? genericParameters, ObjectProperty[] properties) :
-            base(id, @namespace, name, genericParameters, properties) { }
+            base(id, @namespace, name, false, genericParameters, properties) { }
     }
 }

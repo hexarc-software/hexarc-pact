@@ -1,12 +1,14 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json.Serialization;
 using Hexarc.Annotations;
+using Hexarc.Pact.Protocol.Extensions;
+using Hexarc.Pact.Protocol.TypeReferences;
+using Hexarc.Pact.Protocol.Types;
 using Hexarc.Pact.AspNetCore.Extensions;
 using Hexarc.Pact.AspNetCore.Internals;
 using Hexarc.Pact.AspNetCore.Models;
-using Hexarc.Pact.Protocol.TypeReferences;
-using Hexarc.Pact.Protocol.Types;
 
 namespace Hexarc.Pact.AspNetCore.Readers
 {
@@ -84,11 +86,14 @@ namespace Hexarc.Pact.AspNetCore.Readers
                     : genericParameters.Select(x => x.Name).ToArray()
                 : default;
 
+        // TODO: Read props
         private ObjectProperty[] ReadObjectProperties(PropertyInfo[] propertyInfos, UnionTag tag) =>
-            propertyInfos.Select(x => this.ReadObjectProperty(x, tag)).ToArray();
+            propertyInfos.Where(x => x.GetCustomAttribute<JsonIgnoreAttribute>() is null)
+                .Select(x => this.ReadObjectProperty(x, tag)).ToArray();
 
         private ObjectProperty[] ReadObjectProperties(PropertyInfo[] propertyInfos) =>
-            propertyInfos.Select(this.ReadObjectProperty).ToArray();
+            propertyInfos.Where(x => x.GetCustomAttribute<JsonIgnoreAttribute>() is null)
+                .Select(this.ReadObjectProperty).ToArray();
 
         private ObjectProperty ReadObjectProperty(PropertyInfo propertyInfo, UnionTag tag) =>
             propertyInfo.IsUnionTag(tag) ? this.ReadUnionTagProperty(tag) : this.ReadObjectProperty(propertyInfo);

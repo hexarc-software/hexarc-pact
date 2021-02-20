@@ -23,9 +23,13 @@ namespace Hexarc.Pact.Protocol.Types
         /// <param name="id">The unique type id.</param>
         /// <param name="namespace">The type namespace.</param>
         /// <param name="name">The type name.</param>
+        /// <param name="isReference">The type reference semantic marker.</param>
         /// <param name="genericParameters">The generic parameters.</param>
         /// <param name="properties">The type own properties.</param>
-        protected ObjectType(Guid id, String? @namespace, String name, String[]? genericParameters, ObjectProperty[] properties) :
-            base(id, @namespace, name) => (this.GenericParameters, this.Properties) = (genericParameters, properties);
+        protected ObjectType(
+            Guid id, String? @namespace, String name, Boolean isReference,
+            String[]? genericParameters, ObjectProperty[] properties
+        ) : base(id, @namespace, name, isReference) =>
+            (this.GenericParameters, this.Properties) = (genericParameters, properties);
     }
 }

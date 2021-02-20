@@ -13,7 +13,8 @@ namespace Hexarc.Pact.Protocol.Types
         /// <param name="id">The unique type id.</param>
         /// <param name="namespace">The type namespace.</param>
         /// <param name="name">The type name.</param>
-        protected DistinctType(Guid id, String? @namespace, String name) :
-            base(id, @namespace, name) { }
+        /// <param name="isReference">The type reference semantic marker.</param>
+        protected DistinctType(Guid id, String? @namespace, String name, Boolean isReference) :
+            base(id, @namespace, name, isReference) { }
     }
 }

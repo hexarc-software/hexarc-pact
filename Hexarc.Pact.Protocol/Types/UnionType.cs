@@ -28,6 +28,6 @@ namespace Hexarc.Pact.Protocol.Types
         /// <param name="tagName">The union tag name.</param>
         /// <param name="cases">The union cases.</param>
         public UnionType(Guid id, String? @namespace, String name, String tagName, ClassType[] cases) :
-            base(id, @namespace, name) => (this.TagName, this.Cases) = (tagName, cases);
+            base(id, @namespace, name, true) => (this.TagName, this.Cases) = (tagName, cases);
     }
 }

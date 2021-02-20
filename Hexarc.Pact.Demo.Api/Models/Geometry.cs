@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Hexarc.Pact.Demo.Api.Models
 {
@@ -8,6 +9,9 @@ namespace Hexarc.Pact.Demo.Api.Models
         public Double X { get; set; }
 
         public Double Y { get; set; }
+
+        [JsonIgnore]
+        public String Hint { get; set; } = default!;
     }
 
     public class Triangle

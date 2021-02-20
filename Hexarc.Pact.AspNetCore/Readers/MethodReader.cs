@@ -9,7 +9,7 @@ using Hexarc.Pact.Protocol.Api;
 using Hexarc.Pact.Protocol.TypeReferences;
 using Hexarc.Pact.AspNetCore.Internals;
 using Hexarc.Pact.AspNetCore.Models;
-using Hexarc.Pact.AspNetCore.Extensions;
+using Hexarc.Pact.Protocol.Extensions;
 
 namespace Hexarc.Pact.AspNetCore.Readers
 {
@@ -44,8 +44,8 @@ namespace Hexarc.Pact.AspNetCore.Readers
 
         private MethodResult ReadMethodResult(Type returnType) =>
             this.TypeChecker.IsTaskType(returnType)
-                ? new MethodResult((TaskTypeReference)this.TypeReferenceReader.Read(returnType), returnType.GetGenericArguments().First().IsReferenceSemantic())
-                : new MethodResult(new TaskTypeReference(default, this.TypeReferenceReader.Read(returnType)), returnType.IsReferenceSemantic());
+                ? new MethodResult((TaskTypeReference)this.TypeReferenceReader.Read(returnType), returnType.GetGenericArguments().First().IsReference())
+                : new MethodResult(new TaskTypeReference(default, this.TypeReferenceReader.Read(returnType)), returnType.IsReference());
 
         private MethodParameter[] ReadMethodParameters(ParameterInfo[] parameterInfos) =>
             parameterInfos.Select(this.ReadMethodParameter).ToArray();
