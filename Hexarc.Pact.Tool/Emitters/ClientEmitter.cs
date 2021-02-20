@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -32,8 +30,7 @@ namespace Hexarc.Pact.Tool.Emitters
                     TokenList(
                         Token(SyntaxKind.PublicKeyword),
                         Token(SyntaxKind.SealedKeyword),
-                        Token(SyntaxKind.PartialKeyword)
-                    ))
+                        Token(SyntaxKind.PartialKeyword)))
                 .WithBaseList(
                     BaseList(
                         SingletonSeparatedList<BaseTypeSyntax>(
@@ -55,24 +52,17 @@ namespace Hexarc.Pact.Tool.Emitters
         private ParameterListSyntax EmitConstructorParameters() =>
             ParameterList(
                 SeparatedList<ParameterSyntax>(
-                    new SyntaxNodeOrTokenList(
+                    SingletonList(
                         Parameter(Identifier("httpClient"))
-                            .WithType(IdentifierName(typeof(HttpClient).FullName!)),
-                        Token(SyntaxKind.CommaToken),
-                        Parameter(Identifier("baseUri"))
-                            .WithType(IdentifierName(typeof(Uri).FullName!))
-                    )));
+                            .WithType(IdentifierName(typeof(HttpClient).FullName!)))));
 
         private ConstructorInitializerSyntax EmitConstructorInitializer() =>
             ConstructorInitializer(
                 SyntaxKind.BaseConstructorInitializer,
                 ArgumentList(
                     SeparatedList<ArgumentSyntax>(
-                        new SyntaxNodeOrTokenList(
-                            Argument(IdentifierName("httpClient")),
-                            Token(SyntaxKind.CommaToken),
-                            Argument(IdentifierName("baseUri"))
-                        ))));
+                        SingletonList(
+                            Argument(IdentifierName("httpClient"))))));
 
         private BlockSyntax EmitConstructorBody(Controller[] controllers) =>
             Block(controllers.Select(this.EmitControllerPropertyInitializer));

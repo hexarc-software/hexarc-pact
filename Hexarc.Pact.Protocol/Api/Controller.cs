@@ -14,7 +14,7 @@ namespace Hexarc.Pact.Protocol.Api
         public Method[] Methods { get; }
 
         /// <summary>
-        /// Gets the full type name.
+        /// Gets the type full name.
         /// </summary>
         [JsonIgnore]
         public String FullName => String.IsNullOrEmpty(this.Namespace) ? this.Name : $"{this.Namespace}.{this.Name}";

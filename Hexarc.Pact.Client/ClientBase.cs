@@ -9,15 +9,15 @@ namespace Hexarc.Pact.Client
     {
         public HttpClient HttpClient { get; }
 
-        public Uri BaseUri { get; }
-
+        public Uri BaseUri => this.HttpClient.BaseAddress ??
+                              throw new NullReferenceException("No base path provided in the HTTP client");
         public JsonSerializerOptions JsonSerializerOptions { get; } = new()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             Converters = { new UnionConverterFactory() }
         };
 
-        protected ClientBase(HttpClient httpClient, Uri baseUri) =>
-            (this.HttpClient, this.BaseUri) = (httpClient, baseUri);
+        protected ClientBase(HttpClient httpClient) =>
+            this.HttpClient = httpClient;
     }
 }
