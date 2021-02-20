@@ -34,7 +34,7 @@ namespace Hexarc.Pact.Tool.Emitters
             TypeArgumentList(
                 SeparatedList<SyntaxNode>(
                     new SyntaxNodeOrTokenList(
-                        this.TypeReferenceEmitter.Emit(method.Result.Type.ResultType))));
+                        this.TypeReferenceEmitter.Emit(method.ReturnType.ResultType))));
 
         private ArgumentListSyntax EmitGetJsonArguments(Method method) =>
             ArgumentList(

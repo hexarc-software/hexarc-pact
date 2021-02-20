@@ -31,7 +31,7 @@ namespace Hexarc.Pact.Tool.Emitters
                     new SyntaxNodeOrTokenList(
                         this.TypeReferenceEmitter.Emit(method.Parameters.First().Type),
                         Token(SyntaxKind.CommaToken),
-                        this.TypeReferenceEmitter.Emit(method.Result.Type.ResultType))));
+                        this.TypeReferenceEmitter.Emit(method.ReturnType.ResultType))));
 
         private ArgumentListSyntax EmitPostJsonArguments(Method method) =>
             ArgumentList(

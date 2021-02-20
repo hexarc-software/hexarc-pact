@@ -1,4 +1,5 @@
 using System;
+using Hexarc.Pact.Protocol.TypeReferences;
 
 namespace Hexarc.Pact.Protocol.Api
 {
@@ -10,7 +11,7 @@ namespace Hexarc.Pact.Protocol.Api
 
         public HttpMethod HttpMethod { get; }
 
-        public MethodResult Result { get; }
+        public TaskTypeReference ReturnType { get; }
 
         public MethodParameter[] Parameters { get; }
 
@@ -18,13 +19,13 @@ namespace Hexarc.Pact.Protocol.Api
             String name,
             String path,
             HttpMethod httpMethod,
-            MethodResult result,
+            TaskTypeReference returnType,
             MethodParameter[] parameters)
         {
             this.Name = name;
             this.Path = path;
             this.HttpMethod = httpMethod;
-            this.Result = result;
+            this.ReturnType = returnType;
             this.Parameters = parameters;
         }
     }

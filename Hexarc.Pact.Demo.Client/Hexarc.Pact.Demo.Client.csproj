@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Hexarc.Pact.Client\Hexarc.Pact.Client.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="ObjectDumper.NET" Version="3.0.20251.1" />
+  </ItemGroup>
+
 </Project>

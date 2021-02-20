@@ -22,7 +22,7 @@ namespace Hexarc.Pact.Tool.Emitters
 
         public MethodDeclarationSyntax Emit(Method method) =>
             MethodDeclaration(
-                    this.TypeReferenceEmitter.Emit(method.Result.Type),
+                    this.TypeReferenceEmitter.Emit(method.ReturnType),
                     Identifier(method.Name))
                 .WithModifiers(
                     TokenList(

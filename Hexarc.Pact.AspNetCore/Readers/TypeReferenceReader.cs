@@ -29,7 +29,7 @@ namespace Hexarc.Pact.AspNetCore.Readers
         };
 
         private NullableTypeReference ReadNullableValueTypeReference(Type type) =>
-            new(this.Read(Nullable.GetUnderlyingType(type)!), false);
+            new(this.Read(Nullable.GetUnderlyingType(type)!));
 
         private TaskTypeReference ReadTaskTypeReference(Type type) =>
             new(type.GUID, this.Read(type.GetGenericArguments().First()));

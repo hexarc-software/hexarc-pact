@@ -8,9 +8,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
 
         public TypeReference UnderlyingType { get; }
 
-        public Boolean IsReference { get; }
-
-        public NullableTypeReference(TypeReference underlyingType, Boolean isReference) =>
-            (this.UnderlyingType, this.IsReference) = (underlyingType, isReference);
+        public NullableTypeReference(TypeReference underlyingType) =>
+            this.UnderlyingType = underlyingType;
     }
 }

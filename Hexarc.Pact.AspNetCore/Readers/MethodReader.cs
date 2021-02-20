@@ -9,7 +9,6 @@ using Hexarc.Pact.Protocol.Api;
 using Hexarc.Pact.Protocol.TypeReferences;
 using Hexarc.Pact.AspNetCore.Internals;
 using Hexarc.Pact.AspNetCore.Models;
-using Hexarc.Pact.Protocol.Extensions;
 
 namespace Hexarc.Pact.AspNetCore.Readers
 {
@@ -32,20 +31,18 @@ namespace Hexarc.Pact.AspNetCore.Readers
         private String ReadPath(RouteAttribute routeAttribute) =>
             routeAttribute.Template.StartsWith("/") ? routeAttribute.Template : $"/{routeAttribute.Template}";
 
-        private MethodResult ReadMethodResult(Type returnType, Boolean isNullableReferenceResult) =>
+        private TaskTypeReference ReadMethodResult(Type returnType, Boolean isNullableReferenceResult) =>
             this.TryNullifyMethodResult(this.ReadMethodResult(returnType), isNullableReferenceResult);
 
-        private MethodResult TryNullifyMethodResult(MethodResult result, Boolean isNullableReferenceResult) =>
+        private TaskTypeReference TryNullifyMethodResult(TaskTypeReference returnType, Boolean isNullableReferenceResult) =>
             isNullableReferenceResult
-                ? new MethodResult(
-                    new TaskTypeReference(result.Type.TypeId, new NullableTypeReference(result.Type.ResultType, true)),
-                    result.IsReference)
-                : result;
+                ? new TaskTypeReference(returnType.TypeId, new NullableTypeReference(returnType.ResultType))
+                : returnType;
 
-        private MethodResult ReadMethodResult(Type returnType) =>
+        private TaskTypeReference ReadMethodResult(Type returnType) =>
             this.TypeChecker.IsTaskType(returnType)
-                ? new MethodResult((TaskTypeReference)this.TypeReferenceReader.Read(returnType), returnType.GetGenericArguments().First().IsReference())
-                : new MethodResult(new TaskTypeReference(default, this.TypeReferenceReader.Read(returnType)), returnType.IsReference());
+                ? (TaskTypeReference)this.TypeReferenceReader.Read(returnType)
+                : new TaskTypeReference(default, this.TypeReferenceReader.Read(returnType));
 
         private MethodParameter[] ReadMethodParameters(ParameterInfo[] parameterInfos) =>
             parameterInfos.Select(this.ReadMethodParameter).ToArray();

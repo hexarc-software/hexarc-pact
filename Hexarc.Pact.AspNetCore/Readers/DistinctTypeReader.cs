@@ -106,7 +106,7 @@ namespace Hexarc.Pact.AspNetCore.Readers
 
         private TypeReference ReadObjectPropertyType(PropertyInfo propertyInfo) =>
             this.TypeChecker.IsNullableReferenceProperty(propertyInfo)
-                ? new NullableTypeReference(this.TypeReferenceReader.Read(propertyInfo.PropertyType), true)
+                ? new NullableTypeReference(this.TypeReferenceReader.Read(propertyInfo.PropertyType))
                 : this.TypeReferenceReader.Read(propertyInfo.PropertyType);
     }
 }
