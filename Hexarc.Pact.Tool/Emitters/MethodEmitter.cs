@@ -5,17 +5,15 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using Hexarc.Pact.Client;
 using Hexarc.Pact.Protocol.Api;
 using Hexarc.Pact.Tool.Extensions;
 
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Hexarc.Pact.Tool.SyntaxFactories.ArraySyntaxFactory;
-using static Hexarc.Pact.Tool.SyntaxFactories.NameOfSyntaxFactory;
+using static Hexarc.Pact.Tool.SyntaxFactories.ExceptionSyntaxFactory;
 
 namespace Hexarc.Pact.Tool.Emitters
 {
-    public sealed class MethodEmitter
+    public sealed partial class MethodEmitter
     {
         private TypeReferenceEmitter TypeReferenceEmitter { get; }
 
@@ -51,62 +49,7 @@ namespace Hexarc.Pact.Tool.Emitters
             _ => NotImplementedExceptionBlock
         };
 
-        private BlockSyntax EmitGetJsonMethodBody(Method method) =>
-            Block();
-
-        private BlockSyntax EmitPostJsonMethodBody(Method method) =>
-            Block(
-                SingletonList<StatementSyntax>(
-                    ReturnStatement(
-                        AwaitExpression(
-                            InvocationExpression(
-                                    MemberAccessExpression(
-                                        SyntaxKind.SimpleMemberAccessExpression,
-                                        ThisExpression(),
-                                        GenericName(
-                                                Identifier("PostJson"))
-                                            .WithTypeArgumentList(
-                                                TypeArgumentList(
-                                                    SeparatedList<TypeSyntax>(
-                                                        new SyntaxNodeOrTokenList(
-                                                            this.TypeReferenceEmitter.Emit(method.Parameters.First()
-                                                                .Type),
-                                                            Token(SyntaxKind.CommaToken),
-                                                            this.TypeReferenceEmitter.Emit(
-                                                                method.Result.Type.ResultType)))))))
-                                .WithArgumentList(
-                                    ArgumentList(
-                                        SeparatedList<ArgumentSyntax>(
-                                            new SyntaxNodeOrTokenList(
-                                                Argument(
-                                                    LiteralExpression(
-                                                        SyntaxKind.StringLiteralExpression,
-                                                        Literal(method.Path))),
-                                                Token(SyntaxKind.CommaToken),
-                                                Argument(
-                                                    IdentifierName(method.Parameters.First().Name))))))))));
-
-        private ImplicitArrayCreationExpressionSyntax EmitGetMethodParameters(MethodParameter[] parameters) =>
-            NewImplicitArrayExpression(parameters.Select(this.EmitGetMethodParameter).ToArray());
-
-        private SyntaxNodeOrToken EmitGetMethodParameter(MethodParameter parameter) =>
-            ObjectCreationExpression(
-                    IdentifierName(typeof(GetMethodParameter).FullName!))
-                .WithArgumentList(
-                    ArgumentList(
-                        SeparatedList<ArgumentSyntax>(
-                            new SyntaxNodeOrTokenList(
-                                Argument(NameOfExpression(parameter.Name)),
-                                Token(SyntaxKind.CommaToken),
-                                Argument(IdentifierName(parameter.Name))))));
-
         private static BlockSyntax NotImplementedExceptionBlock { get; } =
-            Block(
-                SingletonList(
-                    ThrowStatement(
-                        ObjectCreationExpression(
-                                IdentifierName(typeof(NotImplementedException).FullName!))
-                            .WithArgumentList(
-                                ArgumentList()))));
+            Block(SingletonList(ThrowExceptionStatement(typeof(NotImplementedException))));
     }
 }

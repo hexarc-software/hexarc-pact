@@ -7,6 +7,9 @@ namespace Hexarc.Pact.Demo.Api.Controllers
     public sealed class MiscController : ControllerBase
     {
         [HttpGet, Route(nameof(Ping))]
-        public String Ping([FromQuery]String message) => $"Hello, {message}";
+        public String Ping([FromQuery] String message) => $"Hello, {message}";
+
+        [HttpGet, Route(nameof(Sum))]
+        public Int32 Sum([FromQuery] Int32 a, [FromQuery] Int32 b) => a + b;
     }
 }

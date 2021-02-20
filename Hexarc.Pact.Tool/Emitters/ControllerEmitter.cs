@@ -70,8 +70,7 @@ namespace Hexarc.Pact.Tool.Emitters
                                 EqualsValueClause(
                                     LiteralExpression(
                                         SyntaxKind.StringLiteralExpression,
-                                        Literal(controller.Path))))
-                    )));
+                                        Literal(controller.Path)))))));
 
         private ConstructorInitializerSyntax EmitConstructorInitializer() =>
             ConstructorInitializer(
@@ -81,8 +80,7 @@ namespace Hexarc.Pact.Tool.Emitters
                         new SyntaxNodeOrTokenList(
                             Argument(IdentifierName("client")),
                             Token(SyntaxKind.CommaToken),
-                            Argument(IdentifierName("controllerPath"))
-                        ))));
+                            Argument(IdentifierName("controllerPath"))))));
 
         private IEnumerable<MethodDeclarationSyntax> EmitMethods(Method[] methods) =>
             methods.Select(this.MethodEmitter.Emit);
