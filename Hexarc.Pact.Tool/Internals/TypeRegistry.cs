@@ -9,6 +9,8 @@ namespace Hexarc.Pact.Tool.Internals
 {
     public sealed class TypeRegistry
     {
+        private Dictionary<Guid, Type> Types { get; }
+
         private Dictionary<Guid, PrimitiveType> PrimitiveTypes { get; }
 
         private Dictionary<Guid, DynamicType> DynamicTypes { get; }
@@ -27,42 +29,29 @@ namespace Hexarc.Pact.Tool.Internals
 
         private Dictionary<Guid, UnionType> UnionTypes { get; }
 
-        private TypeRegistry(
-            IEnumerable<PrimitiveType> primitiveTypes,
-            IEnumerable<DynamicType> dynamicTypes,
-            IEnumerable<ArrayLikeType> arrayLikeTypes,
-            IEnumerable<DictionaryType> dictionaryTypes,
-            IEnumerable<TaskType> taskTypes,
-            IEnumerable<EnumType> enumTypes,
-            IEnumerable<StructType> structTypes,
-            IEnumerable<ClassType> classTypes,
-            IEnumerable<UnionType> unionTypes)
-        {
-            this.PrimitiveTypes = primitiveTypes.ToDictionary(x => x.Id, x => x);
-            this.DynamicTypes = dynamicTypes.ToDictionary(x => x.Id, x => x);
-            this.ArrayLikeTypes = arrayLikeTypes.ToDictionary(x => x.Id, x => x);
-            this.DictionaryTypes = dictionaryTypes.ToDictionary(x => x.Id, x => x);
-            this.TaskTypes = taskTypes.ToDictionary(x => x.Id, x => x);
-            this.EnumTypes = enumTypes.ToDictionary(x => x.Id, x => x);
-            this.ClassTypes = classTypes.ToDictionary(x => x.Id, x => x);
-            this.StructTypes = structTypes.ToDictionary(x => x.Id, x => x);
-            this.UnionTypes = unionTypes.ToDictionary(x => x.Id, x => x);
-        }
-
-        public static TypeRegistry FromTypes(IEnumerable<Type> types)
+        public TypeRegistry(Type[] types)
         {
             var groups = types.GroupBy(x => x.Kind, x => x).ToDictionary(x => x.Key, x=> x.ToArray());
-            var primitiveTypes = groups.GetValueOrDefault(TypeKind.Primitive, Array.Empty<Type>()).Cast<PrimitiveType>();
-            var dynamicTypes = groups.GetValueOrDefault(TypeKind.Dynamic, Array.Empty<Type>()).Cast<DynamicType>();
-            var arrayLikeTypes = groups.GetValueOrDefault(TypeKind.ArrayLike, Array.Empty<Type>()).Cast<ArrayLikeType>();
-            var dictionaryTypes = groups.GetValueOrDefault(TypeKind.Dictionary, Array.Empty<Type>()).Cast<DictionaryType>();
-            var taskTypes = groups.GetValueOrDefault(TypeKind.Task, Array.Empty<Type>()).Cast<TaskType>();
-            var enumTypes = groups.GetValueOrDefault(TypeKind.Enum, Array.Empty<Type>()).Cast<EnumType>();
-            var structTypes = groups.GetValueOrDefault(TypeKind.Struct, Array.Empty<Type>()).Cast<StructType>();
-            var classTypes = groups.GetValueOrDefault(TypeKind.Class, Array.Empty<Type>()).Cast<ClassType>();
-            var unionTypes = groups.GetValueOrDefault(TypeKind.Union, Array.Empty<Type>()).Cast<UnionType>();
-            return new TypeRegistry(primitiveTypes, dynamicTypes, arrayLikeTypes, dictionaryTypes, taskTypes, enumTypes, structTypes, classTypes, unionTypes);
+            this.Types = types.ToDictionary(x => x.Id, x => x);
+            this.PrimitiveTypes = ExtractGroup<PrimitiveType>(groups, TypeKind.Primitive);
+            this.DynamicTypes = ExtractGroup<DynamicType>(groups, TypeKind.Dynamic);
+            this.ArrayLikeTypes = ExtractGroup<ArrayLikeType>(groups, TypeKind.ArrayLike);
+            this.DictionaryTypes = ExtractGroup<DictionaryType>(groups, TypeKind.Dictionary);
+            this.TaskTypes = ExtractGroup<TaskType>(groups, TypeKind.Task);
+            this.EnumTypes = ExtractGroup<EnumType>(groups, TypeKind.Enum);
+            this.StructTypes = ExtractGroup<StructType>(groups, TypeKind.Struct);
+            this.ClassTypes = ExtractGroup<ClassType>(groups, TypeKind.Class);
+            this.UnionTypes = ExtractGroup<UnionType>(groups, TypeKind.Union);
         }
+
+        public TypeRegistry(IEnumerable<Type> types) : this(types as Type[] ?? types.ToArray()) { }
+
+        private static Dictionary<Guid, TType> ExtractGroup<TType>(Dictionary<String, Type[]> groups, String groupKind) where TType : Type =>
+            groups.GetValueOrDefault(groupKind, Array.Empty<Type>())
+                .Cast<TType>()
+                .ToDictionary(x => x.Id, x => x);
+
+        public Type GetType(Guid typeId) => this.Types[typeId];
 
         public PrimitiveType GetPrimitiveType(Guid typeId) => this.PrimitiveTypes[typeId];
 

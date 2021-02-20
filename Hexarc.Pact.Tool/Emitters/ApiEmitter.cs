@@ -36,7 +36,7 @@ namespace Hexarc.Pact.Tool.Emitters
         {
             this.ClientSettings = clientSettings;
             this.Schema = schema;
-            this.TypeRegistry = TypeRegistry.FromTypes(this.Schema.Types);
+            this.TypeRegistry = new TypeRegistry(this.Schema.Types);
 
             var typeReferenceEmitter = new TypeReferenceEmitter(this.TypeRegistry);
             var methodEmitter = new MethodEmitter(typeReferenceEmitter);
