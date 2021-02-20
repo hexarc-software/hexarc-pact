@@ -41,7 +41,7 @@ namespace Hexarc.Pact.Tool.Emitters
             var typeReferenceEmitter = new TypeReferenceEmitter(this.TypeRegistry);
             var methodEmitter = new MethodEmitter(typeReferenceEmitter);
 
-            this.DistinctTypeEmitter = new DistinctTypeEmitter(typeReferenceEmitter);
+            this.DistinctTypeEmitter = new DistinctTypeEmitter(this.TypeRegistry, typeReferenceEmitter);
             this.ControllerEmitter = new ControllerEmitter(methodEmitter);
             this.ClientEmitter = new ClientEmitter();
         }

@@ -41,8 +41,7 @@ namespace Hexarc.Pact.Tool.Emitters
                     TokenList(
                         Token(SyntaxKind.PublicKeyword),
                         Token(SyntaxKind.SealedKeyword),
-                        Token(SyntaxKind.PartialKeyword)
-                    ))
+                        Token(SyntaxKind.PartialKeyword)))
                 .WithMembers(
                     List<MemberDeclarationSyntax>(this.EmitMembers(controller)));
 

@@ -20,10 +20,12 @@ namespace Hexarc.Pact.Tool.Emitters
 {
     public sealed class DistinctTypeEmitter
     {
+        private TypeRegistry TypeRegistry { get; }
+
         private TypeReferenceEmitter TypeReferenceEmitter { get; }
 
-        public DistinctTypeEmitter(TypeReferenceEmitter typeReferenceEmitter) =>
-            this.TypeReferenceEmitter = typeReferenceEmitter;
+        public DistinctTypeEmitter(TypeRegistry typeRegistry, TypeReferenceEmitter typeReferenceEmitter) =>
+            (this.TypeRegistry, this.TypeReferenceEmitter) = (typeRegistry, typeReferenceEmitter);
 
         public EmittedEntity Emit(DistinctType distinctType) => distinctType switch
         {
@@ -140,8 +142,7 @@ namespace Hexarc.Pact.Tool.Emitters
                 .WithArgumentList(
                     AttributeArgumentList(
                         SeparatedList<AttributeArgumentSyntax>(
-                            new SyntaxNodeOrToken[]
-                            {
+                            new SyntaxNodeOrTokenList(
                                 AttributeArgument(
                                     TypeOfExpression(IdentifierName(type.Name))),
                                 Token(SyntaxKind.CommaToken),
@@ -151,8 +152,7 @@ namespace Hexarc.Pact.Tool.Emitters
                                         Literal(type.Properties
                                             .Select(x => x.Type)
                                             .OfType<LiteralTypeReference>()
-                                            .First().Name)))
-                            })));
+                                            .First().Name)))))));
 
         private TypeParameterListSyntax EmitGenericParameters(String[] genericParameters) =>
             TypeParameterList(
@@ -213,22 +213,53 @@ namespace Hexarc.Pact.Tool.Emitters
                 .WithSemicolonToken(
                     Token(SyntaxKind.SemicolonToken));
 
-        private PropertyDeclarationSyntax EmitObjectPropertyDeclaration(TypeReference reference, String propertyName, String? currentNamespace) =>
-            PropertyDeclaration(
-                    this.TypeReferenceEmitter.Emit(reference, currentNamespace),
-                    Identifier(propertyName))
-                .WithModifiers(
-                    TokenList(
-                        Token(SyntaxKind.PublicKeyword)))
-                .WithAccessorList(
-                    AccessorList(
-                        List<AccessorDeclarationSyntax>(
-                            new[]
-                            {
-                                AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
-                                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)),
-                                AccessorDeclaration(SyntaxKind.SetAccessorDeclaration)
-                                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
-                            })));
+        private PropertyDeclarationSyntax EmitObjectPropertyDeclaration(TypeReference reference, String propertyName, String? currentNamespace)
+        {
+            return this.IsNotNullReferenceType(reference)
+                ? EmitRoot()
+                    .WithInitializer(
+                        EqualsValueClause(
+                            PostfixUnaryExpression(
+                                SyntaxKind.SuppressNullableWarningExpression,
+                                LiteralExpression(
+                                    SyntaxKind.DefaultLiteralExpression,
+                                    Token(SyntaxKind.DefaultKeyword)))))
+                    .WithSemicolonToken(
+                        Token(SyntaxKind.SemicolonToken))
+                : EmitRoot();
+
+            PropertyDeclarationSyntax EmitRoot() =>
+                PropertyDeclaration(
+                        this.TypeReferenceEmitter.Emit(reference, currentNamespace),
+                        Identifier(propertyName))
+                    .WithModifiers(
+                        TokenList(
+                            Token(SyntaxKind.PublicKeyword)))
+                    .WithAccessorList(
+                        AccessorList(
+                            List<AccessorDeclarationSyntax>(
+                                new[]
+                                {
+                                    AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
+                                        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)),
+                                    AccessorDeclaration(SyntaxKind.SetAccessorDeclaration)
+                                        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
+                                })));
+        }
+
+        private Boolean IsNotNullReferenceType(TypeReference reference) => reference switch
+        {
+            ArrayTypeReference { ArrayLikeTypeId: null } => true,
+            ArrayTypeReference { ArrayLikeTypeId: var typeId } => this.TypeRegistry.GetType(typeId.Value).IsReference,
+            DictionaryTypeReference dictionary => this.TypeRegistry.GetType(dictionary.TypeId).IsReference,
+            DistinctTypeReference distinct => this.TypeRegistry.GetType(distinct.TypeId).IsReference,
+            DynamicTypeReference dynamic => this.TypeRegistry.GetType(dynamic.TypeId).IsReference,
+            GenericTypeReference => true,
+            LiteralTypeReference => true,
+            NullableTypeReference => false,
+            PrimitiveTypeReference primitive => this.TypeRegistry.GetType(primitive.TypeId).IsReference,
+            TaskTypeReference task => this.IsNotNullReferenceType(task.ResultType),
+            _ => throw new NotSupportedException()
+        };
     }
 }

@@ -22,6 +22,6 @@ namespace Hexarc.Pact.Protocol.Types
         /// <param name="name">The type name.</param>
         /// <param name="members">The enum members.</param>
         public EnumType(Guid id, String? @namespace, String name, EnumMember[] members) :
-            base(id, @namespace, name, true) => this.Members = members;
+            base(id, @namespace, name, false) => this.Members = members;
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Hexarc.Annotations;
 
 namespace Hexarc.Pact.Demo.Api.Models
 {
@@ -28,6 +29,7 @@ namespace Hexarc.Pact.Demo.Api.Models
     {
         public List<Point> Points { get; set; } = default!;
 
+        [NullableReference]
         public List<ModelsV2.Point>? PointsV2 { get; set; } = default!;
 
         public Dictionary<Guid, Point> PointsDict { get; set; } = default!;
