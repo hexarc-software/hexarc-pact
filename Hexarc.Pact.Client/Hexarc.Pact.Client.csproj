@@ -9,4 +9,21 @@
     <PackageReference Include="Hexarc.Serialization.Union" Version="1.0.0" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <PackageId>Hexarc.Pact.Client</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Max Koverdyaev</Authors>
+    <Company>Hexarc Software</Company>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>hexarc.png</PackageIcon>
+    <PackageIconFullPath>$(MSBuildThisFileDirectory)../hexarc.png</PackageIconFullPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(PackageIconFullPath)">
+      <PackagePath>\</PackagePath>
+      <Pack>true</Pack>
+    </None>
+  </ItemGroup>
+
 </Project>

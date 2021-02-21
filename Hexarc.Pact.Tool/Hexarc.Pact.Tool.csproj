@@ -4,14 +4,29 @@
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
     <OutputType>Exe</OutputType>
-    <Version>1.0.0</Version>
   </PropertyGroup>
 
   <PropertyGroup>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>pact</ToolCommandName>
-    <PackageOutputPath>./nupkg</PackageOutputPath>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Hexarc.Pact.Tool</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Max Koverdyaev</Authors>
+    <Company>Hexarc Software</Company>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>hexarc.png</PackageIcon>
+    <PackageIconFullPath>$(MSBuildThisFileDirectory)../hexarc.png</PackageIconFullPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(PackageIconFullPath)">
+      <PackagePath>\</PackagePath>
+      <Pack>true</Pack>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Hexarc.Serialization.Union" Version="1.0.0" />
