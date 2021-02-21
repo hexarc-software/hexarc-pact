@@ -7,6 +7,12 @@
       "commands": [
         "dotnet-format"
       ]
+    },
+    "hexarc.pact.tool": {
+      "version": "1.0.0",
+      "commands": [
+        "pact"
+      ]
     }
   }
 }

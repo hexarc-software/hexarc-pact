@@ -4,9 +4,10 @@
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>Enable</Nullable>
   </PropertyGroup>
-
+  
   <ItemGroup>
-    <ProjectReference Include="..\Hexarc.Pact.AspNetCore\Hexarc.Pact.AspNetCore.csproj" />
+    <ProjectReference Include="..\Hexarc.Pact.AspNetCore\Hexarc.Pact.AspNetCore.csproj" Condition="'$(Configuration)' == 'Debug'" />
+    <PackageReference Include="Hexarc.Pact.AspNetCore" Version="1.0.0" Condition="'$(Configuration)' == 'Release'" />
   </ItemGroup>
 
 </Project>
