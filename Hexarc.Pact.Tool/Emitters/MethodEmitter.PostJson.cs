@@ -1,8 +1,10 @@
+using System;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Hexarc.Pact.Protocol.Api;
+using Hexarc.Pact.Protocol.TypeReferences;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Hexarc.Pact.Tool.Emitters
@@ -21,7 +23,7 @@ namespace Hexarc.Pact.Tool.Emitters
             MemberAccessExpression(
                 kind: SyntaxKind.SimpleMemberAccessExpression,
                 expression: ThisExpression(),
-                name: GenericName(Identifier("PostJson"))
+                name: GenericName(Identifier(this.PickPostMethodName(method.ReturnType)))
                     .WithTypeArgumentList(
                         this.EmitPostJsonParameters(method)));
 
@@ -43,6 +45,11 @@ namespace Hexarc.Pact.Tool.Emitters
                                 Literal(method.Path))),
                         Token(SyntaxKind.CommaToken),
                         Argument(
-                            IdentifierName(method.Parameters.First().Name)))));
+                            IdentifierName(method.Parameters.First().Name)),
+                        Token(SyntaxKind.CommaToken),
+                        Argument(IdentifierName("headers")))));
+
+        private String PickPostMethodName(TaskTypeReference returnType) =>
+            returnType.ResultType is NullableTypeReference ? "PostJsonOrNull" : "PostJson";
     }
 }

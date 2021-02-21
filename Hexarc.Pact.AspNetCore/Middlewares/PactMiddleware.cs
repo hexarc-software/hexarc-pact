@@ -2,9 +2,12 @@ using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Template;
+using Microsoft.Extensions.DependencyInjection;
+
 using Hexarc.Serialization.Union;
 using Hexarc.Pact.AspNetCore.Readers;
 
@@ -33,7 +36,7 @@ namespace Hexarc.Pact.AspNetCore.Middlewares
             };
         }
 
-        public async Task Invoke(HttpContext httpContext, SchemaReader schemaReader)
+        public async Task Invoke(HttpContext httpContext)
         {
             if (!this.IsPactSchemaRequested(httpContext.Request))
             {
@@ -41,6 +44,7 @@ namespace Hexarc.Pact.AspNetCore.Middlewares
                 return;
             }
 
+            var schemaReader = httpContext.RequestServices.GetRequiredService<SchemaReader>();
             var schema = schemaReader.Read(this._options.AssemblyWithControllers);
             await httpContext.Response.WriteAsJsonAsync(schema, this._jsonOptions);
         }

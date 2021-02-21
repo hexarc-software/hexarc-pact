@@ -28,7 +28,10 @@ namespace Hexarc.Pact.Client
             this.ControllerPath = controllerPath;
         }
 
-        protected async Task<T?> GetJson<T>(String methodPath, IEnumerable<GetMethodParameter> parameters, IEnumerable<KeyValuePair<String, String>>? headers = default)
+        protected async Task<TResponse?> GetJsonOrNull<TResponse>(
+            String methodPath,
+            IEnumerable<GetMethodParameter> parameters,
+            IEnumerable<KeyValuePair<String, String>>? headers = default)
         {
             var uri = this.ToMethodUri(methodPath, parameters);
             var message = new HttpRequestMessage
@@ -39,10 +42,19 @@ namespace Hexarc.Pact.Client
             if (headers is not null) message.Headers.AddRange(headers);
             var response = await this.HttpClient.SendAsync(message);
             if (!response.IsSuccessStatusCode) throw new InvalidOperationException($"API endpoint `{uri}` failed with code {response.StatusCode}");
-            return await response.Content.ReadFromJsonAsync<T>();
+            return await response.Content.ReadFromJsonAsync<TResponse>();
         }
 
-        protected async Task<TResponse?> PostJson<TRequest, TResponse>(
+        protected async Task<TResponse> GetJson<TResponse>(
+            String methodPath,
+            IEnumerable<GetMethodParameter> parameters,
+            IEnumerable<KeyValuePair<String, String>>? headers = default) where TResponse : notnull
+        {
+            return await this.GetJsonOrNull<TResponse>(methodPath, parameters, headers) ??
+                   throw new NullReferenceException("There was not response data");
+        }
+
+        protected async Task<TResponse?> PostJsonOrNull<TRequest, TResponse>(
             String methodPath,
             TRequest request,
             IEnumerable<KeyValuePair<String, String>>? headers = default)
@@ -60,6 +72,15 @@ namespace Hexarc.Pact.Client
             var response = await this.HttpClient.SendAsync(message);
             if (!response.IsSuccessStatusCode) throw new InvalidOperationException($"API endpoint `{uri}` failed with code {response.StatusCode}");
             return await response.Content.ReadFromJsonAsync<TResponse>();
+        }
+
+        protected async Task<TResponse> PostJson<TRequest, TResponse>(
+            String methodPath,
+            TRequest request,
+            IEnumerable<KeyValuePair<String, String>>? headers = default) where TResponse : notnull
+        {
+            return await this.PostJsonOrNull<TRequest, TResponse>(methodPath, request, headers) ??
+                   throw new NullReferenceException("There was not response data");
         }
 
         protected Uri ToMethodUri(String methodPath) => new(this.BaseUri, $"{this.ControllerPath}{methodPath}");

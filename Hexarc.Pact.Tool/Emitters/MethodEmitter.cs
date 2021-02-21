@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.CodeAnalysis;
@@ -7,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using Hexarc.Pact.Protocol.Api;
 using Hexarc.Pact.Tool.Extensions;
+using Hexarc.Pact.Tool.Internals;
 
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Hexarc.Pact.Tool.SyntaxFactories.ExceptionSyntaxFactory;
@@ -36,11 +38,39 @@ namespace Hexarc.Pact.Tool.Emitters
             ParameterList(
                 SeparatedList<ParameterSyntax>(parameters
                     .Select(this.EmitMethodParameter)
-                    .Separate(parameters.Length, Token(SyntaxKind.CommaToken))));
+                    .Concat(EnumerableFactory.FromOne<SyntaxNodeOrToken>(this.EmitMethodHeadersParameter()))
+                    .Separate(parameters.Length + 1, Token(SyntaxKind.CommaToken))));
 
         private SyntaxNodeOrToken EmitMethodParameter(MethodParameter parameter) =>
             Parameter(Identifier(parameter.Name))
                 .WithType(this.TypeReferenceEmitter.Emit(parameter.Type));
+
+        private SyntaxNodeOrToken EmitMethodHeadersParameter() =>
+            Parameter(
+                    Identifier("headers"))
+                .WithType(
+                    NullableType(
+                        GenericName(
+                                Identifier(typeof(IEnumerable<>).FullName!.StripSuffix("`1")))
+                            .WithTypeArgumentList(
+                                TypeArgumentList(
+                                    SingletonSeparatedList<TypeSyntax>(
+                                        GenericName(
+                                                Identifier(typeof(KeyValuePair<,>).FullName!.StripSuffix("`2")))
+                                            .WithTypeArgumentList(
+                                                TypeArgumentList(
+                                                    SeparatedList<TypeSyntax>(
+                                                        new SyntaxNodeOrToken[]
+                                                        {
+                                                            IdentifierName(typeof(String).FullName!),
+                                                            Token(SyntaxKind.CommaToken),
+                                                            IdentifierName(typeof(String).FullName!)
+                                                        }))))))))
+                .WithDefault(
+                    EqualsValueClause(
+                        LiteralExpression(
+                            SyntaxKind.DefaultLiteralExpression,
+                            Token(SyntaxKind.DefaultKeyword))));
 
         private BlockSyntax EmitMethodBody(Method method) => method.HttpMethod switch
         {

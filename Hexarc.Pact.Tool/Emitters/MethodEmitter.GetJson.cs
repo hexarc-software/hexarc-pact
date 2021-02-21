@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 using Microsoft.CodeAnalysis;
@@ -6,6 +7,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using Hexarc.Pact.Client;
 using Hexarc.Pact.Protocol.Api;
+using Hexarc.Pact.Protocol.TypeReferences;
 
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Hexarc.Pact.Tool.SyntaxFactories.NameOfSyntaxFactory;
@@ -27,7 +29,7 @@ namespace Hexarc.Pact.Tool.Emitters
             MemberAccessExpression(
                 SyntaxKind.SimpleMemberAccessExpression,
                 ThisExpression(),
-                GenericName(Identifier("GetJson"))
+                GenericName(Identifier(this.PickGetMethodName(method.ReturnType)))
                     .WithTypeArgumentList(this.EmitGetJsonParameters(method)));
 
         private TypeArgumentListSyntax EmitGetJsonParameters(Method method) =>
@@ -47,7 +49,9 @@ namespace Hexarc.Pact.Tool.Emitters
                         Token(SyntaxKind.CommaToken),
                         Argument(method.Parameters.Length == 0
                             ? ArrayEmptyExpression(typeof(GetMethodParameter))
-                            : this.EmitGetMethodParameters(method.Parameters)))));
+                            : this.EmitGetMethodParameters(method.Parameters)),
+                        Token(SyntaxKind.CommaToken),
+                        Argument(IdentifierName("headers")))));
 
         private ImplicitArrayCreationExpressionSyntax EmitGetMethodParameters(MethodParameter[] parameters) =>
             NewImplicitArrayExpression(parameters.Select(this.EmitGetMethodParameter).ToArray());
@@ -62,5 +66,8 @@ namespace Hexarc.Pact.Tool.Emitters
                                 Argument(NameOfExpression(parameter.Name)),
                                 Token(SyntaxKind.CommaToken),
                                 Argument(IdentifierName(parameter.Name))))));
+
+        private String PickGetMethodName(TaskTypeReference returnType) =>
+            returnType.ResultType is NullableTypeReference ? "GetJsonOrNull" : "GetJson";
     }
 }
