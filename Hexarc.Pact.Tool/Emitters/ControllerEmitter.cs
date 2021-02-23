@@ -61,10 +61,10 @@ namespace Hexarc.Pact.Tool.Emitters
                 SeparatedList<ParameterSyntax>(
                     new SyntaxNodeOrTokenList(
                         Parameter(Identifier("client"))
-                            .WithType(IdentifierName(typeof(ClientBase).FullName!)),
+                            .WithType(IdentifierNameFromType(typeof(ClientBase))),
                         Token(SyntaxKind.CommaToken),
                         Parameter(Identifier("controllerPath"))
-                            .WithType(IdentifierName(typeof(String).FullName!))
+                            .WithType(IdentifierNameFromType(typeof(String)))
                             .WithDefault(
                                 EqualsValueClause(
                                     LiteralExpression(
@@ -75,11 +75,9 @@ namespace Hexarc.Pact.Tool.Emitters
             ConstructorInitializer(
                 SyntaxKind.BaseConstructorInitializer,
                 ArgumentList(
-                    SeparatedList<ArgumentSyntax>(
-                        new SyntaxNodeOrTokenList(
-                            Argument(IdentifierName("client")),
-                            Token(SyntaxKind.CommaToken),
-                            Argument(IdentifierName("controllerPath"))))));
+                    SeparatedListWithCommas(
+                        Argument(IdentifierName("client")),
+                        Argument(IdentifierName("controllerPath")))));
 
         private IEnumerable<MethodDeclarationSyntax> EmitMethods(Method[] methods) =>
             methods.Select(this.MethodEmitter.Emit);

@@ -129,12 +129,8 @@ namespace Hexarc.Pact.Tool.Emitters
                     AttributeArgumentList(
                         SingletonSeparatedList<AttributeArgumentSyntax>(
                             AttributeArgument(
-                                InvocationExpression(
-                                        IdentifierName("nameof"))
-                                    .WithArgumentList(
-                                        ArgumentList(
-                                            SingletonSeparatedList<ArgumentSyntax>(
-                                                Argument(IdentifierName(tagName)))))))));
+                                NameOfExpression(
+                                    Argument(IdentifierName(tagName)))))));
 
         private AttributeSyntax EmitUnionCaseAttribute(ClassType type) =>
             Attribute(IdentifierName(typeof(UnionCaseAttribute).FullName!))
@@ -174,7 +170,7 @@ namespace Hexarc.Pact.Tool.Emitters
 
         private PropertyDeclarationSyntax EmitAbstractUnionTagPropertyDeclaration(String propertyName) =>
             PropertyDeclaration(
-                    IdentifierName(typeof(String).FullName!),
+                    IdentifierNameFromType(typeof(String)),
                     propertyName)
                 .WithModifiers(
                     TokenList(

@@ -2,12 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using Hexarc.Pact.Protocol.Api;
-using Hexarc.Pact.Tool.Extensions;
 using Hexarc.Pact.Tool.Internals;
 
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -46,26 +44,15 @@ namespace Hexarc.Pact.Tool.Emitters
                 .WithType(this.TypeReferenceEmitter.Emit(parameter.Type));
 
         private ParameterSyntax EmitMethodHeadersParameter() =>
-            Parameter(
-                    Identifier("headers"))
+            Parameter(Identifier("headers"))
                 .WithType(
                     NullableType(
-                        GenericName(
-                                Identifier(typeof(IEnumerable<>).FullName!.StripSuffix("`1")))
-                            .WithTypeArgumentList(
-                                TypeArgumentList(
-                                    SingletonSeparatedList<TypeSyntax>(
-                                        GenericName(
-                                                Identifier(typeof(KeyValuePair<,>).FullName!.StripSuffix("`2")))
-                                            .WithTypeArgumentList(
-                                                TypeArgumentList(
-                                                    SeparatedList<TypeSyntax>(
-                                                        new SyntaxNodeOrToken[]
-                                                        {
-                                                            IdentifierName(typeof(String).FullName!),
-                                                            Token(SyntaxKind.CommaToken),
-                                                            IdentifierName(typeof(String).FullName!)
-                                                        }))))))))
+                        GenericWithArgument(
+                            IdentifierFromType(typeof(IEnumerable<>)),
+                            GenericWithArguments(
+                                IdentifierFromType(typeof(KeyValuePair<,>)),
+                                IdentifierNameFromType(typeof(String)),
+                                IdentifierNameFromType(typeof(String))))))
                 .WithDefault(
                     EqualsValueClause(
                         LiteralExpression(

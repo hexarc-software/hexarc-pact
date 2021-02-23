@@ -9,7 +9,7 @@ namespace Hexarc.Pact.Tool.Syntax
         public static ThrowStatementSyntax ThrowExceptionStatement(Type exceptionType) =>
             ThrowStatement(
                 ObjectCreationExpression(
-                        IdentifierName(exceptionType.FullName!))
+                        IdentifierNameFromType(exceptionType))
                     .WithArgumentList(
                         ArgumentList()));
     }

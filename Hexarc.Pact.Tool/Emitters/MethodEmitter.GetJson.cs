@@ -57,14 +57,12 @@ namespace Hexarc.Pact.Tool.Emitters
 
         private ExpressionSyntax EmitGetMethodParameter(MethodParameter parameter) =>
             ObjectCreationExpression(
-                    IdentifierName(typeof(GetMethodParameter).FullName!))
+                    IdentifierNameFromType(typeof(GetMethodParameter)))
                 .WithArgumentList(
                     ArgumentList(
-                        SeparatedList<ArgumentSyntax>(
-                            new SyntaxNodeOrTokenList(
-                                Argument(NameOfExpression(parameter.Name)),
-                                Token(SyntaxKind.CommaToken),
-                                Argument(IdentifierName(parameter.Name))))));
+                        SeparatedListWithCommas(
+                            Argument(NameOfExpression(parameter.Name)),
+                            Argument(IdentifierName(parameter.Name)))));
 
         private String PickGetMethodName(TaskTypeReference returnType) =>
             returnType.ResultType is NullableTypeReference ? "GetJsonOrNull" : "GetJson";

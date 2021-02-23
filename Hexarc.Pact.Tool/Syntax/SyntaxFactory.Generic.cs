@@ -11,7 +11,7 @@ namespace Hexarc.Pact.Tool.Syntax
                 TypeArgumentList(
                     SingletonSeparatedList(argument)));
 
-        public static GenericNameSyntax GenericWithArguments(SyntaxToken name, TypeSyntax[] arguments) =>
+        public static GenericNameSyntax GenericWithArguments(SyntaxToken name, params TypeSyntax[] arguments) =>
             GenericName(name,
                 TypeArgumentList(
                     SeparatedListWithCommas(arguments)));

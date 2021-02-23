@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Hexarc.Pact.Protocol.Api;
 using Hexarc.Pact.Protocol.TypeReferences;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Hexarc.Pact.Tool.Syntax.SyntaxFactory;
 
 namespace Hexarc.Pact.Tool.Emitters
 {
@@ -29,25 +29,16 @@ namespace Hexarc.Pact.Tool.Emitters
 
         private TypeArgumentListSyntax EmitPostJsonParameters(Method method) =>
             TypeArgumentList(
-                SeparatedList<TypeSyntax>(
-                    new SyntaxNodeOrTokenList(
-                        this.TypeReferenceEmitter.Emit(method.Parameters.First().Type),
-                        Token(SyntaxKind.CommaToken),
-                        this.TypeReferenceEmitter.Emit(method.ReturnType.ResultType))));
+                SeparatedListWithCommas(
+                    this.TypeReferenceEmitter.Emit(method.Parameters.First().Type),
+                    this.TypeReferenceEmitter.Emit(method.ReturnType.ResultType)));
 
         private ArgumentListSyntax EmitPostJsonArguments(Method method) =>
             ArgumentList(
-                SeparatedList<ArgumentSyntax>(
-                    new SyntaxNodeOrTokenList(
-                        Argument(
-                            LiteralExpression(
-                                SyntaxKind.StringLiteralExpression,
-                                Literal(method.Path))),
-                        Token(SyntaxKind.CommaToken),
-                        Argument(
-                            IdentifierName(method.Parameters.First().Name)),
-                        Token(SyntaxKind.CommaToken),
-                        Argument(IdentifierName("headers")))));
+                SeparatedListWithCommas<ArgumentSyntax>(
+                    Argument(LiteralExpressionFromString(method.Path)),
+                    Argument(IdentifierName(method.Parameters.First().Name)),
+                    Argument(IdentifierName("headers"))));
 
         private String PickPostMethodName(TaskTypeReference returnType) =>
             returnType.ResultType is NullableTypeReference ? "PostJsonOrNull" : "PostJson";

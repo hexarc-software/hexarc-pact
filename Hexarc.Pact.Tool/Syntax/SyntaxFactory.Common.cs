@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Hexarc.Pact.Protocol.Extensions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Hexarc.Pact.Tool.Syntax
@@ -14,7 +16,22 @@ namespace Hexarc.Pact.Tool.Syntax
         public static IEnumerable<TNode> Repeat<TNode>(TNode node, Int32 count) =>
             Enumerable.Repeat(node, count);
 
-        public static SeparatedSyntaxList<TNode> SeparatedListWithCommas<TNode>(TNode[] nodes) where TNode : SyntaxNode =>
+        public static SeparatedSyntaxList<TNode> SeparatedListWithCommas<TNode>(params TNode[] nodes) where TNode : SyntaxNode =>
             SeparatedList<TNode>(nodes, Repeat(Comma, nodes.Length - 1));
+
+        public static IdentifierNameSyntax IdentifierNameFromType<T>() =>
+            IdentifierNameFromType(typeof(T));
+
+        public static IdentifierNameSyntax IdentifierNameFromType(Type type) =>
+            IdentifierName(type.NameWithoutGenericArity());
+
+        public static SyntaxToken IdentifierFromType<T>() =>
+            IdentifierFromType(typeof(T));
+
+        public static SyntaxToken IdentifierFromType(Type type) =>
+            Identifier(type.NameWithoutGenericArity());
+
+        public static LiteralExpressionSyntax LiteralExpressionFromString(String value) =>
+            LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(value));
     }
 }
