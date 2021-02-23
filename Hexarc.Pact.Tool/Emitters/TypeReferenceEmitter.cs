@@ -4,13 +4,12 @@ using System.Collections.Generic;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.CSharp;
 
 using Hexarc.Pact.Protocol.TypeReferences;
-using Hexarc.Pact.Tool.Extensions;
 using Hexarc.Pact.Tool.Internals;
 
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Hexarc.Pact.Tool.Syntax.SyntaxFactory;
 using Type = Hexarc.Pact.Protocol.Types.Type;
 
 namespace Hexarc.Pact.Tool.Emitters
@@ -36,8 +35,8 @@ namespace Hexarc.Pact.Tool.Emitters
             _ => throw new InvalidOperationException($"Could not emit a Hexarc Pact type reference from {typeReference}")
         };
 
-        private IEnumerable<SyntaxNodeOrToken> EmitMany(IEnumerable<TypeReference> typeReferences, String? currentNamespace) =>
-            typeReferences.Select(typeReference => (SyntaxNodeOrToken)this.Emit(typeReference, currentNamespace));
+        private IEnumerable<TypeSyntax> EmitMany(IEnumerable<TypeReference> typeReferences, String? currentNamespace) =>
+            typeReferences.Select(typeReference => this.Emit(typeReference, currentNamespace));
 
         private NameSyntax EmitPrimitiveTypeReference(PrimitiveTypeReference reference, String? currentNamespace) =>
             this.EmitTypeName(this.TypeRegistry.GetPrimitiveType(reference.TypeId), currentNamespace);
@@ -102,8 +101,7 @@ namespace Hexarc.Pact.Tool.Emitters
             SingletonSeparatedList<TypeSyntax>(this.Emit(argument, currentNamespace));
 
         private SeparatedSyntaxList<TypeSyntax> EmitGenericArguments(TypeReference[] arguments, String? currentNamespace) =>
-            SeparatedList<TypeSyntax>(this.EmitMany(arguments, currentNamespace)
-                .Separate(arguments.Length, Token(SyntaxKind.CommaToken)));
+            SeparatedListWithCommas(this.EmitMany(arguments, currentNamespace).ToArray());
 
         private NameSyntax EmitTypeName(Type type, String? currentNamespace) =>
             this.IsSameNamespace(type, currentNamespace) ? ParseName(type.Name) : ParseName(type.FullName);

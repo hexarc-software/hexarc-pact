@@ -1,11 +1,11 @@
 using System;
 using System.IO;
-using Hexarc.Pact.Tool.SyntaxFactories;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using NUnit.Framework;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Hexarc.Pact.Tool.Syntax.SyntaxFactory;
 
 namespace Hexarc.Pact.Tests
 {
@@ -15,8 +15,7 @@ namespace Hexarc.Pact.Tests
         [Test]
         public void NameOf()
         {
-            Assert.AreEqual("nameof(Object)", NameOfSyntaxFactory
-                .NameOfExpression("Object")
+            Assert.AreEqual("nameof(Object)", NameOfExpression("Object")
                 .NormalizeWhitespace()
                 .ToFullString());
         }
@@ -24,8 +23,7 @@ namespace Hexarc.Pact.Tests
         [Test]
         public void EmptyArray()
         {
-            Assert.AreEqual("System.Array.Empty<System.Object>()", ArraySyntaxFactory
-                .ArrayEmptyExpression(typeof(Object))
+            Assert.AreEqual("System.Array.Empty<System.Object>()", ArrayEmptyCall(typeof(Object))
                 .NormalizeWhitespace()
                 .ToFullString());
         }

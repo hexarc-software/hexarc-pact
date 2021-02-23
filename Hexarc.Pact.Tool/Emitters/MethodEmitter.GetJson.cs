@@ -10,8 +10,7 @@ using Hexarc.Pact.Protocol.Api;
 using Hexarc.Pact.Protocol.TypeReferences;
 
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Hexarc.Pact.Tool.SyntaxFactories.NameOfSyntaxFactory;
-using static Hexarc.Pact.Tool.SyntaxFactories.ArraySyntaxFactory;
+using static Hexarc.Pact.Tool.Syntax.SyntaxFactory;
 
 namespace Hexarc.Pact.Tool.Emitters
 {
@@ -48,15 +47,15 @@ namespace Hexarc.Pact.Tool.Emitters
                                 Literal(method.Path))),
                         Token(SyntaxKind.CommaToken),
                         Argument(method.Parameters.Length == 0
-                            ? ArrayEmptyExpression(typeof(GetMethodParameter))
+                            ? ArrayEmptyCall(typeof(GetMethodParameter))
                             : this.EmitGetMethodParameters(method.Parameters)),
                         Token(SyntaxKind.CommaToken),
                         Argument(IdentifierName("headers")))));
 
         private ImplicitArrayCreationExpressionSyntax EmitGetMethodParameters(MethodParameter[] parameters) =>
-            NewImplicitArrayExpression(parameters.Select(this.EmitGetMethodParameter).ToArray());
+            ImplicitArrayWithElements(parameters.Select(this.EmitGetMethodParameter).ToArray());
 
-        private SyntaxNodeOrToken EmitGetMethodParameter(MethodParameter parameter) =>
+        private ExpressionSyntax EmitGetMethodParameter(MethodParameter parameter) =>
             ObjectCreationExpression(
                     IdentifierName(typeof(GetMethodParameter).FullName!))
                 .WithArgumentList(

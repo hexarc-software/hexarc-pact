@@ -2,9 +2,9 @@ using System;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Hexarc.Pact.Tool.SyntaxFactories
+namespace Hexarc.Pact.Tool.Syntax
 {
-    public static class ExceptionSyntaxFactory
+    public static partial class SyntaxFactory
     {
         public static ThrowStatementSyntax ThrowExceptionStatement(Type exceptionType) =>
             ThrowStatement(

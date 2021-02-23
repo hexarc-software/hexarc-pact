@@ -9,12 +9,11 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Hexarc.Annotations;
 using Hexarc.Pact.Protocol.Types;
 using Hexarc.Pact.Protocol.TypeReferences;
-using Hexarc.Pact.Tool.Extensions;
 using Hexarc.Pact.Tool.Internals;
 using Hexarc.Pact.Tool.Models;
 
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Hexarc.Pact.Tool.SyntaxFactories.NamespaceSyntaxFactory;
+using static Hexarc.Pact.Tool.Syntax.SyntaxFactory;
 
 namespace Hexarc.Pact.Tool.Emitters
 {
@@ -156,12 +155,9 @@ namespace Hexarc.Pact.Tool.Emitters
 
         private TypeParameterListSyntax EmitGenericParameters(String[] genericParameters) =>
             TypeParameterList(
-                SeparatedList<TypeParameterSyntax>(
-                    genericParameters
-                        .Select(this.EmitGenericParameter)
-                        .Separate(genericParameters.Length, Token(SyntaxKind.CommaToken))));
+                SeparatedListWithCommas(genericParameters.Select(this.EmitGenericParameter).ToArray()));
 
-        private SyntaxNodeOrToken EmitGenericParameter(String genericParameter) =>
+        private TypeParameterSyntax EmitGenericParameter(String genericParameter) =>
             TypeParameter(Identifier(genericParameter));
 
         private SyntaxList<MemberDeclarationSyntax> EmitObjectPropertyDeclarations(ObjectProperty[] properties, String? currentNamespace) =>

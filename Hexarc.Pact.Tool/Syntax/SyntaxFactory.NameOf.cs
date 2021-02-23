@@ -2,9 +2,9 @@ using System;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Hexarc.Pact.Tool.SyntaxFactories
+namespace Hexarc.Pact.Tool.Syntax
 {
-    public static class NameOfSyntaxFactory
+    public static partial class SyntaxFactory
     {
         public static InvocationExpressionSyntax NameOfExpression(String argument) =>
             NameOfExpression(IdentifierName(argument));

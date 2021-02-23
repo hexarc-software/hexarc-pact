@@ -11,7 +11,7 @@ using Hexarc.Pact.Tool.Extensions;
 using Hexarc.Pact.Tool.Internals;
 
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Hexarc.Pact.Tool.SyntaxFactories.ExceptionSyntaxFactory;
+using static Hexarc.Pact.Tool.Syntax.SyntaxFactory;
 
 namespace Hexarc.Pact.Tool.Emitters
 {
@@ -36,16 +36,16 @@ namespace Hexarc.Pact.Tool.Emitters
 
         private ParameterListSyntax EmitMethodParameters(MethodParameter[] parameters) =>
             ParameterList(
-                SeparatedList<ParameterSyntax>(parameters
+                SeparatedListWithCommas(parameters
                     .Select(this.EmitMethodParameter)
-                    .Concat(EnumerableFactory.FromOne<SyntaxNodeOrToken>(this.EmitMethodHeadersParameter()))
-                    .Separate(parameters.Length + 1, Token(SyntaxKind.CommaToken))));
+                    .Concat(EnumerableFactory.FromOne(this.EmitMethodHeadersParameter()))
+                    .ToArray()));
 
-        private SyntaxNodeOrToken EmitMethodParameter(MethodParameter parameter) =>
+        private ParameterSyntax EmitMethodParameter(MethodParameter parameter) =>
             Parameter(Identifier(parameter.Name))
                 .WithType(this.TypeReferenceEmitter.Emit(parameter.Type));
 
-        private SyntaxNodeOrToken EmitMethodHeadersParameter() =>
+        private ParameterSyntax EmitMethodHeadersParameter() =>
             Parameter(
                     Identifier("headers"))
                 .WithType(

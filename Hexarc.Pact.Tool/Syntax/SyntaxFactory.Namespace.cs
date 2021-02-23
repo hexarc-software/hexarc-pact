@@ -4,9 +4,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Hexarc.Pact.Tool.Internals;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Hexarc.Pact.Tool.SyntaxFactories
+namespace Hexarc.Pact.Tool.Syntax
 {
-    public static class NamespaceSyntaxFactory
+    public static partial class SyntaxFactory
     {
         public static MemberDeclarationSyntax TryWrapInNamespace(String? @namespace, MemberDeclarationSyntax memberDeclaration) =>
             String.IsNullOrEmpty(@namespace) ? memberDeclaration : WrapInNamespace(@namespace, memberDeclaration);
