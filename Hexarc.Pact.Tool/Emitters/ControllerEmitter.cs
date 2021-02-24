@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -58,18 +57,16 @@ namespace Hexarc.Pact.Tool.Emitters
 
         private ParameterListSyntax EmitConstructorParameters(Controller controller) =>
             ParameterList(
-                SeparatedList<ParameterSyntax>(
-                    new SyntaxNodeOrTokenList(
-                        Parameter(Identifier("client"))
-                            .WithType(IdentifierNameFromType(typeof(ClientBase))),
-                        Token(SyntaxKind.CommaToken),
-                        Parameter(Identifier("controllerPath"))
-                            .WithType(IdentifierNameFromType(typeof(String)))
-                            .WithDefault(
-                                EqualsValueClause(
-                                    LiteralExpression(
-                                        SyntaxKind.StringLiteralExpression,
-                                        Literal(controller.Path)))))));
+                SeparatedListWithCommas(
+                    Parameter(Identifier("client"))
+                        .WithType(IdentifierNameFromType(typeof(ClientBase))),
+                    Parameter(Identifier("controllerPath"))
+                        .WithType(IdentifierNameFromType(typeof(String)))
+                        .WithDefault(
+                            EqualsValueClause(
+                                LiteralExpression(
+                                    SyntaxKind.StringLiteralExpression,
+                                    Literal(controller.Path))))));
 
         private ConstructorInitializerSyntax EmitConstructorInitializer() =>
             ConstructorInitializer(

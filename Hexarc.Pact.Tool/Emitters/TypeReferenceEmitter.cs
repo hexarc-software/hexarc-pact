@@ -88,17 +88,17 @@ namespace Hexarc.Pact.Tool.Emitters
             };
 
         private GenericNameSyntax EmitGenericTypeName(Type type, TypeReference[] genericArguments, String? currentNamespace) =>
-            GenericName(this.EmitTypeIdentifier(type, currentNamespace))
-                .WithTypeArgumentList(
-                    TypeArgumentList(this.EmitGenericArguments(genericArguments, currentNamespace)));
+            GenericWithArguments(
+                this.EmitTypeIdentifier(type, currentNamespace),
+                this.EmitGenericArguments(genericArguments, currentNamespace));
 
         private GenericNameSyntax EmitGenericTypeName(Type type, TypeReference genericArgument, String? currentNamespace) =>
-            GenericName(this.EmitTypeIdentifier(type, currentNamespace))
-                .WithTypeArgumentList(
-                    TypeArgumentList(this.EmitGenericArgument(genericArgument, currentNamespace)));
+            GenericWithArgument(
+                    this.EmitTypeIdentifier(type, currentNamespace),
+                    this.EmitGenericArgument(genericArgument, currentNamespace));
 
-        private SeparatedSyntaxList<TypeSyntax> EmitGenericArgument(TypeReference argument, String? currentNamespace) =>
-            SingletonSeparatedList<TypeSyntax>(this.Emit(argument, currentNamespace));
+        private TypeSyntax EmitGenericArgument(TypeReference argument, String? currentNamespace) =>
+            this.Emit(argument, currentNamespace);
 
         private SeparatedSyntaxList<TypeSyntax> EmitGenericArguments(TypeReference[] arguments, String? currentNamespace) =>
             SeparatedListWithCommas(this.EmitMany(arguments, currentNamespace).ToArray());

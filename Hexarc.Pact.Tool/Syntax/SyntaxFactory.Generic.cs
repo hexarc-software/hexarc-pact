@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -15,5 +17,8 @@ namespace Hexarc.Pact.Tool.Syntax
             GenericName(name,
                 TypeArgumentList(
                     SeparatedListWithCommas(arguments)));
+
+        public static GenericNameSyntax GenericWithArguments(SyntaxToken name, IEnumerable<TypeSyntax> arguments) =>
+            GenericWithArguments(name, arguments.ToArray());
     }
 }

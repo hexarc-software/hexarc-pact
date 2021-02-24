@@ -17,7 +17,7 @@ namespace Hexarc.Pact.Tool.Syntax
             InvocationExpression(
                 MemberAccessExpression(
                     SyntaxKind.SimpleMemberAccessExpression,
-                    IdentifierName(typeof(Array).FullName!),
+                    IdentifierNameFromType(typeof(Array)),
                     GenericWithArgument(
                         Identifier(nameof(Array.Empty)),
                         IdentifierName(elementType.FullName!))));

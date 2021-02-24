@@ -13,6 +13,8 @@ namespace Hexarc.Pact.Tool.Syntax
     {
         public static SyntaxToken Comma { get; } = Token(SyntaxKind.CommaToken);
 
+        public static SyntaxToken Semicolon { get; } = Token(SyntaxKind.SemicolonToken);
+
         public static IEnumerable<TNode> Repeat<TNode>(TNode node, Int32 count) =>
             Enumerable.Repeat(node, count);
 

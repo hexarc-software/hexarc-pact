@@ -2,6 +2,7 @@
 Hexarc Pact provides tools for exposing and consuming Web API for .NET-based projects.
 
 ## Features
+* Boilerplate-free API integrations in seconds.
 * No type information loosing. Consume exactly API that is provided.
 * Code first. No need to describe your API protocol in external IDL/DSL.
 * Charged with advanced types. Not only simple DTOs but enums, generics, tagged union and etc.

@@ -35,7 +35,7 @@ namespace Hexarc.Pact.Tool.Emitters
                     BaseList(
                         SingletonSeparatedList<BaseTypeSyntax>(
                             SimpleBaseType(
-                                IdentifierName(typeof(ClientBase).FullName!)))))
+                                IdentifierNameFromType(typeof(ClientBase))))))
                 .WithMembers(List(this.EmitMembers(clientSettings, controllers)));
 
         private IEnumerable<MemberDeclarationSyntax> EmitMembers(ClientSettings clientSettings, Controller[] controllers) =>
@@ -54,7 +54,7 @@ namespace Hexarc.Pact.Tool.Emitters
                 SeparatedList<ParameterSyntax>(
                     SingletonList(
                         Parameter(Identifier("httpClient"))
-                            .WithType(IdentifierName(typeof(HttpClient).FullName!)))));
+                            .WithType(IdentifierNameFromType(typeof(HttpClient))))));
 
         private ConstructorInitializerSyntax EmitConstructorInitializer() =>
             ConstructorInitializer(
@@ -80,8 +80,7 @@ namespace Hexarc.Pact.Tool.Emitters
                         .WithArgumentList(
                             ArgumentList(
                                 SingletonSeparatedList<ArgumentSyntax>(
-                                    Argument(
-                                        ThisExpression()))))));
+                                    Argument(ThisExpression()))))));
 
         private IEnumerable<PropertyDeclarationSyntax> EmitControllerProperties(Controller[] controllers) =>
             controllers.Select(this.EmitControllerProperty);
@@ -93,7 +92,6 @@ namespace Hexarc.Pact.Tool.Emitters
                     AccessorList(
                         SingletonList<AccessorDeclarationSyntax>(
                             AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
-                                .WithSemicolonToken(
-                                    Token(SyntaxKind.SemicolonToken)))));
+                                .WithSemicolonToken(Semicolon))));
     }
 }

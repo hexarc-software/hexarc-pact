@@ -27,8 +27,7 @@ namespace Hexarc.Pact.Tool.Emitters
                 .WithModifiers(
                     TokenList(
                         Token(SyntaxKind.PublicKeyword),
-                        Token(SyntaxKind.AsyncKeyword)
-                    ))
+                        Token(SyntaxKind.AsyncKeyword)))
                 .WithParameterList(this.EmitMethodParameters(method.Parameters))
                 .WithBody(this.EmitMethodBody(method));
 

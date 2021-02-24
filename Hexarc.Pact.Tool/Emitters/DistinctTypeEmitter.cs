@@ -136,22 +136,16 @@ namespace Hexarc.Pact.Tool.Emitters
             Attribute(IdentifierName(typeof(UnionCaseAttribute).FullName!))
                 .WithArgumentList(
                     AttributeArgumentList(
-                        SeparatedList<AttributeArgumentSyntax>(
-                            new SyntaxNodeOrTokenList(
-                                AttributeArgument(
-                                    TypeOfExpression(IdentifierName(type.Name))),
-                                Token(SyntaxKind.CommaToken),
-                                AttributeArgument(
-                                    LiteralExpression(
-                                        SyntaxKind.StringLiteralExpression,
-                                        Literal(type.Properties
-                                            .Select(x => x.Type)
-                                            .OfType<LiteralTypeReference>()
-                                            .First().Name)))))));
+                        SeparatedListWithCommas<AttributeArgumentSyntax>(
+                            AttributeArgument(TypeOfExpression(IdentifierName(type.Name))),
+                            AttributeArgument(
+                                LiteralExpressionFromString(type.Properties
+                                    .Select(x => x.Type)
+                                    .OfType<LiteralTypeReference>()
+                                    .First().Name)))));
 
         private TypeParameterListSyntax EmitGenericParameters(String[] genericParameters) =>
-            TypeParameterList(
-                SeparatedListWithCommas(genericParameters.Select(this.EmitGenericParameter).ToArray()));
+            TypeParameterList(SeparatedListWithCommas(genericParameters.Select(this.EmitGenericParameter).ToArray()));
 
         private TypeParameterSyntax EmitGenericParameter(String genericParameter) =>
             TypeParameter(Identifier(genericParameter));
@@ -180,8 +174,7 @@ namespace Hexarc.Pact.Tool.Emitters
                     AccessorList(
                         SingletonList<AccessorDeclarationSyntax>(
                             AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
-                                .WithSemicolonToken(
-                                    Token(SyntaxKind.SemicolonToken)))));
+                                .WithSemicolonToken(Semicolon))));
 
         private PropertyDeclarationSyntax EmitConcreteUnionTagPropertyDeclaration(LiteralTypeReference reference, String propertyName) =>
             PropertyDeclaration(
@@ -195,15 +188,13 @@ namespace Hexarc.Pact.Tool.Emitters
                     AccessorList(
                         SingletonList<AccessorDeclarationSyntax>(
                             AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
-                                .WithSemicolonToken(
-                                    Token(SyntaxKind.SemicolonToken)))))
+                                .WithSemicolonToken(Semicolon))))
                 .WithInitializer(
                     EqualsValueClause(
                         LiteralExpression(
                             SyntaxKind.StringLiteralExpression,
                             Literal(reference.Name))))
-                .WithSemicolonToken(
-                    Token(SyntaxKind.SemicolonToken));
+                .WithSemicolonToken(Semicolon);
 
         private PropertyDeclarationSyntax EmitObjectPropertyDeclaration(TypeReference reference, String propertyName, String? currentNamespace)
         {
@@ -216,8 +207,7 @@ namespace Hexarc.Pact.Tool.Emitters
                                 LiteralExpression(
                                     SyntaxKind.DefaultLiteralExpression,
                                     Token(SyntaxKind.DefaultKeyword)))))
-                    .WithSemicolonToken(
-                        Token(SyntaxKind.SemicolonToken))
+                    .WithSemicolonToken(Semicolon)
                 : EmitRoot();
 
             PropertyDeclarationSyntax EmitRoot() =>
@@ -233,9 +223,9 @@ namespace Hexarc.Pact.Tool.Emitters
                                 new[]
                                 {
                                     AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
-                                        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)),
+                                        .WithSemicolonToken(Semicolon),
                                     AccessorDeclaration(SyntaxKind.SetAccessorDeclaration)
-                                        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken))
+                                        .WithSemicolonToken(Semicolon)
                                 })));
         }
 

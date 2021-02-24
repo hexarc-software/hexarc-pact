@@ -39,18 +39,12 @@ namespace Hexarc.Pact.Tool.Emitters
 
         private ArgumentListSyntax EmitGetJsonArguments(Method method) =>
             ArgumentList(
-                SeparatedList<ArgumentSyntax>(
-                    new SyntaxNodeOrTokenList(
-                        Argument(
-                            LiteralExpression(
-                                SyntaxKind.StringLiteralExpression,
-                                Literal(method.Path))),
-                        Token(SyntaxKind.CommaToken),
-                        Argument(method.Parameters.Length == 0
-                            ? ArrayEmptyCall(typeof(GetMethodParameter))
-                            : this.EmitGetMethodParameters(method.Parameters)),
-                        Token(SyntaxKind.CommaToken),
-                        Argument(IdentifierName("headers")))));
+                SeparatedListWithCommas(
+                    Argument(LiteralExpressionFromString(method.Path)),
+                    Argument(method.Parameters.Length == 0
+                        ? ArrayEmptyCall(typeof(GetMethodParameter))
+                        : this.EmitGetMethodParameters(method.Parameters)),
+                    Argument(IdentifierName("headers"))));
 
         private ImplicitArrayCreationExpressionSyntax EmitGetMethodParameters(MethodParameter[] parameters) =>
             ImplicitArrayWithElements(parameters.Select(this.EmitGetMethodParameter).ToArray());
