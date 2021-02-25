@@ -13,7 +13,7 @@
 
   <PropertyGroup>
     <PackageId>Hexarc.Pact.Tool</PackageId>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <Authors>Max Koverdyaev</Authors>
     <Company>Hexarc Software</Company>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

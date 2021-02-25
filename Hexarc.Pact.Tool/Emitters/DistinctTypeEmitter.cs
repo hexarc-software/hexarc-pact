@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -56,9 +57,22 @@ namespace Hexarc.Pact.Tool.Emitters
                 .WithModifiers(
                     TokenList(
                         Token(SyntaxKind.PublicKeyword)))
+                .WithAttributeLists(
+                    SingletonList(
+                        AttributeList(
+                            SingletonSeparatedList(this.EmitStringEnumAttribute()))))
                 .WithMembers(
                     SeparatedList<EnumMemberDeclarationSyntax>(
                         this.EmitStringEnumMemberDeclarations(type.Members)));
+
+        private AttributeSyntax EmitStringEnumAttribute() =>
+            Attribute(IdentifierNameFromType(typeof(JsonConverterAttribute)))
+                .WithArgumentList(
+                    AttributeArgumentList(
+                        SingletonSeparatedList<AttributeArgumentSyntax>(
+                            AttributeArgument(
+                                TypeOfExpression(
+                                    IdentifierNameFromType(typeof(JsonStringEnumConverter)))))));
 
         private IEnumerable<EnumMemberDeclarationSyntax> EmitStringEnumMemberDeclarations(String[] members) =>
             members.Select(this.EmitStringEnumMemberDeclaration);
@@ -143,7 +157,7 @@ namespace Hexarc.Pact.Tool.Emitters
                 .AddRange(type.Cases.Select(x => AttributeList(SingletonSeparatedList(this.EmitUnionCaseAttribute(x)))));
 
         private AttributeSyntax EmitUnionTagAttribute(String tagName) =>
-            Attribute(IdentifierName(typeof(UnionTagAttribute).FullName!))
+            Attribute(IdentifierNameFromType(typeof(UnionTagAttribute)))
                 .WithArgumentList(
                     AttributeArgumentList(
                         SingletonSeparatedList<AttributeArgumentSyntax>(
@@ -152,7 +166,7 @@ namespace Hexarc.Pact.Tool.Emitters
                                     Argument(IdentifierName(tagName)))))));
 
         private AttributeSyntax EmitUnionCaseAttribute(ClassType type) =>
-            Attribute(IdentifierName(typeof(UnionCaseAttribute).FullName!))
+            Attribute(IdentifierNameFromType(typeof(UnionCaseAttribute)))
                 .WithArgumentList(
                     AttributeArgumentList(
                         SeparatedListWithCommas<AttributeArgumentSyntax>(
