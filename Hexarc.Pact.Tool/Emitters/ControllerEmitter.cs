@@ -35,7 +35,7 @@ namespace Hexarc.Pact.Tool.Emitters
                     BaseList(
                         SingletonSeparatedList<BaseTypeSyntax>(
                             SimpleBaseType(
-                                IdentifierName(typeof(ControllerBase).FullName!)))))
+                                IdentifierNameFromType(typeof(ControllerBase))))))
                 .WithModifiers(
                     TokenList(
                         Token(SyntaxKind.PublicKeyword),

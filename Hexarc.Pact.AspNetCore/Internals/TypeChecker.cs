@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Hexarc.Annotations;
+using Hexarc.Pact.AspNetCore.Extensions;
 using Hexarc.Pact.Protocol.TypeProviders;
 
 namespace Hexarc.Pact.AspNetCore.Internals
@@ -54,6 +55,8 @@ namespace Hexarc.Pact.AspNetCore.Internals
         public Boolean IsUnionType(Type type) => type.GetCustomAttribute<UnionTagAttribute>() is not null;
 
         public Boolean IsEnumType(Type type) => type.IsEnum;
+
+        public Boolean IsStringEnumType(Type type) => type.IsEnum && type.SupportJsonStringEnumConversion();
 
         public Boolean IsClassType(Type type) => type.IsClass;
 

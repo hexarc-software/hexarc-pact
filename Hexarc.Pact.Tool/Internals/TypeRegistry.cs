@@ -23,6 +23,8 @@ namespace Hexarc.Pact.Tool.Internals
 
         private Dictionary<Guid, EnumType> EnumTypes { get; }
 
+        private Dictionary<Guid, StringEnumType> StringEnumTypes { get; }
+
         private Dictionary<Guid, StructType> StructTypes { get; }
 
         private Dictionary<Guid, ClassType> ClassTypes { get; }
@@ -39,6 +41,7 @@ namespace Hexarc.Pact.Tool.Internals
             this.DictionaryTypes = ExtractGroup<DictionaryType>(groups, TypeKind.Dictionary);
             this.TaskTypes = ExtractGroup<TaskType>(groups, TypeKind.Task);
             this.EnumTypes = ExtractGroup<EnumType>(groups, TypeKind.Enum);
+            this.StringEnumTypes = ExtractGroup<StringEnumType>(groups, TypeKind.StringEnum);
             this.StructTypes = ExtractGroup<StructType>(groups, TypeKind.Struct);
             this.ClassTypes = ExtractGroup<ClassType>(groups, TypeKind.Class);
             this.UnionTypes = ExtractGroup<UnionType>(groups, TypeKind.Union);
@@ -69,6 +72,8 @@ namespace Hexarc.Pact.Tool.Internals
 
         public EnumType GetEnumType(Guid typeId) => this.EnumTypes[typeId];
 
+        public StringEnumType GetStringEnumType(Guid typeId) => this.StringEnumTypes[typeId];
+
         public StructType GetStructType(Guid typeId) => this.StructTypes[typeId];
 
         public ClassType GetClassType(Guid typeId) => this.ClassTypes[typeId];
@@ -78,6 +83,7 @@ namespace Hexarc.Pact.Tool.Internals
         public DistinctType GetDistinctType(Guid typeId)
         {
             if (this.EnumTypes.TryGetValue(typeId, out var @enum)) return @enum;
+            if (this.StringEnumTypes.TryGetValue(typeId, out var stringEnum)) return stringEnum;
             if (this.StructTypes.TryGetValue(typeId, out var @struct)) return @struct;
             if (this.ClassTypes.TryGetValue(typeId, out var @class)) return @class;
             if (this.UnionTypes.TryGetValue(typeId, out var union)) return union;
@@ -86,6 +92,7 @@ namespace Hexarc.Pact.Tool.Internals
 
         public IEnumerable<DistinctType> EnumerateDistinctTypes() =>
             this.EnumTypes.Values.Cast<DistinctType>()
+                .Concat(this.StringEnumTypes.Values)
                 .Concat(this.StructTypes.Values)
                 .Concat(this.ClassTypes.Values)
                 .Concat(this.UnionTypes.Values);

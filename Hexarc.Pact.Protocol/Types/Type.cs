@@ -15,6 +15,7 @@ namespace Hexarc.Pact.Protocol.Types
     [UnionCase(typeof(DictionaryType), TypeKind.Dictionary)]
     [UnionCase(typeof(TaskType), TypeKind.Task)]
     [UnionCase(typeof(EnumType), TypeKind.Enum)]
+    [UnionCase(typeof(StringEnumType), TypeKind.StringEnum)]
     [UnionCase(typeof(StructType), TypeKind.Struct)]
     [UnionCase(typeof(ClassType), TypeKind.Class)]
     [UnionCase(typeof(UnionType), TypeKind.Union)]

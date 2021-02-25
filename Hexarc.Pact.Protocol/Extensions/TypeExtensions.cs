@@ -19,6 +19,13 @@ namespace Hexarc.Pact.Protocol.Extensions
             return index == -1 ? name : name.Substring(0, index);
         }
 
+        public static String FullNameWithoutGenericArity(this Type type)
+        {
+            var name = type.FullName ?? throw new InvalidOperationException();
+            var index = name.IndexOf("`", StringComparison.Ordinal);
+            return index == -1 ? name : name.Substring(0, index);
+        }
+
         /// <summary>
         /// Checks the type has the reference semantic or not.
         /// </summary>

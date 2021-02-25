@@ -25,13 +25,13 @@ namespace Hexarc.Pact.Tool.Syntax
             IdentifierNameFromType(typeof(T));
 
         public static IdentifierNameSyntax IdentifierNameFromType(Type type) =>
-            IdentifierName(type.NameWithoutGenericArity());
+            IdentifierName(type.FullNameWithoutGenericArity());
 
         public static SyntaxToken IdentifierFromType<T>() =>
             IdentifierFromType(typeof(T));
 
         public static SyntaxToken IdentifierFromType(Type type) =>
-            Identifier(type.NameWithoutGenericArity());
+            Identifier(type.FullNameWithoutGenericArity());
 
         public static LiteralExpressionSyntax LiteralExpressionFromString(String value) =>
             LiteralExpression(SyntaxKind.StringLiteralExpression, Literal(value));

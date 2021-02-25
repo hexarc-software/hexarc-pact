@@ -9,7 +9,7 @@ RUN dotnet restore Hexarc.Pact.Demo.Api/Hexarc.Pact.Demo.Api.csproj
 COPY Hexarc.Pact.Demo.Api ./Hexarc.Pact.Demo.Api
 COPY Hexarc.Pact.AspNetCore ./Hexarc.Pact.AspNetCore
 COPY Hexarc.Pact.Protocol ./Hexarc.Pact.Protocol
-RUN dotnet publish Hexarc.Pact.Demo.Api/Hexarc.Pact.Demo.Api.csproj -c Release -o out --no-restore
+RUN dotnet publish Hexarc.Pact.Demo.Api/Hexarc.Pact.Demo.Api.csproj -c Debug -o out --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine
 WORKDIR /app

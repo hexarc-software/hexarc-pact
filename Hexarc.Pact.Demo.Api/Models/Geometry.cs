@@ -35,6 +35,8 @@ namespace Hexarc.Pact.Demo.Api.Models
         public Dictionary<Guid, Point> PointsDict { get; set; } = default!;
 
         public Direction Direction { get; set; }
+
+        public Flags Flags { get; set; }
     }
 }
 

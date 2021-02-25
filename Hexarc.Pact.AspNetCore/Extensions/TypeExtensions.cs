@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 namespace Hexarc.Pact.AspNetCore.Extensions
 {
@@ -15,5 +16,13 @@ namespace Hexarc.Pact.AspNetCore.Extensions
         /// <returns>The result that contains extracted properties.</returns>
         public static PropertyInfo[] GetPublicInstanceProperties(this Type type) =>
             type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+        /// <summary>
+        /// Checks if the type supports converting to a json string enum.
+        /// </summary>
+        /// <param name="type">The type to check.</param>
+        /// <returns>Returns true if the type supports converting to a json string enum either false.</returns>
+        public static Boolean SupportJsonStringEnumConversion(this Type type) =>
+            type.GetCustomAttribute<JsonConverterAttribute>()?.ConverterType == typeof(JsonStringEnumConverter);
     }
 }

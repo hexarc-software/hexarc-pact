@@ -36,12 +36,16 @@ namespace Hexarc.Pact.AspNetCore.Readers
         /// <returns>The Hexarc Pact distinct type read from the given .NET system type.</returns>
         public DistinctType Read(System.Type type) => type switch
         {
+            var x when this.TypeChecker.IsStringEnumType(x) => this.ReadStringEnumType(x),
             var x when this.TypeChecker.IsEnumType(x) => this.ReadEnumType(x),
             var x when this.TypeChecker.IsUnionType(x) => this.ReadUnionType(x),
             var x when this.TypeChecker.IsStructType(x) => this.ReadStructType(x),
             var x when this.TypeChecker.IsClassType(x) => this.ReadClassType(x),
             _ => throw new InvalidOperationException($"Could not read a Hexarc Pact type from {type}")
         };
+
+        private StringEnumType ReadStringEnumType(System.Type type) =>
+            new(type.GUID, type.Namespace, type.Name, Enum.GetNames(type));
 
         private EnumType ReadEnumType(System.Type type) =>
             new(type.GUID, type.Namespace, type.Name, this.ReadEnumMembers(type, Enum.GetNames(type)));

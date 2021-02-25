@@ -29,11 +29,15 @@ namespace Hexarc.Pact.Tool.Emitters
         public EmittedEntity Emit(DistinctType distinctType) => distinctType switch
         {
             EnumType @enum => this.EmitEnumType(@enum),
+            StringEnumType stringEnum => this.EmitStringEnumType(stringEnum),
             StructType @struct => this.EmitStructType(@struct),
             ClassType @class => this.EmitClassType(@class),
             UnionType union => this.EmitUnionType(union),
             _ => throw new InvalidOperationException($"Could not emit a Hexarc Pact type from {distinctType}")
         };
+
+        private EmittedEntity EmitStringEnumType(StringEnumType type) =>
+            new(type.Name, TryWrapInNamespace(type.Namespace, this.EmitStringEnumDeclaration(type)));
 
         private EmittedEntity EmitEnumType(EnumType type) =>
             new(type.Name, TryWrapInNamespace(type.Namespace, this.EmitEnumDeclaration(type)));
@@ -46,6 +50,21 @@ namespace Hexarc.Pact.Tool.Emitters
 
         private EmittedEntity EmitUnionType(UnionType type) =>
             new(type.Name, TryWrapInNamespace(type.Namespace, this.EmitUnionDeclaration(type)));
+
+        private EnumDeclarationSyntax EmitStringEnumDeclaration(StringEnumType type) =>
+            EnumDeclaration(type.Name)
+                .WithModifiers(
+                    TokenList(
+                        Token(SyntaxKind.PublicKeyword)))
+                .WithMembers(
+                    SeparatedList<EnumMemberDeclarationSyntax>(
+                        this.EmitStringEnumMemberDeclarations(type.Members)));
+
+        private IEnumerable<EnumMemberDeclarationSyntax> EmitStringEnumMemberDeclarations(String[] members) =>
+            members.Select(this.EmitStringEnumMemberDeclaration);
+
+        private EnumMemberDeclarationSyntax EmitStringEnumMemberDeclaration(String member) =>
+            EnumMemberDeclaration(member);
 
         private EnumDeclarationSyntax EmitEnumDeclaration(EnumType type) =>
             EnumDeclaration(type.Name)

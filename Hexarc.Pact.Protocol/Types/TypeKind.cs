@@ -38,6 +38,11 @@ namespace Hexarc.Pact.Protocol.Types
         public const String Enum = nameof(Enum);
 
         /// <summary>
+        /// The string enum type literal.
+        /// </summary>
+        public const String StringEnum = nameof(StringEnum);
+
+        /// <summary>
         /// The structure type literal.
         /// </summary>
         public const String Struct = nameof(Struct);

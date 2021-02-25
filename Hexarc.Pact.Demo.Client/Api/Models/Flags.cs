@@ -7,12 +7,10 @@
 
 namespace Hexarc.Pact.Demo.Api.Models
 {
-    public enum Direction
+    public enum Flags
     {
-        Up,
-        Down,
-        Left,
-        Right
+        On = 1,
+        Off = 2
     }
 }
 
