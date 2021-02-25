@@ -25,21 +25,21 @@ namespace Hexarc.Pact.AspNetCore.Readers
             new(methodCandidate.MethodInfo.Name,
                 this.ReadPath(methodCandidate.RouteAttribute!),
                 this.ReadHttpMethod(methodCandidate.HttpMethodAttribute!),
-                this.ReadMethodResult(methodCandidate.MethodInfo.ReturnType, methodCandidate.IsNullableReferenceResult),
+                this.ReadMethodReturnType(methodCandidate.MethodInfo.ReturnType, methodCandidate.IsNullableReferenceResult),
                 this.ReadMethodParameters(methodCandidate.MethodInfo.GetParameters()));
 
         private String ReadPath(RouteAttribute routeAttribute) =>
             routeAttribute.Template.StartsWith("/") ? routeAttribute.Template : $"/{routeAttribute.Template}";
 
-        private TaskTypeReference ReadMethodResult(Type returnType, Boolean isNullableReferenceResult) =>
-            this.TryNullifyMethodResult(this.ReadMethodResult(returnType), isNullableReferenceResult);
+        private TaskTypeReference ReadMethodReturnType(Type returnType, Boolean isNullableReferenceResult) =>
+            this.TryNullifyMethodReturnType(this.ReadMethodReturnType(returnType), isNullableReferenceResult);
 
-        private TaskTypeReference TryNullifyMethodResult(TaskTypeReference returnType, Boolean isNullableReferenceResult) =>
+        private TaskTypeReference TryNullifyMethodReturnType(TaskTypeReference returnType, Boolean isNullableReferenceResult) =>
             isNullableReferenceResult
                 ? new TaskTypeReference(returnType.TypeId, new NullableTypeReference(returnType.ResultType))
                 : returnType;
 
-        private TaskTypeReference ReadMethodResult(Type returnType) =>
+        private TaskTypeReference ReadMethodReturnType(Type returnType) =>
             this.TypeChecker.IsTaskType(returnType)
                 ? (TaskTypeReference)this.TypeReferenceReader.Read(returnType)
                 : new TaskTypeReference(default, this.TypeReferenceReader.Read(returnType));

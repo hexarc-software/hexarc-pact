@@ -4,6 +4,7 @@ using System.Reflection;
 using Hexarc.Annotations;
 using Hexarc.Pact.AspNetCore.Extensions;
 using Hexarc.Pact.Protocol.TypeProviders;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Hexarc.Pact.AspNetCore.Internals
 {
@@ -32,6 +33,9 @@ namespace Hexarc.Pact.AspNetCore.Internals
             this.DictionaryTypeIds = dictionaryTypeProvider.TypeIds;
             this.TaskTypeIds = taskTypeProvider.TypeIds;
         }
+
+        public Boolean IsActionResultOfT(Type type) =>
+            type.IsGenericType && type.GetGenericTypeDefinition().IsAssignableFrom(typeof(ActionResult<>));
 
         public Boolean IsNullableReferenceProperty(PropertyInfo propertyInfo) =>
             propertyInfo.GetCustomAttribute<NullableReferenceAttribute>() is not null;

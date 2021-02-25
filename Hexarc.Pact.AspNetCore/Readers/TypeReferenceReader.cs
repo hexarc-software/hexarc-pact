@@ -17,6 +17,7 @@ namespace Hexarc.Pact.AspNetCore.Readers
 
         public TypeReference Read(Type type) => type switch
         {
+            var x when this.TypeChecker.IsActionResultOfT(x) => this.ReadFromActionResultOfT(x),
             var x when this.TypeChecker.IsNullableValueType(x) => this.ReadNullableValueTypeReference(x),
             var x when this.TypeChecker.IsTaskType(x) => this.ReadTaskTypeReference(x),
             var x when this.TypeChecker.IsGenericParameter(x) => this.ReadGenericTypeReference(x),
@@ -27,6 +28,9 @@ namespace Hexarc.Pact.AspNetCore.Readers
             var x when this.TypeChecker.IsDynamicType(x) => this.ReadDynamicTypeReference(x),
             var x => this.ReadDistinctTypeReference(x)
         };
+
+        private TypeReference ReadFromActionResultOfT(Type type) =>
+            this.Read(type.GetGenericArguments().First());
 
         private NullableTypeReference ReadNullableValueTypeReference(Type type) =>
             new(this.Read(Nullable.GetUnderlyingType(type)!));

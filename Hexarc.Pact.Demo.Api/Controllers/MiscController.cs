@@ -11,5 +11,8 @@ namespace Hexarc.Pact.Demo.Api.Controllers
 
         [HttpGet, Route(nameof(Sum))]
         public Int32 Sum([FromQuery] Int32 a, [FromQuery] Int32 b) => a + b;
+
+        [HttpGet, Route(nameof(Random))]
+        public ActionResult<Double> Random() => new Random().NextDouble();
     }
 }
