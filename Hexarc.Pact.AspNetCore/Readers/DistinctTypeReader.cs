@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using Namotion.Reflection;
 using Hexarc.Annotations;
 using Hexarc.Pact.Protocol.Extensions;
 using Hexarc.Pact.Protocol.TypeReferences;
@@ -90,27 +91,26 @@ namespace Hexarc.Pact.AspNetCore.Readers
                     : genericParameters.Select(x => x.Name).ToArray()
                 : default;
 
-        // TODO: Read props
-        private ObjectProperty[] ReadObjectProperties(PropertyInfo[] propertyInfos, UnionTag tag) =>
-            propertyInfos.Where(x => x.GetCustomAttribute<JsonIgnoreAttribute>() is null)
+        private ObjectProperty[] ReadObjectProperties(ContextualPropertyInfo[] properties, UnionTag tag) =>
+            properties.Where(x => x.GetAttribute<JsonIgnoreAttribute>() is null)
                 .Select(x => this.ReadObjectProperty(x, tag)).ToArray();
 
-        private ObjectProperty[] ReadObjectProperties(PropertyInfo[] propertyInfos) =>
-            propertyInfos.Where(x => x.GetCustomAttribute<JsonIgnoreAttribute>() is null)
+        private ObjectProperty[] ReadObjectProperties(ContextualPropertyInfo[] properties) =>
+            properties.Where(x => x.GetAttribute<JsonIgnoreAttribute>() is null)
                 .Select(this.ReadObjectProperty).ToArray();
 
-        private ObjectProperty ReadObjectProperty(PropertyInfo propertyInfo, UnionTag tag) =>
-            propertyInfo.IsUnionTag(tag) ? this.ReadUnionTagProperty(tag) : this.ReadObjectProperty(propertyInfo);
+        private ObjectProperty ReadObjectProperty(ContextualPropertyInfo property, UnionTag tag) =>
+            property.PropertyInfo.IsUnionTag(tag)
+                ? this.ReadUnionTagProperty(tag)
+                : this.ReadObjectProperty(property);
 
-        private ObjectProperty ReadObjectProperty(PropertyInfo propertyInfo) =>
-            new(this.ReadObjectPropertyType(propertyInfo), propertyInfo.Name);
+        private ObjectProperty ReadObjectProperty(ContextualPropertyInfo property) =>
+            new(this.ReadObjectPropertyType(property), property.Name);
 
         private ObjectProperty ReadUnionTagProperty(UnionTag tag) =>
             new(new LiteralTypeReference(tag.Value), tag.Name);
 
-        private TypeReference ReadObjectPropertyType(PropertyInfo propertyInfo) =>
-            this.TypeChecker.IsNullableReferenceProperty(propertyInfo)
-                ? new NullableTypeReference(this.TypeReferenceReader.Read(propertyInfo.PropertyType))
-                : this.TypeReferenceReader.Read(propertyInfo.PropertyType);
+        private TypeReference ReadObjectPropertyType(ContextualPropertyInfo property) =>
+            this.TypeReferenceReader.Read(property);
     }
 }

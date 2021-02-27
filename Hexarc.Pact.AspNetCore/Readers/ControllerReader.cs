@@ -3,9 +3,7 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Hexarc.Annotations;
 using Hexarc.Pact.AspNetCore.Attributes;
-using Hexarc.Pact.AspNetCore.Extensions;
 using Hexarc.Pact.AspNetCore.Models;
 using Hexarc.Pact.Protocol.Api;
 using Controller = Hexarc.Pact.Protocol.Api.Controller;
@@ -36,7 +34,6 @@ namespace Hexarc.Pact.AspNetCore.Readers
             new(methodInfo,
                 methodInfo.GetCustomAttribute<IgnoreAttribute>(),
                 methodInfo.GetCustomAttribute<HttpMethodAttribute>(),
-                methodInfo.GetCustomAttribute<RouteAttribute>(),
-                methodInfo.IsReturnAttributeDefined<NullableReferenceAttribute>());
+                methodInfo.GetCustomAttribute<RouteAttribute>());
     }
 }

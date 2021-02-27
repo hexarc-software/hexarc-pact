@@ -7,11 +7,10 @@
 
 namespace Hexarc.Pact.Demo.Api.Models
 {
-    public sealed class Triangle
+    public sealed class Info<T1, T2>
     {
-        public Point V1 { get; set; } = default!;
-        public Point V2 { get; set; } = default!;
-        public Point V3 { get; set; } = default!;
+        public System.Collections.Generic.List<T1?> Items { get; set; } = default!;
+        public System.Collections.Generic.Dictionary<System.String, T2?> Marks { get; set; } = default!;
     }
 }
 

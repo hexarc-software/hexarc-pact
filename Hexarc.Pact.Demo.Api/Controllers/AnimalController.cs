@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Hexarc.Annotations;
 using Hexarc.Pact.Demo.Api.Models;
 
 namespace Hexarc.Pact.Demo.Api.Controllers
@@ -8,7 +7,6 @@ namespace Hexarc.Pact.Demo.Api.Controllers
     public sealed class AnimalController : ControllerBase
     {
         [HttpGet, Route(nameof(GetAnimal))]
-        [return: NullableReference]
         public Animal? GetAnimal() => null;
     }
 }

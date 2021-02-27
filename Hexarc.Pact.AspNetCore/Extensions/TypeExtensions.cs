@@ -1,6 +1,8 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using Namotion.Reflection;
 
 namespace Hexarc.Pact.AspNetCore.Extensions
 {
@@ -14,8 +16,10 @@ namespace Hexarc.Pact.AspNetCore.Extensions
         /// </summary>
         /// <param name="type">The type to extract properties.</param>
         /// <returns>The result that contains extracted properties.</returns>
-        public static PropertyInfo[] GetPublicInstanceProperties(this Type type) =>
-            type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+        public static ContextualPropertyInfo[] GetPublicInstanceProperties(this Type type) =>
+            type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Select(x => x.ToContextualProperty())
+                .ToArray();
 
         /// <summary>
         /// Checks if the type supports converting to a json string enum.

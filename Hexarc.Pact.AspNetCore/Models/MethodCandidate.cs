@@ -25,20 +25,16 @@ namespace Hexarc.Pact.AspNetCore.Models
             this.RouteAttribute is not null &&
             this.IsSupportedHttpMethod;
 
-        public Boolean IsNullableReferenceResult { get; }
-
         public MethodCandidate(
             MethodInfo methodInfo,
             IgnoreAttribute? ignoreAttribute,
             HttpMethodAttribute? httpMethodAttribute,
-            RouteAttribute? routeAttribute,
-            Boolean isNullableReferenceResult)
+            RouteAttribute? routeAttribute)
         {
             this.MethodInfo = methodInfo;
             this.IgnoreAttribute = ignoreAttribute;
             this.HttpMethodAttribute = httpMethodAttribute;
             this.RouteAttribute = routeAttribute;
-            this.IsNullableReferenceResult = isNullableReferenceResult;
         }
     }
 }

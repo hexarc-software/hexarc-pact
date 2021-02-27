@@ -1,9 +1,10 @@
 using System;
 using System.Linq;
-using System.Reflection;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+
+using Namotion.Reflection;
 
 using Hexarc.Pact.Protocol.Api;
 using Hexarc.Pact.Protocol.TypeReferences;
@@ -25,30 +26,22 @@ namespace Hexarc.Pact.AspNetCore.Readers
             new(methodCandidate.MethodInfo.Name,
                 this.ReadPath(methodCandidate.RouteAttribute!),
                 this.ReadHttpMethod(methodCandidate.HttpMethodAttribute!),
-                this.ReadMethodReturnType(methodCandidate.MethodInfo.ReturnType, methodCandidate.IsNullableReferenceResult),
-                this.ReadMethodParameters(methodCandidate.MethodInfo.GetParameters()));
+                this.ReadMethodReturnType(methodCandidate.MethodInfo.ReturnType.ToContextualType()),
+                this.ReadMethodParameters(methodCandidate.MethodInfo.GetContextualParameters()));
 
         private String ReadPath(RouteAttribute routeAttribute) =>
             routeAttribute.Template.StartsWith("/") ? routeAttribute.Template : $"/{routeAttribute.Template}";
 
-        private TaskTypeReference ReadMethodReturnType(Type returnType, Boolean isNullableReferenceResult) =>
-            this.TryNullifyMethodReturnType(this.ReadMethodReturnType(returnType), isNullableReferenceResult);
-
-        private TaskTypeReference TryNullifyMethodReturnType(TaskTypeReference returnType, Boolean isNullableReferenceResult) =>
-            isNullableReferenceResult
-                ? new TaskTypeReference(returnType.TypeId, new NullableTypeReference(returnType.ResultType))
-                : returnType;
-
-        private TaskTypeReference ReadMethodReturnType(Type returnType) =>
+        private TaskTypeReference ReadMethodReturnType(ContextualType returnType) =>
             this.TypeChecker.IsTaskType(returnType)
                 ? (TaskTypeReference)this.TypeReferenceReader.Read(returnType)
                 : new TaskTypeReference(default, this.TypeReferenceReader.Read(returnType));
 
-        private MethodParameter[] ReadMethodParameters(ParameterInfo[] parameterInfos) =>
+        private MethodParameter[] ReadMethodParameters(ContextualParameterInfo[] parameterInfos) =>
             parameterInfos.Select(this.ReadMethodParameter).ToArray();
 
-        private MethodParameter ReadMethodParameter(ParameterInfo parameterInfo) =>
-            new(this.TypeReferenceReader.Read(parameterInfo.ParameterType), parameterInfo.Name!);
+        private MethodParameter ReadMethodParameter(ContextualParameterInfo parameterInfo) =>
+            new(this.TypeReferenceReader.Read(parameterInfo), parameterInfo.Name!);
 
         private HttpMethod ReadHttpMethod(HttpMethodAttribute methodAttribute) => methodAttribute switch
         {

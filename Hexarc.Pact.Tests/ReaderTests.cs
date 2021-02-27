@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
+using Namotion.Reflection;
 using Hexarc.Annotations;
 using Hexarc.Pact.Protocol.TypeProviders;
 using Hexarc.Pact.AspNetCore.Internals;
@@ -32,12 +33,12 @@ namespace Hexarc.Pact.Tests
 
             foreach (var t in types)
             {
-                Console.WriteLine(ObjectDumper.Dump(typeReferenceReader.Read(t)));
+                Console.WriteLine(ObjectDumper.Dump(typeReferenceReader.Read(t.ToContextualType())));
             }
 
             while (distinctTypeQueue.TryDequeue(out var t))
             {
-                Console.WriteLine(ObjectDumper.Dump(distinctTypeReader.Read(t)));
+                Console.WriteLine(ObjectDumper.Dump(distinctTypeReader.Read(t.ToContextualType())));
             }
         }
 

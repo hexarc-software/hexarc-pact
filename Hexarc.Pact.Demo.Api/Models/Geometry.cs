@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Hexarc.Annotations;
 
 namespace Hexarc.Pact.Demo.Api.Models
 {
@@ -25,14 +24,24 @@ namespace Hexarc.Pact.Demo.Api.Models
              this.V3.X * (this.V1.Y - this.V2.Y)) / 2.0;
     }
 
+    public class Info<T1, T2>
+    {
+        public List<T1?> Items { get; set; } = default!;
+
+        public Dictionary<String, T2?> Marks { get; set; } = default!;
+    }
+
     public class GeometryCollection
     {
         public List<Point> Points { get; set; } = default!;
 
-        [NullableReference]
         public List<ModelsV2.Point>? PointsV2 { get; set; } = default!;
 
         public Dictionary<Guid, Point> PointsDict { get; set; } = default!;
+
+        public List<Dictionary<Int32, String?>?> Boxes { get; set; } = default!;
+
+        public Info<String, String?>? Info { get; set; }
 
         public Direction Direction { get; set; }
 

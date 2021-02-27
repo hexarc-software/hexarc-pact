@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using System.Reflection;
+using Namotion.Reflection;
 using Hexarc.Pact.AspNetCore.Internals;
 using Hexarc.Pact.Protocol.TypeReferences;
 
@@ -15,54 +15,64 @@ namespace Hexarc.Pact.AspNetCore.Readers
         public TypeReferenceReader(TypeChecker typeChecker, DistinctTypeQueue distinctTypeQueue) =>
             (this.TypeChecker, this.DistinctTypeQueue) = (typeChecker, distinctTypeQueue);
 
-        public TypeReference Read(Type type) => type switch
+        public TypeReference Read(ContextualType contextualType) => contextualType switch
         {
-            var x when this.TypeChecker.IsActionResultOfT(x) => this.ReadFromActionResultOfT(x),
+            { Nullability: Nullability.Nullable } => this.ReadNullableReferenceTypeReference(contextualType),
+            _ => this.ReadUnwrapped(contextualType)
+        };
+
+        private TypeReference ReadUnwrapped(ContextualType contextualType) => contextualType switch
+        {
+            var x when this.TypeChecker.IsActionResultOfT(x.OriginalType) => this.ReadFromActionResultOfT(x),
             var x when this.TypeChecker.IsNullableValueType(x) => this.ReadNullableValueTypeReference(x),
-            var x when this.TypeChecker.IsTaskType(x) => this.ReadTaskTypeReference(x),
-            var x when this.TypeChecker.IsGenericParameter(x) => this.ReadGenericTypeReference(x),
-            var x when this.TypeChecker.IsArrayType(x) => this.ReadArrayTypeReference(x),
-            var x when this.TypeChecker.IsArrayLikeType(x) => this.ReadArrayLikeTypeReference(x),
-            var x when this.TypeChecker.IsDictionaryType(x) => this.ReadDictionaryTypeReference(x),
-            var x when this.TypeChecker.IsPrimitiveType(x) => this.ReadPrimitiveTypeReference(x),
-            var x when this.TypeChecker.IsDynamicType(x) => this.ReadDynamicTypeReference(x),
+            var x when this.TypeChecker.IsTaskType(x.OriginalType) => this.ReadTaskTypeReference(x),
+            var x when this.TypeChecker.IsGenericParameter(x.OriginalType) => this.ReadGenericTypeReference(x),
+            var x when this.TypeChecker.IsArrayType(x.OriginalType) => this.ReadArrayTypeReference(x),
+            var x when this.TypeChecker.IsArrayLikeType(x.OriginalType) => this.ReadArrayLikeTypeReference(x),
+            var x when this.TypeChecker.IsDictionaryType(x.OriginalType) => this.ReadDictionaryTypeReference(x),
+            var x when this.TypeChecker.IsPrimitiveType(x.OriginalType) => this.ReadPrimitiveTypeReference(x),
+            var x when this.TypeChecker.IsDynamicType(x.OriginalType) => this.ReadDynamicTypeReference(x),
             var x => this.ReadDistinctTypeReference(x)
         };
 
-        private TypeReference ReadFromActionResultOfT(Type type) =>
-            this.Read(type.GetGenericArguments().First());
+        private NullableTypeReference ReadNullableReferenceTypeReference(ContextualType contextualType) =>
+            new(this.ReadUnwrapped(contextualType));
 
-        private NullableTypeReference ReadNullableValueTypeReference(Type type) =>
-            new(this.Read(Nullable.GetUnderlyingType(type)!));
+        private TypeReference ReadFromActionResultOfT(ContextualType contextualType) =>
+            this.Read(contextualType.GenericArguments.First());
 
-        private TaskTypeReference ReadTaskTypeReference(Type type) =>
-            new(type.GUID, this.Read(type.GetGenericArguments().First()));
+        private NullableTypeReference ReadNullableValueTypeReference(ContextualType contextualType) =>
+            new(this.Read(contextualType.Type.ToContextualType()));
 
-        private GenericTypeReference ReadGenericTypeReference(MemberInfo type) =>
-            new(type.Name);
+        private TaskTypeReference ReadTaskTypeReference(ContextualType contextualType) =>
+            new(contextualType.OriginalType.GUID, this.Read(contextualType.GenericArguments.First()));
 
-        private ArrayTypeReference ReadArrayTypeReference(Type type) =>
-            new(this.Read(type.GetElementType()!));
+        private GenericTypeReference ReadGenericTypeReference(ContextualType contextualType) =>
+            new(contextualType.OriginalType.Name);
 
-        private ArrayTypeReference ReadArrayLikeTypeReference(Type type) =>
-            new(type.GUID, this.Read(type.GetGenericArguments().First()));
+        private ArrayTypeReference ReadArrayTypeReference(ContextualType contextualType) =>
+            new(this.Read(contextualType.ElementType!));
 
-        private DictionaryTypeReference ReadDictionaryTypeReference(Type type) =>
-            new(type.GUID, type.GetGenericArguments().Select(this.Read).ToArray());
+        private ArrayTypeReference ReadArrayLikeTypeReference(ContextualType contextualType) =>
+            new(contextualType.OriginalType.GUID, this.Read(contextualType.GenericArguments.First()));
 
-        private PrimitiveTypeReference ReadPrimitiveTypeReference(Type type) =>
-            new(type.GUID);
+        private DictionaryTypeReference ReadDictionaryTypeReference(ContextualType contextualType) =>
+            new(contextualType.OriginalType.GUID, contextualType.GenericArguments.Select(this.Read).ToArray());
 
-        private DynamicTypeReference ReadDynamicTypeReference(Type type) =>
-            new(type.GUID);
+        private PrimitiveTypeReference ReadPrimitiveTypeReference(ContextualType contextualType) =>
+            new(contextualType.OriginalType.GUID);
 
-        private TypeReference[]? ReadGenericArguments(Type[] genericTypes) =>
-            genericTypes.Length != 0 ? Array.ConvertAll(genericTypes, this.Read) : default;
+        private DynamicTypeReference ReadDynamicTypeReference(ContextualType contextualType) =>
+            new(contextualType.OriginalType.GUID);
 
-        private DistinctTypeReference ReadDistinctTypeReference(Type type)
+        private DistinctTypeReference ReadDistinctTypeReference(ContextualType contextualType)
         {
+            var type = contextualType.OriginalType;
             this.DistinctTypeQueue.Enqueue(type.IsGenericType ? type.GetGenericTypeDefinition() : type);
-            return new DistinctTypeReference(type.GUID, this.ReadGenericArguments(type.GetGenericArguments()));
+            return new DistinctTypeReference(contextualType.OriginalType.GUID, this.ReadGenericArguments(contextualType.GenericArguments));
         }
+
+        private TypeReference[]? ReadGenericArguments(ContextualType[] genericTypes) =>
+            genericTypes.Length != 0 ? Array.ConvertAll(genericTypes, this.Read) : default;
     }
 }

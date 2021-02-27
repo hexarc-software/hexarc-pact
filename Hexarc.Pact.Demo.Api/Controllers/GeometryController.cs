@@ -1,6 +1,5 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
-using Hexarc.Annotations;
 using Hexarc.Pact.Demo.Api.Models;
 
 namespace Hexarc.Pact.Demo.Api.Controllers
@@ -12,7 +11,6 @@ namespace Hexarc.Pact.Demo.Api.Controllers
         public Double Area(Triangle triangle) => triangle.CalculateArea();
 
         [HttpGet, Route(nameof(ComputeCollection))]
-        [return: NullableReference]
         public GeometryCollection? ComputeCollection() => null;
     }
 }
