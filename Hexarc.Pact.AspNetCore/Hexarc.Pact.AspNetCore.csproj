@@ -24,7 +24,7 @@
     <PackageProjectUrl>https://github.com/hexarc-software/hexarc-pact</PackageProjectUrl>
     <RepositoryUrl>https://github.com/hexarc-software/hexarc-pact</RepositoryUrl>
     <Description>
-       Middlewares to generate and expose Hexarc Pact protocols for .NET Web API projects. 
+       Middleware to generate and expose Hexarc Pact protocols for .NET Web API projects. 
     </Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>hexarc.png</PackageIcon>

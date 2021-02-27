@@ -29,8 +29,7 @@ namespace Hexarc.Pact.Tool.Emitters
                     this.EmitControllerDeclaration(controller)));
 
         private ClassDeclarationSyntax EmitControllerDeclaration(Controller controller) =>
-            ClassDeclaration(
-                    Identifier(controller.Name))
+            ClassDeclaration(Identifier(controller.Name))
                 .WithBaseList(
                     BaseList(
                         SingletonSeparatedList<BaseTypeSyntax>(
