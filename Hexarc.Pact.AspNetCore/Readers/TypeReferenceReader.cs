@@ -17,7 +17,7 @@ namespace Hexarc.Pact.AspNetCore.Readers
 
         public TypeReference Read(ContextualType contextualType) => contextualType switch
         {
-            { Nullability: Nullability.Nullable } => this.ReadNullableReferenceTypeReference(contextualType),
+            { Nullability: Nullability.Nullable, IsNullableType: false } => this.ReadNullableReferenceTypeReference(contextualType),
             _ => this.ReadUnwrapped(contextualType)
         };
 

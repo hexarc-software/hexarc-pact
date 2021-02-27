@@ -17,14 +17,14 @@
 
   <PropertyGroup>
     <PackageId>Hexarc.Pact.AspNetCore</PackageId>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
     <Authors>Max Koverdyaev</Authors>
     <Company>Hexarc Software</Company>
     <PackageTags>Discovery;WebApi;AspNet;Protocol;Pact</PackageTags>
     <PackageProjectUrl>https://github.com/hexarc-software/hexarc-pact</PackageProjectUrl>
     <RepositoryUrl>https://github.com/hexarc-software/hexarc-pact</RepositoryUrl>
     <Description>
-       Middleware to generate and expose Hexarc Pact protocols for .NET Web API projects. 
+       Middleware to generate and expose Hexarc Pact protocols for .NET Web API projects.
     </Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>hexarc.png</PackageIcon>
