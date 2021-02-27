@@ -5,6 +5,9 @@ using Hexarc.Pact.Protocol.Types;
 
 namespace Hexarc.Pact.Protocol.TypeProviders
 {
+    /// <summary>
+    /// The stock primitive type provider used in the Hexarc Pact protocol.
+    /// </summary>
     public sealed class PrimitiveTypeProvider
     {
         public readonly PrimitiveType Boolean = new(typeof(Boolean));
