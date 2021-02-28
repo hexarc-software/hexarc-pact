@@ -5,9 +5,12 @@ using Hexarc.Pact.Protocol.Types;
 
 namespace Hexarc.Pact.Protocol.TypeProviders
 {
+    /// <summary>
+    /// The stock dictionary type provider used in the Hexarc Pact protocol.
+    /// </summary>
     public sealed class DictionaryTypeProvider
     {
-        public readonly DictionaryType Dictionary = new(typeof(Dictionary<,>));
+        private DictionaryType Dictionary { get; } = new(typeof(Dictionary<,>));
 
         public IReadOnlySet<Guid> TypeIds { get; }
 

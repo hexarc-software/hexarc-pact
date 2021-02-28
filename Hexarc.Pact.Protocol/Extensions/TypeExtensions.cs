@@ -19,6 +19,11 @@ namespace Hexarc.Pact.Protocol.Extensions
             return index == -1 ? name : name.Substring(0, index);
         }
 
+        /// <summary>
+        /// Extracts the full type name without generic arity if presented.
+        /// </summary>
+        /// <param name="type">The type to extract the full name.</param>
+        /// <returns>The full type name without generic arity.</returns>
         public static String FullNameWithoutGenericArity(this Type type)
         {
             var name = type.FullName ?? throw new InvalidOperationException();

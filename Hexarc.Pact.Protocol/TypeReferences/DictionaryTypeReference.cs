@@ -3,6 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace Hexarc.Pact.Protocol.TypeReferences
 {
+    /// <summary>
+    /// Describes a dictionary type reference that can be provided by the Hexarc Pact protocol.
+    /// </summary>
     public sealed class DictionaryTypeReference : TypeReference
     {
         public override String Kind { get; } = TypeReferenceKind.Dictionary;

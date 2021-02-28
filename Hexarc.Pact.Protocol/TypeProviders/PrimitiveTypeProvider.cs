@@ -10,40 +10,43 @@ namespace Hexarc.Pact.Protocol.TypeProviders
     /// </summary>
     public sealed class PrimitiveTypeProvider
     {
-        public readonly PrimitiveType Boolean = new(typeof(Boolean));
+        private PrimitiveType Boolean { get; } = new(typeof(Boolean));
 
-        public readonly PrimitiveType Byte = new(typeof(Byte));
+        private PrimitiveType Byte { get; } = new(typeof(Byte));
 
-        public readonly PrimitiveType SByte = new(typeof(SByte));
+        private PrimitiveType SByte { get; } = new(typeof(SByte));
 
-        public readonly PrimitiveType Char = new(typeof(Char));
+        private PrimitiveType Char { get; } = new(typeof(Char));
 
-        public readonly PrimitiveType Int16 = new(typeof(Int16));
+        private PrimitiveType Int16 { get; } = new(typeof(Int16));
 
-        public readonly PrimitiveType UInt16 = new(typeof(UInt16));
+        private PrimitiveType UInt16 { get; } = new(typeof(UInt16));
 
-        public readonly PrimitiveType Int32 = new(typeof(Int32));
+        private PrimitiveType Int32 { get; } = new(typeof(Int32));
 
-        public readonly PrimitiveType UInt32 = new(typeof(UInt32));
+        private PrimitiveType UInt32 { get; } = new(typeof(UInt32));
 
-        public readonly PrimitiveType Int64 = new(typeof(Int64));
+        private PrimitiveType Int64 { get; } = new(typeof(Int64));
 
-        public readonly PrimitiveType UInt64 = new(typeof(UInt64));
+        private PrimitiveType UInt64 { get; } = new(typeof(UInt64));
 
-        public readonly PrimitiveType Single = new(typeof(Single));
+        private PrimitiveType Single { get; } = new(typeof(Single));
 
-        public readonly PrimitiveType Double = new(typeof(Double));
+        private PrimitiveType Double { get; }= new(typeof(Double));
 
-        public readonly PrimitiveType Decimal = new(typeof(Decimal));
+        private PrimitiveType Decimal { get; } = new(typeof(Decimal));
 
-        public readonly PrimitiveType String = new(typeof(String));
+        private PrimitiveType String { get; } = new(typeof(String));
 
-        public readonly PrimitiveType Guid = new(typeof(Guid));
+        private PrimitiveType Guid { get; } = new(typeof(Guid));
 
-        public readonly PrimitiveType DateTime = new(typeof(DateTime));
+        private PrimitiveType DateTime { get; } = new(typeof(DateTime));
 
         public IReadOnlySet<Guid> TypeIds { get; }
 
+        /// <summary>
+        /// Creates an instance of the PrimitiveTypeProvider class.
+        /// </summary>
         public PrimitiveTypeProvider() =>
             this.TypeIds = this.Enumerate()
                 .Select(x => x.Id)

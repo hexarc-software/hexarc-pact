@@ -6,14 +6,20 @@ using Hexarc.Pact.Protocol.Types;
 
 namespace Hexarc.Pact.Protocol.TypeProviders
 {
+    /// <summary>
+    /// The stock task type provider used in the Hexarc Pact protocol.
+    /// </summary>
     public sealed class TaskTypeProvider
     {
-        public readonly TaskType TaskOfT = new(typeof(Task<>));
+        private TaskType TaskOfT { get; } = new(typeof(Task<>));
 
-        public readonly TaskType ValueTaskOfT = new(typeof(ValueTask<>));
+        private TaskType ValueTaskOfT { get; } = new(typeof(ValueTask<>));
 
         public IReadOnlySet<Guid> TypeIds { get; }
 
+        /// <summary>
+        /// Creates an instance of the TaskTypeProvider class.
+        /// </summary>
         public TaskTypeProvider() =>
             this.TypeIds = this.Enumerate()
                 .Select(x => x.Id)

@@ -6,14 +6,20 @@ using Hexarc.Pact.Protocol.Types;
 
 namespace Hexarc.Pact.Protocol.TypeProviders
 {
+    /// <summary>
+    /// The stock dynamic type provider used in the Hexarc Pact protocol.
+    /// </summary>
     public sealed class DynamicTypeProvider
     {
-        public readonly DynamicType Object = new(typeof(Object));
+        private DynamicType Object { get; } = new(typeof(Object));
 
-        public readonly DynamicType JsonElement = new(typeof(JsonElement));
+        private DynamicType JsonElement { get; } = new(typeof(JsonElement));
 
         public IReadOnlySet<Guid> TypeIds { get; }
 
+        /// <summary>
+        /// Creates an instance of the DynamicTypeProvider class.
+        /// </summary>
         public DynamicTypeProvider() =>
             this.TypeIds = this.Enumerate()
                 .Select(x => x.Id)

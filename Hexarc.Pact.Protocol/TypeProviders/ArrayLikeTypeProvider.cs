@@ -5,13 +5,16 @@ using Hexarc.Pact.Protocol.Types;
 
 namespace Hexarc.Pact.Protocol.TypeProviders
 {
+    /// <summary>
+    /// The stock array-like type provider used in the Hexarc Pact protocol.
+    /// </summary>
     public sealed class ArrayLikeTypeProvider
     {
-        public readonly ArrayLikeType EnumerableOfT = new(typeof(IEnumerable<>));
+        private ArrayLikeType EnumerableOfT { get; } = new(typeof(IEnumerable<>));
 
-        public readonly ArrayLikeType ListOfT = new(typeof(List<>));
+        private ArrayLikeType ListOfT { get; } = new(typeof(List<>));
 
-        public readonly ArrayLikeType HashSetOf = new(typeof(HashSet<>));
+        private ArrayLikeType HashSetOf { get; } = new(typeof(HashSet<>));
 
         public IReadOnlySet<Guid> TypeIds { get; }
 
