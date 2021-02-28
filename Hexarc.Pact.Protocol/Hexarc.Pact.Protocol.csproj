@@ -12,9 +12,15 @@
 
   <PropertyGroup>
     <PackageId>Hexarc.Pact.Protocol</PackageId>
-    <Version>1.1.1</Version>
+    <Version>1.1.2</Version>
     <Authors>Max Koverdyaev</Authors>
     <Company>Hexarc Software</Company>
+    <PackageTags>Protocol;Pact;Api;Json;Http</PackageTags>
+    <PackageProjectUrl>https://github.com/hexarc-software/hexarc-pact</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/hexarc-software/hexarc-pact</RepositoryUrl>
+    <Description>
+      The Hexarc Pact protocol models and infrastructure for the type system and API endpoint contracts.
+    </Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>hexarc.png</PackageIcon>
     <PackageIconFullPath>$(MSBuildThisFileDirectory)../hexarc.png</PackageIconFullPath>
