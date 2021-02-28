@@ -7,6 +7,9 @@ namespace Hexarc.Pact.Protocol.Types
     /// </summary>
     public sealed class UnionType : DistinctType
     {
+        /// <summary>
+        /// Gets the UnionType kind.
+        /// </summary>
         public override String Kind { get; } = TypeKind.Union;
 
         /// <summary>

@@ -8,6 +8,9 @@ namespace Hexarc.Pact.Protocol.TypeReferences
     /// </summary>
     public sealed class ArrayTypeReference : TypeReference
     {
+        /// <summary>
+        /// Gets the ArrayTypeReference kind.
+        /// </summary>
         public override String Kind { get; } = TypeReferenceKind.Array;
 
         /// <summary>

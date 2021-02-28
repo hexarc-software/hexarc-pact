@@ -12,13 +12,23 @@ namespace Hexarc.Pact.Protocol.TypeProviders
     {
         private DictionaryType Dictionary { get; } = new(typeof(Dictionary<,>));
 
+        /// <summary>
+        /// Gets the registered dictionary type ids.
+        /// </summary>
         public IReadOnlySet<Guid> TypeIds { get; }
 
+        /// <summary>
+        /// Creates an instance of the DictionaryTypeProvider class.
+        /// </summary>
         public DictionaryTypeProvider() =>
             this.TypeIds = this.Enumerate()
                 .Select(x => x.Id)
                 .ToHashSet();
 
+        /// <summary>
+        /// Enumerates the registered dictionary types.
+        /// </summary>
+        /// <returns>The registered dictionary type collection.</returns>
         public IEnumerable<DictionaryType> Enumerate()
         {
             yield return this.Dictionary;

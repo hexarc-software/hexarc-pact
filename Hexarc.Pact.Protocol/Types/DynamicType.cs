@@ -9,6 +9,9 @@ namespace Hexarc.Pact.Protocol.Types
     /// </summary>
     public sealed class DynamicType : Type
     {
+        /// <summary>
+        /// Gets the DynamicType kind.
+        /// </summary>
         public override String Kind { get; } = TypeKind.Dynamic;
 
         /// <summary>

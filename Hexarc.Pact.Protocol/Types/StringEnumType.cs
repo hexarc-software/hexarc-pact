@@ -7,6 +7,9 @@ namespace Hexarc.Pact.Protocol.Types
     /// </summary>
     public sealed class StringEnumType : DistinctType
     {
+        /// <summary>
+        /// Gets the StringEnumType kind.
+        /// </summary>
         public override String Kind { get; } = TypeKind.StringEnum;
 
         /// <summary>

@@ -16,13 +16,23 @@ namespace Hexarc.Pact.Protocol.TypeProviders
 
         private ArrayLikeType HashSetOf { get; } = new(typeof(HashSet<>));
 
+        /// <summary>
+        /// Gets the registered array-like type ids.
+        /// </summary>
         public IReadOnlySet<Guid> TypeIds { get; }
 
+        /// <summary>
+        /// Creates an instance of the ArrayLikeTypeProvider class.
+        /// </summary>
         public ArrayLikeTypeProvider() =>
             this.TypeIds = this.Enumerate()
                 .Select(x => x.Id)
                 .ToHashSet();
 
+        /// <summary>
+        /// Enumerates the registered array-like types.
+        /// </summary>
+        /// <returns>The registered array-like type collection.</returns>
         public IEnumerable<ArrayLikeType> Enumerate()
         {
             yield return this.EnumerableOfT;

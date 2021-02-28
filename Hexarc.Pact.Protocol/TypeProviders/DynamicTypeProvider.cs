@@ -15,6 +15,9 @@ namespace Hexarc.Pact.Protocol.TypeProviders
 
         private DynamicType JsonElement { get; } = new(typeof(JsonElement));
 
+        /// <summary>
+        /// Gets the registered dynamic type ids.
+        /// </summary>
         public IReadOnlySet<Guid> TypeIds { get; }
 
         /// <summary>
@@ -25,6 +28,10 @@ namespace Hexarc.Pact.Protocol.TypeProviders
                 .Select(x => x.Id)
                 .ToHashSet();
 
+        /// <summary>
+        /// Enumerates the registered dynamic types.
+        /// </summary>
+        /// <returns>The registered dynamic type collection.</returns>
         public IEnumerable<DynamicType> Enumerate()
         {
             yield return this.Object;

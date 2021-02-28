@@ -42,6 +42,9 @@ namespace Hexarc.Pact.Protocol.TypeProviders
 
         private PrimitiveType DateTime { get; } = new(typeof(DateTime));
 
+        /// <summary>
+        /// Gets the registered primitive type ids.
+        /// </summary>
         public IReadOnlySet<Guid> TypeIds { get; }
 
         /// <summary>
@@ -52,6 +55,10 @@ namespace Hexarc.Pact.Protocol.TypeProviders
                 .Select(x => x.Id)
                 .ToHashSet();
 
+        /// <summary>
+        /// Enumerates the registered primitive types.
+        /// </summary>
+        /// <returns>The registered primitive type collection.</returns>
         public IEnumerable<PrimitiveType> Enumerate()
         {
             yield return this.Boolean;

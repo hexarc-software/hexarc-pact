@@ -15,6 +15,9 @@ namespace Hexarc.Pact.Protocol.TypeProviders
 
         private TaskType ValueTaskOfT { get; } = new(typeof(ValueTask<>));
 
+        /// <summary>
+        /// Gets the registered task type ids.
+        /// </summary>
         public IReadOnlySet<Guid> TypeIds { get; }
 
         /// <summary>
@@ -25,6 +28,10 @@ namespace Hexarc.Pact.Protocol.TypeProviders
                 .Select(x => x.Id)
                 .ToHashSet();
 
+        /// <summary>
+        /// Enumerates the registered task types.
+        /// </summary>
+        /// <returns>The registered task type collection.</returns>
         public IEnumerable<TaskType> Enumerate()
         {
             yield return this.TaskOfT;

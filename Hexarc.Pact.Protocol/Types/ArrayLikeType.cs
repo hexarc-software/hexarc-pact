@@ -9,6 +9,9 @@ namespace Hexarc.Pact.Protocol.Types
     /// </summary>
     public sealed class ArrayLikeType : Type
     {
+        /// <summary>
+        /// Gets the ArrayLikeType kind.
+        /// </summary>
         public override String Kind { get; } = TypeKind.ArrayLike;
 
         /// <summary>

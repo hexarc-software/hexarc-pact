@@ -9,6 +9,9 @@ namespace Hexarc.Pact.Protocol.Types
     /// </summary>
     public sealed class DictionaryType : Type
     {
+        /// <summary>
+        /// Gets the DictionaryType kind.
+        /// </summary>
         public override String Kind { get; } = TypeKind.Dictionary;
 
         /// <summary>
