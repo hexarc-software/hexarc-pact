@@ -91,6 +91,7 @@ where
 dotnet pact
 ```
 This command must be performed in the same folder with the `pact.json` config.
+
 5. The generated API client will be available for accessing the API server:
 ```c#
 var client = new DemoClient(new HttpClient { BaseAddress = new Uri("YOUR_API_HOST") });
