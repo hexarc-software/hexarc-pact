@@ -8,6 +8,7 @@ using Namotion.Reflection;
 
 using Hexarc.Pact.Protocol.Api;
 using Hexarc.Pact.Protocol.TypeReferences;
+using Hexarc.Pact.AspNetCore.Extensions;
 using Hexarc.Pact.AspNetCore.Internals;
 using Hexarc.Pact.AspNetCore.Models;
 
@@ -22,8 +23,8 @@ namespace Hexarc.Pact.AspNetCore.Readers
         public MethodReader(TypeChecker typeChecker, TypeReferenceReader typeReferenceReader) =>
             (this.TypeChecker, this.TypeReferenceReader) = (typeChecker, typeReferenceReader);
 
-        public Method Read(MethodCandidate methodCandidate) =>
-            new(methodCandidate.MethodInfo.Name,
+        public Method Read(MethodCandidate methodCandidate, NamingConvention? namingConvention) =>
+            new(methodCandidate.MethodInfo.Name.ToConventionalString(namingConvention),
                 this.ReadPath(methodCandidate.RouteAttribute!),
                 this.ReadHttpMethod(methodCandidate.HttpMethodAttribute!),
                 this.ReadMethodReturnType(methodCandidate.MethodInfo.ReturnType.ToContextualType()),

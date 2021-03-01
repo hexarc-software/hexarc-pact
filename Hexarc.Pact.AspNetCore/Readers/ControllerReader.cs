@@ -17,17 +17,17 @@ namespace Hexarc.Pact.AspNetCore.Readers
         public ControllerReader(MethodReader methodReader) =>
             this.MethodReader = methodReader;
 
-        public Controller Read(Type type, RouteAttribute routeAttribute) =>
-            new(type.Namespace, type.Name, this.ReadPath(routeAttribute), this.ReadMethods(type));
+        public Controller Read(Type type, RouteAttribute routeAttribute, NamingConvention? namingConvention) =>
+            new(type.Namespace, type.Name, this.ReadPath(routeAttribute), this.ReadMethods(type, namingConvention));
 
         private String ReadPath(RouteAttribute routeAttribute) =>
             routeAttribute.Template.StartsWith("/") ? routeAttribute.Template : $"/{routeAttribute.Template}";
 
-        private Method[] ReadMethods(Type type) =>
+        private Method[] ReadMethods(Type type, NamingConvention? namingConvention) =>
             type.GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .Select(this.ReadMethodCandidate)
                 .Where(x => x.IsPactCompatible)
-                .Select(this.MethodReader.Read)
+                .Select(x => this.MethodReader.Read(x, namingConvention))
                 .ToArray();
 
         private MethodCandidate ReadMethodCandidate(MethodInfo methodInfo) =>

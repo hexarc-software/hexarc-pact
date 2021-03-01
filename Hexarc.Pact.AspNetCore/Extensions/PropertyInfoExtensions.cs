@@ -14,8 +14,13 @@ namespace Hexarc.Pact.AspNetCore.Extensions
         /// </summary>
         /// <param name="propertyInfo">The property to check.</param>
         /// <param name="tag">The union tag object to check against.</param>
+        /// <param name="namingConvention">The naming convention for the property.</param>
         /// <returns>Returns true if the property is the union tag.</returns>
-        public static Boolean IsUnionTag(this PropertyInfo propertyInfo, UnionTag tag) =>
-            propertyInfo.Name == tag.Name;
+        /// <remarks>
+        /// The union tag must be provided with the specified naming convention.
+        /// The provided naming convention will be applied only to the property name.
+        /// </remarks>
+        public static Boolean IsUnionTag(this PropertyInfo propertyInfo, UnionTag tag, NamingConvention? namingConvention) =>
+            propertyInfo.Name.ToConventionalString(namingConvention) == tag.Name;
     }
 }

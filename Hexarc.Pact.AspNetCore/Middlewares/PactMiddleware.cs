@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.Extensions.DependencyInjection;
 
+using Hexarc.Pact.AspNetCore.Extensions;
+using Hexarc.Pact.AspNetCore.Models;
 using Hexarc.Serialization.Union;
 using Hexarc.Pact.AspNetCore.Readers;
 
@@ -45,12 +47,16 @@ namespace Hexarc.Pact.AspNetCore.Middlewares
             }
 
             var schemaReader = httpContext.RequestServices.GetRequiredService<SchemaReader>();
-            var schema = schemaReader.Read(this._options.AssemblyWithControllers);
+            var namingConvention = this.ExtractNamingConvention(httpContext.Request);
+            var schema = schemaReader.Read(this._options.AssemblyWithControllers, namingConvention);
             await httpContext.Response.WriteAsJsonAsync(schema, this._jsonOptions);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Boolean IsPactSchemaRequested(HttpRequest request) =>
             this._requestMatcher.TryMatch(request.Path, new RouteValueDictionary());
+
+        private NamingConvention? ExtractNamingConvention(HttpRequest request) =>
+            EnumExtensions.Parse<NamingConvention>(request.Query["namingConvention"]);
     }
 }

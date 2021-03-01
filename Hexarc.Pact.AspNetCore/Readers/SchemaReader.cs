@@ -50,16 +50,16 @@ namespace Hexarc.Pact.AspNetCore.Readers
             this.TaskTypeProvider = taskTypeProvider;
         }
 
-        public Schema Read(Assembly assembly) =>
-            new(this.ReadControllers(assembly.GetTypes()), this.ReadTypes());
+        public Schema Read(Assembly assembly, NamingConvention? namingConvention = default) =>
+            new(this.ReadControllers(assembly.GetTypes(), namingConvention), this.ReadTypes(namingConvention));
 
-        public Schema Read(System.Type[] controllerTypes) =>
-            new(this.ReadControllers(controllerTypes), this.ReadTypes());
+        public Schema Read(System.Type[] controllerTypes, NamingConvention? namingConvention = default) =>
+            new(this.ReadControllers(controllerTypes, namingConvention), this.ReadTypes(namingConvention));
 
-        private Controller[] ReadControllers(System.Type[] types) => types
+        private Controller[] ReadControllers(System.Type[] types, NamingConvention? namingConvention) => types
             .Select(this.ReadControllerCandidate)
             .Where(x => x.IsPactCompatible)
-            .Select(x => this.ControllerReader.Read(x.Type, x.RouteAttribute!))
+            .Select(x => this.ControllerReader.Read(x.Type, x.RouteAttribute!, namingConvention))
             .Where(x => x.Methods.Length != 0)
             .ToArray();
 
@@ -69,8 +69,8 @@ namespace Hexarc.Pact.AspNetCore.Readers
                 type.GetCustomAttribute<ApiControllerAttribute>(),
                 type.GetCustomAttribute<RouteAttribute>());
 
-        private Type[] ReadTypes() =>
-            this.EnumerateDistinctTypes()
+        private Type[] ReadTypes(NamingConvention? namingConvention) =>
+            this.EnumerateDistinctTypes(namingConvention)
                 .Concat(this.PrimitiveTypeProvider.Enumerate())
                 .Concat(this.DynamicTypeProvider.Enumerate())
                 .Concat(this.ArrayLikeTypeProvider.Enumerate())
@@ -78,11 +78,11 @@ namespace Hexarc.Pact.AspNetCore.Readers
                 .Concat(this.TaskTypeProvider.Enumerate())
                 .ToArray();
 
-        private IEnumerable<Type> EnumerateDistinctTypes()
+        private IEnumerable<Type> EnumerateDistinctTypes(NamingConvention? namingConvention)
         {
             while (this.DistinctTypeQueue.TryDequeue(out var type))
             {
-                yield return this.DistinctTypeReader.Read(type);
+                yield return this.DistinctTypeReader.Read(type, namingConvention);
             }
         }
     }

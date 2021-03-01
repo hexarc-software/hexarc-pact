@@ -38,7 +38,7 @@ namespace Hexarc.Pact.Tests
 
             while (distinctTypeQueue.TryDequeue(out var t))
             {
-                Console.WriteLine(ObjectDumper.Dump(distinctTypeReader.Read(t.ToContextualType())));
+                Console.WriteLine(ObjectDumper.Dump(distinctTypeReader.Read(t.ToContextualType(), default)));
             }
         }
 
