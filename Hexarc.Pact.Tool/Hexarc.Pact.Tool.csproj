@@ -13,9 +13,15 @@
 
   <PropertyGroup>
     <PackageId>Hexarc.Pact.Tool</PackageId>
-    <Version>1.1.1</Version>
+    <Version>1.1.2</Version>
     <Authors>Max Koverdyaev</Authors>
     <Company>Hexarc Software</Company>
+    <PackageTags>CodeGen;Api;WebApi;AspNet;Pact</PackageTags>
+    <PackageProjectUrl>https://github.com/hexarc-software/hexarc-pact</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/hexarc-software/hexarc-pact</RepositoryUrl>
+    <Description>
+      .NET CLI tool to generate API clients from Hexarc Pact protocols.
+    </Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageIcon>hexarc.png</PackageIcon>
     <PackageIconFullPath>$(MSBuildThisFileDirectory)../hexarc.png</PackageIconFullPath>
@@ -36,8 +42,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hexarc.Pact.Client\Hexarc.Pact.Client.csproj" />
     <ProjectReference Include="..\Hexarc.Pact.Protocol\Hexarc.Pact.Protocol.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Hexarc.Pact.Client\Hexarc.Pact.Client.csproj" Condition="'$(Configuration)' == 'Debug'" />
+    <PackageReference Include="Hexarc.Pact.Client" Version="[1.0.0,1.1.0)" Condition="'$(Configuration)' == 'Release'" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,5 @@
 using System;
-using System.Text.Json;
 using System.Threading.Tasks;
-using Hexarc.Serialization.Union;
 using Hexarc.Pact.Tool.Emitters;
 using Hexarc.Pact.Tool.Internals;
 
@@ -11,28 +9,39 @@ namespace Hexarc.Pact.Tool
     {
         public static async Task Main()
         {
-            var options = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                Converters = { new UnionConverterFactory() }
-            };
-
-            var clientSettingsReader = new ClientSettingsReader(options);
+            var clientSettingsReader = new ClientSettingsReader(SerializerOptions.Default);
             var clientSettingsCollection = await clientSettingsReader.Read();
 
-            Console.WriteLine(ObjectDumper.Dump(clientSettingsCollection));
-            if (clientSettingsCollection is null) return;
+            if (clientSettingsCollection is null)
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("No pact.json config found. Nothing to generate.");
+                return;
+            }
 
             foreach (var clientSettings in clientSettingsCollection)
             {
-                var schemaReader = new SchemaReader(options);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Generating API client for given settings.");
+                Console.ResetColor();
+                Console.WriteLine(ObjectDumper.Dump(clientSettings));
+
+                var schemaReader = new SchemaReader(SerializerOptions.Default);
                 var schema = await schemaReader.ReadAsync(clientSettings.SchemaUri);
-                if (schema is null) continue;
+                if (schema is null)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("Could not read schema.");
+                    continue;
+                }
 
                 var fileManager = new FileManager(clientSettings.OutputDirectory);
                 var apiEmitter = new ApiEmitter(clientSettings, schema);
                 var emittedApi = apiEmitter.Emit();
                 fileManager.Save(emittedApi);
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("API client successfully generated.");
             }
         }
     }
