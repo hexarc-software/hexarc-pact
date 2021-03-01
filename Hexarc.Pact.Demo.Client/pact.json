@@ -2,5 +2,9 @@
   "schemaUri": "https://hexarc-demo-api.herokuapp.com/pact/schema",
   "clientClassName": "DemoClient",
   "clientClassNamespace": "Hexarc.Pact.Demo.Client",
-  "outputDirectory": "Api"
+  "outputDirectory": "Api",
+  "generationOptions":
+  {
+    "omitTimestampComment": true
+  }
 }

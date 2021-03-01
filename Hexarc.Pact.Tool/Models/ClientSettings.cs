@@ -12,12 +12,20 @@ namespace Hexarc.Pact.Tool.Models
 
         public String OutputDirectory { get; }
 
-        public ClientSettings(String schemaUri, String clientClassName, String? clientClassNamespace, String outputDirectory)
+        public GenerationOptions? GenerationOptions { get; }
+
+        public ClientSettings(
+            String schemaUri,
+            String clientClassName,
+            String? clientClassNamespace,
+            String outputDirectory,
+            GenerationOptions? generationOptions)
         {
             this.SchemaUri = schemaUri;
             this.ClientClassName = clientClassName;
             this.ClientClassNamespace = clientClassNamespace;
             this.OutputDirectory = outputDirectory;
+            this.GenerationOptions = generationOptions;
         }
     }
 }
