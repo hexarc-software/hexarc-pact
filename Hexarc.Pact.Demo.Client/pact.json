@@ -3,6 +3,7 @@
   "clientClassName": "DemoClient",
   "clientClassNamespace": "Hexarc.Pact.Demo.Client",
   "outputDirectory": "Api",
+  "scopes": ["Animals"],
   "generationOptions":
   {
     "omitTimestampComment": true

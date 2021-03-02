@@ -27,7 +27,7 @@ namespace Hexarc.Pact.Tool
                 Console.WriteLine(ObjectDumper.Dump(clientSettings));
 
                 var schemaReader = new SchemaReader(SerializerOptions.Default);
-                var schema = await schemaReader.ReadAsync(clientSettings.SchemaUri);
+                var schema = await schemaReader.ReadAsync(clientSettings.SchemaUri, clientSettings.Scopes);
                 if (schema is null)
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
