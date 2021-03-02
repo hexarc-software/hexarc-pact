@@ -53,10 +53,16 @@ namespace Hexarc.Pact.AspNetCore.Readers
         public Schema Read(Assembly assembly, NamingConvention? namingConvention = default) =>
             new(this.ReadControllers(assembly.GetTypes(), namingConvention), this.ReadTypes(namingConvention));
 
-        public Schema Read(System.Type[] controllerTypes, NamingConvention? namingConvention = default) =>
-            new(this.ReadControllers(controllerTypes, namingConvention), this.ReadTypes(namingConvention));
+        /// <summary>
+        /// Reads the API schema from given types.
+        /// </summary>
+        /// <param name="types">The types to search for controllers.</param>
+        /// <param name="namingConvention">The naming convention applied to types.</param>
+        /// <returns>The API schema read from the given types.</returns>
+        public Schema Read(IEnumerable<System.Type> types, NamingConvention? namingConvention = default) =>
+            new(this.ReadControllers(types, namingConvention), this.ReadTypes(namingConvention));
 
-        private Controller[] ReadControllers(System.Type[] types, NamingConvention? namingConvention) => types
+        private Controller[] ReadControllers(IEnumerable<System.Type> types, NamingConvention? namingConvention) => types
             .Select(this.ReadControllerCandidate)
             .Where(x => x.IsPactCompatible)
             .Select(x => this.ControllerReader.Read(x.Type, x.RouteAttribute!, namingConvention))
@@ -65,7 +71,7 @@ namespace Hexarc.Pact.AspNetCore.Readers
 
         private ControllerCandidate ReadControllerCandidate(System.Type type) =>
             new(type,
-                type.GetCustomAttribute<IgnoreAttribute>(),
+                type.GetCustomAttribute<PactIgnoreAttribute>(),
                 type.GetCustomAttribute<ApiControllerAttribute>(),
                 type.GetCustomAttribute<RouteAttribute>());
 

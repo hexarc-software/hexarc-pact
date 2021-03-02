@@ -32,7 +32,7 @@ namespace Hexarc.Pact.AspNetCore.Readers
 
         private MethodCandidate ReadMethodCandidate(MethodInfo methodInfo) =>
             new(methodInfo,
-                methodInfo.GetCustomAttribute<IgnoreAttribute>(),
+                methodInfo.GetCustomAttribute<PactIgnoreAttribute>(),
                 methodInfo.GetCustomAttribute<HttpMethodAttribute>(),
                 methodInfo.GetCustomAttribute<RouteAttribute>());
     }

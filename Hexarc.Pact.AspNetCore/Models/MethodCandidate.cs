@@ -10,7 +10,7 @@ namespace Hexarc.Pact.AspNetCore.Models
     {
         public MethodInfo MethodInfo { get; }
 
-        public IgnoreAttribute? IgnoreAttribute { get; }
+        public PactIgnoreAttribute? IgnoreAttribute { get; }
 
         public HttpMethodAttribute? HttpMethodAttribute { get; }
 
@@ -27,7 +27,7 @@ namespace Hexarc.Pact.AspNetCore.Models
 
         public MethodCandidate(
             MethodInfo methodInfo,
-            IgnoreAttribute? ignoreAttribute,
+            PactIgnoreAttribute? ignoreAttribute,
             HttpMethodAttribute? httpMethodAttribute,
             RouteAttribute? routeAttribute)
         {

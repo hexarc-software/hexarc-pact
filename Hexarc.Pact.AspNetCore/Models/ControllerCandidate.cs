@@ -8,7 +8,7 @@ namespace Hexarc.Pact.AspNetCore.Models
     {
         public Type Type { get; }
 
-        public IgnoreAttribute? IgnoreAttribute { get; }
+        public PactIgnoreAttribute? IgnoreAttribute { get; }
 
         public ApiControllerAttribute? ApiControllerAttribute { get; }
 
@@ -22,7 +22,7 @@ namespace Hexarc.Pact.AspNetCore.Models
 
         public ControllerCandidate(
             Type type,
-            IgnoreAttribute? ignoreAttribute,
+            PactIgnoreAttribute? ignoreAttribute,
             ApiControllerAttribute? apiControllerAttribute,
             RouteAttribute? routeAttribute)
         {

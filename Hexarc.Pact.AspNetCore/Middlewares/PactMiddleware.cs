@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
@@ -46,9 +48,15 @@ namespace Hexarc.Pact.AspNetCore.Middlewares
                 return;
             }
 
-            var schemaReader = httpContext.RequestServices.GetRequiredService<SchemaReader>();
             var namingConvention = this.ExtractNamingConvention(httpContext.Request);
-            var schema = schemaReader.Read(this._options.AssemblyWithControllers, namingConvention);
+            var scopes = this.ExtractScopes(httpContext.Request);
+            var schemaReader = httpContext.RequestServices.GetRequiredService<SchemaReader>();
+            var assembly = this._options.AssemblyWithControllers;
+            var schema = scopes switch
+            {
+                not null => schemaReader.Read(assembly.GetPactScopedTypes(scopes), namingConvention),
+                _ => schemaReader.Read(assembly, namingConvention)
+            };
             await httpContext.Response.WriteAsJsonAsync(schema, this._jsonOptions);
         }
 
@@ -57,6 +65,13 @@ namespace Hexarc.Pact.AspNetCore.Middlewares
             this._requestMatcher.TryMatch(request.Path, new RouteValueDictionary());
 
         private NamingConvention? ExtractNamingConvention(HttpRequest request) =>
-            EnumExtensions.Parse<NamingConvention>(request.Query["namingConvention"]);
+            request.Query.ContainsKey("namingConvention")
+                ? EnumExtensions.Parse<NamingConvention>(request.Query["namingConvention"])
+                : default;
+
+        private HashSet<String>? ExtractScopes(HttpRequest request) =>
+            request.Query.ContainsKey("scope")
+                ? request.Query["scope"].ToHashSet()
+                : default;
     }
 }
