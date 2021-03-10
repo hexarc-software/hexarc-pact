@@ -10,7 +10,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
     [UnionCase(typeof(ArrayTypeReference), TypeReferenceKind.Array)]
     [UnionCase(typeof(DictionaryTypeReference), TypeReferenceKind.Dictionary)]
     [UnionCase(typeof(DistinctTypeReference), TypeReferenceKind.Distinct)]
-    [UnionCase(typeof(GenericTypeReference), TypeReferenceKind.Generic)]
+    [UnionCase(typeof(TypeParameterReference), TypeReferenceKind.TypeParameter)]
     [UnionCase(typeof(NullableTypeReference), TypeReferenceKind.Nullable)]
     [UnionCase(typeof(TaskTypeReference), TypeReferenceKind.Task)]
     [UnionCase(typeof(PrimitiveTypeReference), TypeReferenceKind.Primitive)]

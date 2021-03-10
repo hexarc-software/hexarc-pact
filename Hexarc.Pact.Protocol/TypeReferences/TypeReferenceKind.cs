@@ -18,9 +18,9 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         public const String Task = nameof(Task);
 
         /// <summary>
-        /// The generic type reference literal.
+        /// The type parameter reference literal.
         /// </summary>
-        public const String Generic = nameof(Generic);
+        public const String TypeParameter = nameof(TypeParameter);
 
         /// <summary>
         /// The primitive type reference literal.

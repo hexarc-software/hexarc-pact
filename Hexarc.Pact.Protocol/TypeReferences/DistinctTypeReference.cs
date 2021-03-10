@@ -18,16 +18,16 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         public Guid TypeId { get; }
 
         /// <summary>
-        /// Gets the distinct type generic parameters.
+        /// Gets the distinct type arguments.
         /// </summary>
-        public TypeReference[]? GenericArguments { get; }
+        public TypeReference[]? TypeArguments { get; }
 
         /// <summary>
         /// Creates an instance of the DistinctTypeReference class.
         /// </summary>
         /// <param name="typeId">The unique distinct type id.</param>
-        /// <param name="genericArguments">The distinct type generic arguments.</param>
-        public DistinctTypeReference(Guid typeId, TypeReference[]? genericArguments = default) =>
-            (this.TypeId, this.GenericArguments) = (typeId, genericArguments);
+        /// <param name="typeArguments">The distinct type arguments.</param>
+        public DistinctTypeReference(Guid typeId, TypeReference[]? typeArguments = default) =>
+            (this.TypeId, this.TypeArguments) = (typeId, typeArguments);
     }
 }

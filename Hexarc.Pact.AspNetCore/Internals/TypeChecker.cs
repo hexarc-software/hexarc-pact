@@ -42,7 +42,7 @@ namespace Hexarc.Pact.AspNetCore.Internals
 
         public Boolean IsTaskType(Type type) => this.TaskTypeIds.Contains(type.GUID);
 
-        public Boolean IsGenericParameter(Type type) => type.IsGenericParameter;
+        public Boolean IsTypeParameter(Type type) => type.IsGenericParameter;
 
         public Boolean IsArrayType(Type type) => type.IsArray;
 

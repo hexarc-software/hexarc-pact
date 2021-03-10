@@ -29,7 +29,7 @@ namespace Hexarc.Pact.Tool.Emitters
             ArrayTypeReference array => this.EmitArrayTypeReference(array, currentNamespace),
             DictionaryTypeReference dictionary => this.EmitDictionaryTypeReference(dictionary, currentNamespace),
             TaskTypeReference task => this.EmitTaskTypeReference(task, currentNamespace),
-            GenericTypeReference generic => this.EmitGenericTypeReference(generic),
+            TypeParameterReference typeParameter => this.EmitTypeParameterReference(typeParameter),
             LiteralTypeReference => this.EmitLiteralTypeReference(),
             DistinctTypeReference distinct => this.EmitDistinctTypeReference(distinct, currentNamespace),
             _ => throw new InvalidOperationException($"Could not emit a Hexarc Pact type reference from {typeReference}")
@@ -74,33 +74,33 @@ namespace Hexarc.Pact.Tool.Emitters
         private GenericNameSyntax EmitTaskTypeReference(TaskTypeReference reference, String? currentNamespace) =>
             this.EmitGenericTypeName(this.TypeRegistry.GetTaskType(reference.TypeId), reference.ResultType, currentNamespace);
 
-        private NameSyntax EmitGenericTypeReference(GenericTypeReference reference) =>
+        private NameSyntax EmitTypeParameterReference(TypeParameterReference reference) =>
             ParseName(reference.Name);
 
         private NameSyntax EmitLiteralTypeReference() =>
             ParseName(typeof(String).FullName!);
 
         private TypeSyntax EmitDistinctTypeReference(DistinctTypeReference reference, String? currentNamespace) =>
-            (this.TypeRegistry.GetDistinctType(reference.TypeId), reference.GenericArguments) switch
+            (this.TypeRegistry.GetDistinctType(reference.TypeId), reference.TypeArguments) switch
             {
                 (var type, null) => this.EmitTypeName(type, currentNamespace),
-                var (type, genericArguments) => this.EmitGenericTypeName(type, genericArguments, currentNamespace)
+                var (type, typeArguments) => this.EmitGenericTypeName(type, typeArguments, currentNamespace)
             };
 
-        private GenericNameSyntax EmitGenericTypeName(Type type, TypeReference[] genericArguments, String? currentNamespace) =>
+        private GenericNameSyntax EmitGenericTypeName(Type type, TypeReference[] typeArguments, String? currentNamespace) =>
             GenericWithArguments(
                 this.EmitTypeIdentifier(type, currentNamespace),
-                this.EmitGenericArguments(genericArguments, currentNamespace));
+                this.EmitTypeArguments(typeArguments, currentNamespace));
 
-        private GenericNameSyntax EmitGenericTypeName(Type type, TypeReference genericArgument, String? currentNamespace) =>
+        private GenericNameSyntax EmitGenericTypeName(Type type, TypeReference typeArgument, String? currentNamespace) =>
             GenericWithArgument(
                     this.EmitTypeIdentifier(type, currentNamespace),
-                    this.EmitGenericArgument(genericArgument, currentNamespace));
+                    this.EmitTypeArgument(typeArgument, currentNamespace));
 
-        private TypeSyntax EmitGenericArgument(TypeReference argument, String? currentNamespace) =>
+        private TypeSyntax EmitTypeArgument(TypeReference argument, String? currentNamespace) =>
             this.Emit(argument, currentNamespace);
 
-        private SeparatedSyntaxList<TypeSyntax> EmitGenericArguments(TypeReference[] arguments, String? currentNamespace) =>
+        private SeparatedSyntaxList<TypeSyntax> EmitTypeArguments(TypeReference[] arguments, String? currentNamespace) =>
             SeparatedListWithCommas(this.EmitMany(arguments, currentNamespace).ToArray());
 
         private NameSyntax EmitTypeName(Type type, String? currentNamespace) =>

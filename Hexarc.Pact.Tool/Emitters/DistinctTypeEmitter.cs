@@ -106,8 +106,8 @@ namespace Hexarc.Pact.Tool.Emitters
                     TokenList(
                         Token(SyntaxKind.PublicKeyword)))
                 .WithTypeParameterList(
-                    type.GenericParameters is not null
-                        ? this.EmitGenericParameters(type.GenericParameters)
+                    type.TypeParameters is not null
+                        ? this.EmitGenericParameters(type.TypeParameters)
                         : default)
                 .WithMembers(
                     this.EmitObjectPropertyDeclarations(type.Properties, type.Namespace));
@@ -119,8 +119,8 @@ namespace Hexarc.Pact.Tool.Emitters
                         Token(SyntaxKind.PublicKeyword),
                         Token(SyntaxKind.SealedKeyword)))
                 .WithTypeParameterList(
-                    type.GenericParameters is not null
-                        ? this.EmitGenericParameters(type.GenericParameters)
+                    type.TypeParameters is not null
+                        ? this.EmitGenericParameters(type.TypeParameters)
                         : default)
                 .WithMembers(
                     this.EmitObjectPropertyDeclarations(type.Properties, type.Namespace));
@@ -269,7 +269,7 @@ namespace Hexarc.Pact.Tool.Emitters
             DictionaryTypeReference dictionary => this.TypeRegistry.GetType(dictionary.TypeId).IsReference,
             DistinctTypeReference distinct => this.TypeRegistry.GetType(distinct.TypeId).IsReference,
             DynamicTypeReference dynamic => this.TypeRegistry.GetType(dynamic.TypeId).IsReference,
-            GenericTypeReference => true,
+            TypeParameterReference => true,
             LiteralTypeReference => true,
             NullableTypeReference => false,
             PrimitiveTypeReference primitive => this.TypeRegistry.GetType(primitive.TypeId).IsReference,

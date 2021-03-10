@@ -8,9 +8,9 @@ namespace Hexarc.Pact.Protocol.Types
     public abstract class ObjectType : DistinctType
     {
         /// <summary>
-        /// Gets the generic type parameters.
+        /// Gets the type parameters.
         /// </summary>
-        public String[]? GenericParameters { get; }
+        public String[]? TypeParameters { get; }
 
         /// <summary>
         /// Gets the type properties.
@@ -24,12 +24,12 @@ namespace Hexarc.Pact.Protocol.Types
         /// <param name="namespace">The type namespace.</param>
         /// <param name="name">The type name.</param>
         /// <param name="isReference">The type reference semantic marker.</param>
-        /// <param name="genericParameters">The generic parameters.</param>
+        /// <param name="typeParameters">The type parameters.</param>
         /// <param name="properties">The type own properties.</param>
         protected ObjectType(
             Guid id, String? @namespace, String name, Boolean isReference,
-            String[]? genericParameters, ObjectProperty[] properties
+            String[]? typeParameters, ObjectProperty[] properties
         ) : base(id, @namespace, name, isReference) =>
-            (this.GenericParameters, this.Properties) = (genericParameters, properties);
+            (this.TypeParameters, this.Properties) = (typeParameters, properties);
     }
 }

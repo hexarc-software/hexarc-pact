@@ -18,9 +18,9 @@ namespace Hexarc.Pact.Protocol.Types
         /// <param name="id">The unique type id</param>
         /// <param name="namespace">The type namespace.</param>
         /// <param name="name">The type name.</param>
-        /// <param name="genericParameters">The struct generic parameters.</param>
+        /// <param name="typeParameters">The struct type parameters.</param>
         /// <param name="properties">The struct properties.</param>
-        public StructType(Guid id, String? @namespace, String name, String[]? genericParameters, ObjectProperty[] properties) :
-            base(id, @namespace, name, false, genericParameters, properties) { }
+        public StructType(Guid id, String? @namespace, String name, String[]? typeParameters, ObjectProperty[] properties) :
+            base(id, @namespace, name, false, typeParameters, properties) { }
     }
 }

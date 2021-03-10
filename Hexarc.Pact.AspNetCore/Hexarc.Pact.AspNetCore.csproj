@@ -17,7 +17,7 @@
 
   <PropertyGroup>
     <PackageId>Hexarc.Pact.AspNetCore</PackageId>
-    <Version>1.4.0</Version>
+    <Version>1.5.0</Version>
     <Authors>Max Koverdyaev</Authors>
     <Company>Hexarc Software</Company>
     <PackageTags>Discovery;WebApi;AspNet;Protocol;Pact</PackageTags>

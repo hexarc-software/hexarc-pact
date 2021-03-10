@@ -26,7 +26,7 @@ namespace Hexarc.Pact.AspNetCore.Readers
             var x when this.TypeChecker.IsActionResultOfT(x.OriginalType) => this.ReadFromActionResultOfT(x),
             var x when this.TypeChecker.IsNullableValueType(x) => this.ReadNullableValueTypeReference(x),
             var x when this.TypeChecker.IsTaskType(x.OriginalType) => this.ReadTaskTypeReference(x),
-            var x when this.TypeChecker.IsGenericParameter(x.OriginalType) => this.ReadGenericTypeReference(x),
+            var x when this.TypeChecker.IsTypeParameter(x.OriginalType) => this.ReadTypeParameterReference(x),
             var x when this.TypeChecker.IsArrayType(x.OriginalType) => this.ReadArrayTypeReference(x),
             var x when this.TypeChecker.IsArrayLikeType(x.OriginalType) => this.ReadArrayLikeTypeReference(x),
             var x when this.TypeChecker.IsDictionaryType(x.OriginalType) => this.ReadDictionaryTypeReference(x),
@@ -47,7 +47,7 @@ namespace Hexarc.Pact.AspNetCore.Readers
         private TaskTypeReference ReadTaskTypeReference(ContextualType contextualType) =>
             new(contextualType.OriginalType.GUID, this.Read(contextualType.GenericArguments.First()));
 
-        private GenericTypeReference ReadGenericTypeReference(ContextualType contextualType) =>
+        private TypeParameterReference ReadTypeParameterReference(ContextualType contextualType) =>
             new(contextualType.OriginalType.Name);
 
         private ArrayTypeReference ReadArrayTypeReference(ContextualType contextualType) =>
