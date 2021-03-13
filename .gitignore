@@ -1,8 +1,12 @@
 bin
 obj
 nupkg
+node_modules
 
 .env
 *.nupkg
 *.DotSettings.user
 .DS_Store
+
+!/Hexarc.Pact.Tool.TypeScript/bin/*
+/Hexarc.Pact.Tool.TypeScript/lib/*
