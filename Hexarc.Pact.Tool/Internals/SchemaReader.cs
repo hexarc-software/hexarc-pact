@@ -19,7 +19,6 @@ namespace Hexarc.Pact.Tool.Internals
 
         public async Task<Schema?> ReadAsync(String schemaUri, String[]? scopes)
         {
-            Console.WriteLine(this.BuildUri(schemaUri, scopes));
             return await this.HttpClient.GetFromJsonAsync<Schema>(this.BuildUri(schemaUri, scopes),
                 this.JsonSerializerOptions);
         }

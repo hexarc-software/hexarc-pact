@@ -1,3 +1,2 @@
-/// <reference path="./types.d.ts" />
-/// <reference path="./type_references.d.ts" />
-/// <reference path="./api.d.ts" />
+/// <reference path="./protocol/index.d.ts" />
+/// <reference path="./tool/index.d.ts" />
