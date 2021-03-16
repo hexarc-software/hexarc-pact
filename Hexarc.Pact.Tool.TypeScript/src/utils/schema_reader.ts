@@ -1,7 +1,8 @@
 import fetch from "node-fetch";
+import type { Schema } from "../types/protocol/api";
 
 
-export async function read(schemaUri: string, scopes: string[] | undefined) {
+export async function read(schemaUri: string, scopes: string[] | undefined): Promise<Schema> {
   const response = await fetch(buildUri(schemaUri, scopes));
   if (!response.ok) throw new Error("Couldn't read schema");
   return await response.json();
@@ -12,14 +13,14 @@ function buildUri(schemaUri: string, scopes: string[] | undefined) {
 }
 
 function buildQueryString(scopes: string[] | undefined) {
-  const namingConvetionQuery = toNamingConvetionQuery(NamingConvention.CamelCase);
+  const namingConventionQuery = toNamingConventionQuery(NamingConvention.CamelCase);
   const scopeQuery = scopes == null ? "" : toScopeQuery(scopes);
-  return [namingConvetionQuery, scopeQuery]
+  return [namingConventionQuery, scopeQuery]
     .filter(x => x != null && x.length > 0)
     .join("&");
 }
 
-function toNamingConvetionQuery(namingConvention: NamingConvention) {
+function toNamingConventionQuery(namingConvention: NamingConvention) {
   return `namingConvention=${namingConvention}`;
 }
 

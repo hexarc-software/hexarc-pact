@@ -1,6 +1,6 @@
 import * as util from "util";
-import * as ClientSettingsReader from "../src/client_settings_reader";
-import * as SchemaReader from "../src/schema_reader";
+import * as ClientSettingsReader from "../src/utils/client_settings_reader";
+import * as SchemaReader from "../src/utils/schema_reader";
 
 
 (async function read() {

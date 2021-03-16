@@ -1,8 +1,8 @@
-/// <reference path="../types/index.d.ts" />
-import * as File from "./io/file";
+import * as File from "./file";
+import type { ClientSettings } from "../types/tool";
 
 
-export async function read(): Promise<Pact.Tool.ClientSettings[] | null> {
+export async function read(): Promise<ClientSettings[] | null> {
   if (!await File.exists("pact.json")) return null;
 
   const raw = await File.read("pact.json");
