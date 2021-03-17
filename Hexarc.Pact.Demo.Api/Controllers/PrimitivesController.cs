@@ -42,6 +42,9 @@ namespace Hexarc.Pact.Demo.Api.Controllers
         [HttpGet, Route(nameof(GetDouble))]
         public Double GetDouble() => 1.0;
 
+        [HttpGet, Route(nameof(GetDecimal))]
+        public Decimal GetDecimal() => Decimal.MaxValue;
+
         [HttpGet, Route(nameof(GetGuid))]
         public Guid GetGuid() => Guid.NewGuid();
 
