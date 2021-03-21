@@ -20,5 +20,5 @@ export interface TypeRegistry {
 }
 
 export interface TypeReferenceEmitter {
-  emit: (typeReference: TypeReference, currentNamespace?: string) => TypeNode;
+  emit: (typeReference: TypeReference, currentNamespace: string | undefined) => TypeNode;
 }
