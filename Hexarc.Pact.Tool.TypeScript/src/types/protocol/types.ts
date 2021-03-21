@@ -39,7 +39,7 @@ export interface EnumMember {
   readonly value: number;
 }
 
-export interface StringEnumType {
+export interface StringEnumType extends TypeBase {
   readonly kind: "StringEnum";
   readonly members: string[];
 }
@@ -62,11 +62,18 @@ export interface ClassType extends ObjectType {
   readonly kind: "Class";
 }
 
-export interface UnionType {
+export interface UnionType extends TypeBase {
   readonly kind: "Union";
   readonly tagName: string;
   readonly cases: ClassType[];
 }
+
+export type DistinctType =
+  | EnumType
+  | StringEnumType
+  | StructType
+  | ClassType
+  | UnionType;
 
 export type Type =
   | PrimitiveType
@@ -74,7 +81,4 @@ export type Type =
   | ArrayLikeType
   | DynamicType
   | TaskType
-  | EnumType
-  | StringEnumType
-  | StructType
-  | UnionType;
+  | DistinctType;
