@@ -9,7 +9,7 @@ import * as InterfaceTypeEmitter from "./interface_type_emitter";
 import * as UnionTypeEmitter from "./union_type_emitter";
 
 
-export function emit(type: DistinctType, typeReferenceEmitter: TypeReferenceEmitter): ts.Declaration[] {
+export function emit(type: DistinctType, typeReferenceEmitter: TypeReferenceEmitter): ts.DeclarationStatement[] {
   switch(type.kind) {
     case TypeKind.Enum: return [EnumTypeEmitter.emit(type)];
     case TypeKind.StringEnum: return [StringEnumTypeEmitter.emit(type)];

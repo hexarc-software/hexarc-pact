@@ -24,12 +24,12 @@ export function create(types: Type[]): TypeRegistry {
   const primitiveTypes = extractGroup<PrimitiveType>(TypeKind.Primitive);
   const dynamicTypes = extractGroup<DynamicType>(TypeKind.Dynamic);
   const arrayLikeTypes = extractGroup<ArrayLikeType>(TypeKind.ArrayLike);
-  const dictionaryTypes = extractGroup<DictionaryType>(TypeKind.Primitive);
-  const taskTypes = extractGroup<TaskType>(TypeKind.Primitive);
-  const enumTypes = extractGroup<EnumType>(TypeKind.Primitive);
-  const stringEnumTypes = extractGroup<StringEnumType>(TypeKind.Primitive);
-  const structTypes = extractGroup<StructType>(TypeKind.Primitive);
-  const classTypes = extractGroup<ClassType>(TypeKind.Primitive);
+  const dictionaryTypes = extractGroup<DictionaryType>(TypeKind.Dictionary);
+  const taskTypes = extractGroup<TaskType>(TypeKind.Task);
+  const enumTypes = extractGroup<EnumType>(TypeKind.Enum);
+  const stringEnumTypes = extractGroup<StringEnumType>(TypeKind.StringEnum);
+  const structTypes = extractGroup<StructType>(TypeKind.Struct);
+  const classTypes = extractGroup<ClassType>(TypeKind.Class);
   const unionTypes =  extractGroup<UnionType>(TypeKind.Union);
 
   function throwNotFound(key: string): never {

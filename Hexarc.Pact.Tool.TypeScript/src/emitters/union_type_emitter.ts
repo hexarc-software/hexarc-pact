@@ -5,13 +5,13 @@ import type { UnionType } from "../types/protocol/types";
 import type { TypeReferenceEmitter } from "../types/tool";
 
 
-export function emit(type: UnionType, typeReferenceEmitter: TypeReferenceEmitter): ts.Declaration[] {
+export function emit(type: UnionType, typeReferenceEmitter: TypeReferenceEmitter): ts.DeclarationStatement[] {
   const cases = emitCaseInterfaces(type, typeReferenceEmitter);
   const union = emitUnionDeclaration(type);
   return [...cases, union];
 }
 
-function emitCaseInterfaces(type: UnionType, typeReferenceEmitter: TypeReferenceEmitter): ts.InterfaceDeclaration[] {
+function emitCaseInterfaces(type: UnionType, typeReferenceEmitter: TypeReferenceEmitter): ts.DeclarationStatement[] {
   return type.cases.map(x => InterfaceEmitter.emit(x, typeReferenceEmitter));
 }
 

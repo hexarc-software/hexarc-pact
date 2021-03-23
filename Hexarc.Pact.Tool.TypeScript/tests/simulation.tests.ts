@@ -1,6 +1,6 @@
+import * as ts from "typescript";
 import * as util from "util";
-import * as ClientSettingsReader from "../src/utils/client_settings_reader";
-import * as SchemaReader from "../src/utils/schema_reader";
+import { ClientSettingsReader, DistinctTypeEmitter, SchemaReader, TypeDefinitionsEmitter, TypeReferenceEmitter, TypeRegistry } from "../src/pact";
 
 
 (async function read() {
@@ -9,6 +9,13 @@ import * as SchemaReader from "../src/utils/schema_reader";
   console.log(settingsCollection);
   for (let settings of settingsCollection!) {
     const schema = await SchemaReader.read(settings.schemaUri, settings.scopes);
-    console.log(schema);
+    const typeRegistry = TypeRegistry.create(schema.types);
+    const typeReferenceEmitter = TypeReferenceEmitter.create(typeRegistry);
+    const distinctTypes = typeRegistry.enumerateDistinctTypes();
+    const definitions = TypeDefinitionsEmitter.emit(distinctTypes, typeReferenceEmitter);
+    const file = ts.createSourceFile("source.ts", "", ts.ScriptTarget.ESNext, false, ts.ScriptKind.TS);
+    const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
+    const result = printer.printList(ts.ListFormat.MultiLine, definitions, file);
+    console.log(result);
   }
 })();

@@ -6,13 +6,18 @@ import type { TypeReferenceEmitter } from "../types/tool";
 
 export function emit(type: ObjectType, typeReferenceEmitter: TypeReferenceEmitter): ts.InterfaceDeclaration {
   const properties = type.properties.map(x => emitProperty(x, type.namespace, typeReferenceEmitter));
+  const typeParameters = emitTypeParameters(type.typeParameters);
   return ts.factory.createInterfaceDeclaration(
     undefined,
     undefined,
     type.name,
-    undefined,
+    typeParameters,
     undefined,
     properties);
+}
+
+function emitTypeParameters(typeParameters: string[] | undefined) {
+  if (typeParameters != null) return typeParameters.map(x => ts.factory.createTypeParameterDeclaration(x));
 }
 
 function emitProperty(
