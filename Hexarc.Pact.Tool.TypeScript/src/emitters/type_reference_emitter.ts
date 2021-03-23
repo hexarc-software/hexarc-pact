@@ -2,6 +2,7 @@ import * as ts from "typescript";
 import * as TypeUtils from "../utils/type_utils";
 import * as PrimitiveTypeChecker from "./primitive_type_checker";
 
+import { TypeReferenceKind } from "../types/protocol/type_references";
 import type { TypeReferenceEmitter, TypeRegistry } from "../types/tool";
 import type {
   TypeReference, PrimitiveTypeReference, NullableTypeReference,
@@ -14,15 +15,15 @@ export function create(typeRegistry: TypeRegistry): TypeReferenceEmitter {
 
   function emit(typeReference: TypeReference, currentNamespace: string | undefined): ts.TypeNode {
     switch (typeReference.kind) {
-      case "Primitive": return emitPrimitiveTypeReference(typeReference);
-      case "Dynamic": return emitDynamicTypeReference();
-      case "Nullable": return emitNullableTypeReference(typeReference, currentNamespace);
-      case "Array": return emitArrayTypeReference(typeReference, currentNamespace);
-      case "Dictionary": return emitDictionaryTypeReference(typeReference, currentNamespace);
-      case "Task": return emitTaskTypeReference(typeReference, currentNamespace);
-      case "TypeParameter": return emitTypeParameterReference(typeReference);
-      case "Literal": return emitLiteralTypeReference(typeReference);
-      case "Distinct": return emitDistinctTypeReference(typeReference, currentNamespace);
+      case TypeReferenceKind.Primitive: return emitPrimitiveTypeReference(typeReference);
+      case TypeReferenceKind.Dynamic: return emitDynamicTypeReference();
+      case TypeReferenceKind.Nullable: return emitNullableTypeReference(typeReference, currentNamespace);
+      case TypeReferenceKind.Array: return emitArrayTypeReference(typeReference, currentNamespace);
+      case TypeReferenceKind.Dictionary: return emitDictionaryTypeReference(typeReference, currentNamespace);
+      case TypeReferenceKind.Task: return emitTaskTypeReference(typeReference, currentNamespace);
+      case TypeReferenceKind.TypeParameter: return emitTypeParameterReference(typeReference);
+      case TypeReferenceKind.Literal: return emitLiteralTypeReference(typeReference);
+      case TypeReferenceKind.Distinct: return emitDistinctTypeReference(typeReference, currentNamespace);
       default: throw new Error(`Couldn't emit a Hexarc Pact type reference for ${JSON.stringify(typeReference)}`);
     }
   }

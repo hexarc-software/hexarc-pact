@@ -1,50 +1,62 @@
+export const enum TypeReferenceKind {
+  Array = "Array",
+  Dictionary = "Dictionary",
+  Distinct = "Distinct",
+  TypeParameter = "TypeParameter",
+  Nullable = "Nullable",
+  Task = "Task",
+  Primitive = "Primitive",
+  Dynamic = "Dynamic",
+  Literal = "Literal"
+}
+
 export interface ArrayTypeReference {
-  readonly kind: "Array";
+  readonly kind: TypeReferenceKind.Array;
   readonly arrayLikeTypeId?: string;
   readonly elementType: TypeReference;
 }
 
 export interface DictionaryTypeReference {
-  readonly kind: "Dictionary";
+  readonly kind: TypeReferenceKind.Dictionary;
   readonly typeId: string;
   readonly keyType: TypeReference;
   readonly valueType: TypeReference;
 }
 
 export interface DistinctTypeReference {
-  readonly kind: "Distinct";
+  readonly kind: TypeReferenceKind.Distinct;
   readonly typeId: string;
   readonly typeArguments?: TypeReference[];
 }
 
 export interface TypeParameterReference {
-  readonly kind: "TypeParameter";
+  readonly kind: TypeReferenceKind.TypeParameter;
   readonly name: string;
 }
 
 export interface NullableTypeReference {
-  readonly kind: "Nullable";
+  readonly kind: TypeReferenceKind.Nullable;
   readonly underlyingType: TypeReference;
 }
 
 export interface TaskTypeReference {
-  readonly kind: "Task";
+  readonly kind: TypeReferenceKind.Task;
   readonly typeId?: string;
   readonly resultType: TypeReference;
 }
 
 export interface PrimitiveTypeReference {
-  readonly kind: "Primitive";
+  readonly kind: TypeReferenceKind.Primitive;
   readonly typeId: string;
 }
 
 export interface DynamicTypeReference {
-  readonly kind: "Dynamic";
+  readonly kind: TypeReferenceKind.Dynamic;
   readonly typeId: string;
 }
 
 export interface LiteralTypeReference {
-  readonly kind: "Literal";
+  readonly kind: TypeReferenceKind.Literal;
   readonly name: string;
 }
 
