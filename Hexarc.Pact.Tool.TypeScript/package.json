@@ -10,7 +10,8 @@
   "files": [
     "./bin/*",
     "./lib/*",
-    "./types/*"
+    "./types/*",
+    "./bootstrap/*"
   ],
   "scripts": {
     "prebuild": "rm -rf lib/**",

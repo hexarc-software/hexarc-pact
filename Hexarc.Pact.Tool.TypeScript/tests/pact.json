@@ -2,7 +2,6 @@
   "schemaUri": "https://hexarc-demo-api.herokuapp.com/pact/schema",
   "clientClassName": "DemoClient",
   "outputDirectory": "Api",
-  "scopes": ["Animals"],
   "generationOptions":
   {
     "omitTimestampComment": true
