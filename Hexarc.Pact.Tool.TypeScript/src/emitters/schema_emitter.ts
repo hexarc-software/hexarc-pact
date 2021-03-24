@@ -16,6 +16,8 @@ const TYPES_PATH = "types";
 
 const PRIMITIVE_TYPES_FILE_NAME = "primitive_types.d.ts";
 const DISTINCT_TYPES_FILE_NAME = "distinct_types.d.ts";
+const API_BASE_FILE_NAME = "client_base.ts";
+const CONTROLLER_BASE_FILE_NAME = "controller_base.ts";
 
 export function create(schema: Schema, clientSettings: ClientSettings): SchemaEmitter {
   const outputDirectory = clientSettings.outputDirectory;
@@ -25,6 +27,8 @@ export function create(schema: Schema, clientSettings: ClientSettings): SchemaEm
 
   const primitiveTypesFilePath = path.join(typesDirectory, PRIMITIVE_TYPES_FILE_NAME);
   const distinctTypesFilePath = path.join(typesDirectory, DISTINCT_TYPES_FILE_NAME);
+  const clientBaseFilePath = path.join(bootstrapDirectory, API_BASE_FILE_NAME);
+  const controllerBaseFilePath = path.join(bootstrapDirectory, CONTROLLER_BASE_FILE_NAME);
 
   const typeRegistry = TypeRegistry.create(schema.types);
   const typeReferenceEmitter = TypeReferenceEmitter.create(typeRegistry);
@@ -41,7 +45,8 @@ export function create(schema: Schema, clientSettings: ClientSettings): SchemaEm
   }
 
   async function emitBootstrap() {
-    
+    await File.copy(path.resolve(__dirname, "../../bootstrap/client_base.ts"), clientBaseFilePath);
+    await File.copy(path.resolve(__dirname, "../../bootstrap/controller_base.ts"), controllerBaseFilePath);
   }
 
   async function emitDistinctTypesFile() {
@@ -52,8 +57,7 @@ export function create(schema: Schema, clientSettings: ClientSettings): SchemaEm
   }
 
   async function emitPrimitiveTypesFile() {
-    const source = path.resolve(__dirname, "../../bootstrap/primitive_types.d.ts");
-    await File.copy(source, primitiveTypesFilePath);
+    await File.copy(path.resolve(__dirname, "../../bootstrap/primitive_types.d.ts"), primitiveTypesFilePath);
   }
 
   async function emitTypes() {
