@@ -11,6 +11,7 @@ export interface ClientSettings {
   readonly schemaUri: string;
   readonly clientClassName: string;
   readonly scopes?: string[];
+  readonly outputDirectory: string;
   readonly generationOptions: GenerationOptions;
 }
 
@@ -35,4 +36,14 @@ export interface TypeRegistry {
 
 export interface TypeReferenceEmitter {
   emit: (typeReference: TypeReference, currentNamespace: string | undefined) => TypeNode;
+}
+
+export interface SchemaEmitter {
+  prepare: () => Promise<void>;
+  emit: () => Promise<void>;
+  emitBootstrap: () => Promise<void>;
+  emitTypes: () => Promise<void>;
+  emitControllers: () => Promise<void>;
+  emitApiClient: () => Promise<void>;
+  emitIndex: () => Promise<void>;
 }

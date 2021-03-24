@@ -3,8 +3,12 @@ import * as path from "path";
 
 
 export async function exists(path: string): Promise<boolean> {
-  const stat = await fs.promises.lstat(path);
-  return stat.isDirectory();
+  try {
+    const stat = await fs.promises.lstat(path);
+    return stat.isDirectory();
+  } catch {
+    return false;
+  }
 }
 
 export async function clear(dirPath: string): Promise<void> {
