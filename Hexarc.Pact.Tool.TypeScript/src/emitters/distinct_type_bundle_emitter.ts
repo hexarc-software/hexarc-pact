@@ -11,12 +11,6 @@ export function emit(types: DistinctType[], typeReferenceEmitter: TypeReferenceE
   return ts.factory.createBundle([sourceFile]);
 }
 
-// export function emitTypes(types: DistinctType[], typeReferenceEmitter: TypeReferenceEmitter): ts.NodeArray<ts.DeclarationStatement> {
-//   const groups = groupTypesByNamespace(types);
-//   const declarations = [...groups.entries()].map(([n, t]) => emitTypes(n, t, typeReferenceEmitter)).flat();
-//   return ts.factory.createNodeArray(declarations);
-// }
-
 function groupTypesByNamespace(types: DistinctType[]): Map<string, DistinctType[]> {
   return types.reduce((acc, x) => {
     const namespace = x.namespace ?? "";
