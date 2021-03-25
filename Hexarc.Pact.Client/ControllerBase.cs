@@ -87,7 +87,8 @@ namespace Hexarc.Pact.Client
 
         protected Uri ToMethodUri(String methodPath, IEnumerable<GetMethodParameter> parameters)
         {
-            var query = String.Join("&", parameters.Select(x => x.QueryStringKeyValue));
+            var pairs = parameters.Where(x => x.Value is not null).Select(x => x.QueryStringKeyValue);
+            var query = String.Join("&", pairs);
             return new Uri(this.BaseUri, $"{this.ControllerPath}{methodPath}?{query}");
         }
     }

@@ -6,11 +6,11 @@ namespace Hexarc.Pact.Client
     {
         public String Name { get; }
 
-        public Object Value { get; }
+        public Object? Value { get; }
 
         public String QueryStringKeyValue => $"{this.Name}={this.Value}";
 
-        public GetMethodParameter(String name, Object value) =>
+        public GetMethodParameter(String name, Object? value) =>
             (this.Name, this.Value) = (name, value);
     }
 }
