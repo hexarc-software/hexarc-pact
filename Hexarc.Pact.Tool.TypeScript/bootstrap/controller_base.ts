@@ -16,7 +16,7 @@ export abstract class ControllerBase {
   }
 
   protected async getJson<TResponse>(path: string, parameters: GetMethodParameter[]): Promise<TResponse> {
-    const query = parameters.map(x => `${x.name}=${x.value}`).join("&");
+    const query = parameters.filter(x => x.value != null).map(x => `${x.name}=${x.value}`).join("&");
     const url = `${this.client.path}${this._path}${path}?${query}`;
     const headers = Object.assign(this.client.headers, { "Content-Type": "application/json" });
     const response = await fetch(url, { method: "GET", headers });
@@ -36,5 +36,5 @@ export abstract class ControllerBase {
 
 export interface GetMethodParameter {
   name: string;
-  value: any;
+  value: any | undefined | null;
 }

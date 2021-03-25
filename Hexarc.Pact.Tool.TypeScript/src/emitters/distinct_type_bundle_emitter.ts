@@ -4,11 +4,18 @@ import type { DistinctType } from "../types/protocol/types";
 import type { TypeReferenceEmitter } from "../types/tool";
 
 
-export function emit(types: DistinctType[], typeReferenceEmitter: TypeReferenceEmitter): ts.NodeArray<ts.DeclarationStatement> {
+export function emit(types: DistinctType[], typeReferenceEmitter: TypeReferenceEmitter): ts.Bundle {
   const groups = groupTypesByNamespace(types);
   const declarations = [...groups.entries()].map(([n, t]) => emitTypes(n, t, typeReferenceEmitter)).flat();
-  return ts.factory.createNodeArray(declarations);
+  const sourceFile = ts.factory.createSourceFile(declarations, ts.factory.createToken(ts.SyntaxKind.EndOfFileToken), ts.NodeFlags.None);
+  return ts.factory.createBundle([sourceFile]);
 }
+
+// export function emitTypes(types: DistinctType[], typeReferenceEmitter: TypeReferenceEmitter): ts.NodeArray<ts.DeclarationStatement> {
+//   const groups = groupTypesByNamespace(types);
+//   const declarations = [...groups.entries()].map(([n, t]) => emitTypes(n, t, typeReferenceEmitter)).flat();
+//   return ts.factory.createNodeArray(declarations);
+// }
 
 function groupTypesByNamespace(types: DistinctType[]): Map<string, DistinctType[]> {
   return types.reduce((acc, x) => {

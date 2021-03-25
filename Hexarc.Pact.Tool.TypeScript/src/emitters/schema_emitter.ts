@@ -4,7 +4,9 @@ import * as Directory from "../utils/directory";
 import * as File from "../utils/file";
 import * as TypeRegistry from "../utils/type_registry";
 import * as TypeReferenceEmitter from "./type_reference_emitter";
-import * as TypeDefinitionsEmitter from "./type_definitions_emitter";
+
+import * as DistinctTypeBundleEmitter from "./distinct_type_bundle_emitter";
+import * as IndexBundleEmitter from "./index_bundle_emitter";
 
 import type { Schema } from "../types/protocol/api";
 import type { ClientSettings, SchemaEmitter } from "../types/tool";
@@ -18,6 +20,7 @@ const PRIMITIVE_TYPES_FILE_NAME = "primitive_types.d.ts";
 const DISTINCT_TYPES_FILE_NAME = "distinct_types.d.ts";
 const API_BASE_FILE_NAME = "client_base.ts";
 const CONTROLLER_BASE_FILE_NAME = "controller_base.ts";
+const INDEX_FILE_NAME = "index.ts";
 
 export function create(schema: Schema, clientSettings: ClientSettings): SchemaEmitter {
   const outputDirectory = clientSettings.outputDirectory;
@@ -29,11 +32,10 @@ export function create(schema: Schema, clientSettings: ClientSettings): SchemaEm
   const distinctTypesFilePath = path.join(typesDirectory, DISTINCT_TYPES_FILE_NAME);
   const clientBaseFilePath = path.join(bootstrapDirectory, API_BASE_FILE_NAME);
   const controllerBaseFilePath = path.join(bootstrapDirectory, CONTROLLER_BASE_FILE_NAME);
+  const indexFilePath = path.join(outputDirectory, INDEX_FILE_NAME);
 
   const typeRegistry = TypeRegistry.create(schema.types);
   const typeReferenceEmitter = TypeReferenceEmitter.create(typeRegistry);
-
-  const sourceFile = ts.createSourceFile("source.ts", "", ts.ScriptTarget.ESNext, false, ts.ScriptKind.TS);
   const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
 
   async function prepare() {
@@ -51,8 +53,8 @@ export function create(schema: Schema, clientSettings: ClientSettings): SchemaEm
 
   async function emitDistinctTypesFile() {
     const distinctTypes = typeRegistry.enumerateDistinctTypes();
-    const distinctDefinitions = TypeDefinitionsEmitter.emit(distinctTypes, typeReferenceEmitter);
-    const result = printer.printList(ts.ListFormat.MultiLine, distinctDefinitions, sourceFile);
+    const bundle = DistinctTypeBundleEmitter.emit(distinctTypes, typeReferenceEmitter);
+    const result = printer.printBundle(bundle);
     await File.writeString(distinctTypesFilePath, result);
   }
 
@@ -74,7 +76,12 @@ export function create(schema: Schema, clientSettings: ClientSettings): SchemaEm
   }
 
   async function emitIndex() {
-    
+    const primitiveTypesPath = path.join(TYPES_PATH, PRIMITIVE_TYPES_FILE_NAME);
+    const distinctTypesPath = path.join(TYPES_PATH, DISTINCT_TYPES_FILE_NAME);
+    const typeDefinitionPaths = [primitiveTypesPath, distinctTypesPath];
+    const bundle = IndexBundleEmitter.emit({ typeDefinitionPaths });
+    const result = printer.printBundle(bundle);
+    await File.writeString(indexFilePath, result);
   }
 
   async function emit() {
