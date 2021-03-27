@@ -2,13 +2,15 @@ import * as path from "path";
 import * as ts from "typescript";
 import * as Directory from "../utils/directory";
 import * as File from "../utils/file";
+import * as StringConverter from "../utils/string_converter";
 import * as TypeRegistry from "../utils/type_registry";
 import * as TypeReferenceEmitter from "./type_reference_emitter";
 
 import * as DistinctTypeBundleEmitter from "./distinct_type_bundle_emitter";
+import * as ControllerEmitter from "./controller_emitter";
 import * as IndexBundleEmitter from "./index_bundle_emitter";
 
-import type { Schema } from "../types/protocol/api";
+import type { Controller, Schema } from "../types/protocol/api";
 import type { ClientSettings, SchemaEmitter } from "../types/tool";
 
 
@@ -68,11 +70,24 @@ export function create(schema: Schema, clientSettings: ClientSettings): SchemaEm
   }
 
   async function emitControllers() {
+    schema.controllers
+      .map(controller => ({ controller, filePath: computeControllerPath(controller) }))
+      .forEach(async ({ controller, filePath }) => await emitController(controller, `${filePath}.ts`));
+  }
 
+  function computeControllerPath(controller: Controller) {
+    const fileName = StringConverter.fromPascalToUnderscore(controller.name);
+    return path.join(controllersDirectory, fileName)
+  }
+
+  async function emitController(controller: Controller, filePath: string) {
+    const bundle = ControllerEmitter.emit(controller);
+    const result = printer.printBundle(bundle);
+    await File.writeString(filePath, result);
   }
 
   async function emitApiClient() {
-    
+
   }
 
   async function emitIndex() {

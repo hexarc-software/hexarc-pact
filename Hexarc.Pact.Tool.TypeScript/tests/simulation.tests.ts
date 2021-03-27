@@ -13,6 +13,7 @@ import { ClientSettingsReader, SchemaEmitter, SchemaReader } from "../src/pact";
       await schemaEmitter.prepare();
       await schemaEmitter.emitBootstrap();
       await schemaEmitter.emitTypes();
+      await schemaEmitter.emitControllers();
       await schemaEmitter.emitIndex();
     } catch (e) {
       console.error(e);
