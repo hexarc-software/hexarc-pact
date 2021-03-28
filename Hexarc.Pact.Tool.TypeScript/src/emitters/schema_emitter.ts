@@ -8,10 +8,11 @@ import * as TypeReferenceEmitter from "./type_reference_emitter";
 
 import * as DistinctTypeBundleEmitter from "./distinct_type_bundle_emitter";
 import * as ControllerEmitter from "./controller_emitter";
+import * as ClientEmitter from "./client_emitter";
 import * as IndexBundleEmitter from "./index_bundle_emitter";
 
 import type { Controller, Schema } from "../types/protocol/api";
-import type { ClientSettings, SchemaEmitter } from "../types/tool";
+import { ClientSettings, ImportedController, SchemaEmitter } from "../types/tool";
 
 
 const BOOTSTRAP_PATH = "bootstrap";
@@ -22,6 +23,7 @@ const PRIMITIVE_TYPES_FILE_NAME = "primitive_types.d.ts";
 const DISTINCT_TYPES_FILE_NAME = "distinct_types.d.ts";
 const API_BASE_FILE_NAME = "client_base.ts";
 const CONTROLLER_BASE_FILE_NAME = "controller_base.ts";
+const API_FILE_NAME = "api.ts";
 const INDEX_FILE_NAME = "index.ts";
 
 export function create(schema: Schema, clientSettings: ClientSettings): SchemaEmitter {
@@ -34,6 +36,7 @@ export function create(schema: Schema, clientSettings: ClientSettings): SchemaEm
   const distinctTypesFilePath = path.join(typesDirectory, DISTINCT_TYPES_FILE_NAME);
   const clientBaseFilePath = path.join(bootstrapDirectory, API_BASE_FILE_NAME);
   const controllerBaseFilePath = path.join(bootstrapDirectory, CONTROLLER_BASE_FILE_NAME);
+  const apiFilePath = path.join(outputDirectory, API_FILE_NAME);
   const indexFilePath = path.join(outputDirectory, INDEX_FILE_NAME);
 
   const typeRegistry = TypeRegistry.create(schema.types);
@@ -77,7 +80,7 @@ export function create(schema: Schema, clientSettings: ClientSettings): SchemaEm
 
   function computeControllerPath(controller: Controller) {
     const fileName = StringConverter.fromPascalToUnderscore(controller.name);
-    return path.join(controllersDirectory, fileName)
+    return path.join(controllersDirectory, fileName);
   }
 
   async function emitController(controller: Controller, filePath: string) {
@@ -86,8 +89,22 @@ export function create(schema: Schema, clientSettings: ClientSettings): SchemaEm
     await File.writeString(filePath, result);
   }
 
-  async function emitApiClient() {
+  function computeImportedController(controller: Controller): ImportedController {
+    return {
+      className: controller.name,
+      modulePath: `./controllers/${StringConverter.fromPascalToUnderscore(controller.name)}`
+    };
+  }
 
+  async function emitApiClient() {
+    const importedControllers = schema.controllers.map(x => computeImportedController(x));
+    const bundle = ClientEmitter.emit({ 
+      clientClassName: clientSettings.clientClassName, 
+      controllers: importedControllers,
+      apiBasePath: ""
+    });
+    const result = printer.printBundle(bundle);
+    await File.writeString(apiFilePath, result);
   }
 
   async function emitIndex() {

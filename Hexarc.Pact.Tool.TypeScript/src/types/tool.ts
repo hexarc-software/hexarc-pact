@@ -7,6 +7,7 @@ import type {
   StructType, TaskType, UnionType 
 } from "./protocol/types";
 
+
 export interface ClientSettings {
   readonly schemaUri: string;
   readonly clientClassName: string;
@@ -46,4 +47,15 @@ export interface SchemaEmitter {
   emitControllers: () => Promise<void>;
   emitApiClient: () => Promise<void>;
   emitIndex: () => Promise<void>;
+}
+
+export interface ImportedController {
+  readonly className: string;
+  readonly modulePath: string;
+}
+
+export interface EmitClientSettings {
+  readonly clientClassName: string;
+  readonly apiBasePath: string;
+  readonly controllers: ImportedController[];
 }
