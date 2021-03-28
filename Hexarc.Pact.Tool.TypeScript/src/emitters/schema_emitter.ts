@@ -70,7 +70,8 @@ export function create(schema: Schema, clientSettings: ClientSettings): SchemaEm
   }
 
   async function emitController(controller: Controller, filePath: string) {
-    const bundle = ControllerEmitter.emit(controller);
+    const typeDefinitionPaths = [`../${Defs.PRIMITIVES_TYPES_TARGET_PATH}`, `../${Defs.DISTINCT_TYPES_TARGET_PATH}`];
+    const bundle = ControllerEmitter.emit(controller, typeDefinitionPaths, typeReferenceEmitter);
     const result = printer.printBundle(bundle);
     await File.writeString(filePath, result);
   }

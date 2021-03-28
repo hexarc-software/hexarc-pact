@@ -47,5 +47,6 @@ export const createSourceFile = (statements: ts.Statement[]) =>
     ts.NodeFlags.None);
 
 export const createPublicModifier = () => ts.factory.createModifier(ts.SyntaxKind.PublicKeyword);
+export const createAsyncModifier = () => ts.factory.createModifier(ts.SyntaxKind.AsyncKeyword);
 export const createExportModifier = () => ts.factory.createModifier(ts.SyntaxKind.ExportKeyword);
 export const createReadonlyModifier = () => ts.factory.createModifier(ts.SyntaxKind.ReadonlyKeyword);

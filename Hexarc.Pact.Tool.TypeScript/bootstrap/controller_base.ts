@@ -15,8 +15,8 @@ export abstract class ControllerBase {
     this._path = path;
   }
 
-  protected async getJson<TResponse>(path: string, parameters: GetMethodParameter[]): Promise<TResponse> {
-    const query = parameters.filter(x => x.value != null).map(x => `${x.name}=${x.value}`).join("&");
+  protected async getJson<TResponse>(path: string, args: GetMethodArgument[]): Promise<TResponse> {
+    const query = args.filter(x => x.value != null).map(x => `${x.name}=${x.value}`).join("&");
     const url = `${this.client.path}${this._path}${path}?${query}`;
     const headers = Object.assign(this.client.headers, { "Content-Type": "application/json" });
     const response = await fetch(url, { method: "GET", headers });
@@ -34,7 +34,7 @@ export abstract class ControllerBase {
   }
 }
 
-export interface GetMethodParameter {
+export interface GetMethodArgument {
   name: string;
   value: any | undefined | null;
 }
