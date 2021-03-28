@@ -15,6 +15,18 @@ export const createNamedImportDeclaration = (identifierName: string, modulePath:
           ts.factory.createIdentifier(identifierName))])),
     ts.factory.createStringLiteral(modulePath));
 
+// Emits: export { identifierName } from "modulePath";
+export const createNamedExportDeclaration = (identifierName: string, modulePath: string) =>
+  ts.factory.createExportDeclaration(
+    undefined,
+    undefined,
+    false,
+    ts.factory.createNamedExports([
+      ts.factory.createExportSpecifier(
+        undefined,
+        ts.factory.createIdentifier(identifierName))]),
+    ts.factory.createStringLiteral(modulePath));
+
 // Emits: extends SomeClass
 export const createExtendsClause = (className: string) =>
   ts.factory.createHeritageClause(

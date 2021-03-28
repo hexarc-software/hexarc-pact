@@ -14,8 +14,10 @@ const emitDeclarations = (settings: EmitClientSettings) =>
 const emitImports = (controller: ImportedController[]) =>
   [emitClientBaseImport(), ...emitControllersImport(controller)];
 
-const emitClientBaseImport = (): ts.ImportDeclaration =>
-  Syntax.createNamedImportDeclaration(Defs.CLIENT_BASE_CLASS_NAME, Defs.CLIENT_BASE_MODULE_PATH);
+const emitClientBaseImport = () =>
+  Syntax.createNamedImportDeclaration(
+    Defs.CLIENT_BASE_CLASS_NAME, 
+    `./${Defs.CLIENT_BASE_MODULE_PATH}`);
 
 const emitControllersImport = (controllers: ImportedController[]) =>
   controllers.map(x => Syntax.createNamedImportDeclaration(x.className, x.modulePath));

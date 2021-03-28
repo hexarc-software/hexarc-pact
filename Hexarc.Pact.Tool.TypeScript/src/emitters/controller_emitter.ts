@@ -1,103 +1,59 @@
 import * as ts from "typescript";
+import * as Defs from "./defs";
+import * as Syntax from "./syntax";
 import type { Controller } from "../types/protocol/api";
 
 
-export function emit(controller: Controller): ts.Bundle {
-  const sourceFile = ts.factory.createSourceFile(
-    emitDeclarations(controller),
-    ts.factory.createToken(ts.SyntaxKind.EndOfFileToken),
-    ts.NodeFlags.None);
-  return ts.factory.createBundle([sourceFile]);
-}
+export const emit = (controller: Controller) =>
+  Syntax.createBundle(emitDeclarations(controller));
 
-function emitDeclarations(controller: Controller): ts.Statement[] {
-  const controllerBaseImport = emitControllerBaseImport();
-  const clientBaseImport = emitClientBaseImport();
-  const classDeclaration = emitClass(controller);
-  return [controllerBaseImport, clientBaseImport, classDeclaration];
-}
+const emitDeclarations = (controller: Controller) =>
+  [...emitImports(), emitClass(controller)];
 
-function emitControllerBaseImport(): ts.ImportDeclaration {
-  const importSpec = ts.factory.createImportSpecifier(undefined, ts.factory.createIdentifier("ControllerBase"));
-  const namedImport = ts.factory.createNamedImports([importSpec]);
-  const importClause = ts.factory.createImportClause(false, undefined, namedImport);
-  const pathLiteral = ts.factory.createStringLiteral("../bootstrap/controller_base");
-  return ts.factory.createImportDeclaration(
-    undefined,
-    undefined,
-    importClause,
-    pathLiteral
-  );
-}
+const emitImports = () =>
+  [emitControllerBaseImport(), emitClientBaseImport()];
 
-function emitClientBaseImport(): ts.ImportDeclaration {
-  const importSpec = ts.factory.createImportSpecifier(undefined, ts.factory.createIdentifier("ClientBase"));
-  const namedImport = ts.factory.createNamedImports([importSpec]);
-  const importClause = ts.factory.createImportClause(false, undefined, namedImport);
-  const pathLiteral = ts.factory.createStringLiteral("../bootstrap/client_base");
-  return ts.factory.createImportDeclaration(
-    undefined,
-    undefined,
-    importClause,
-    pathLiteral
-  );
-}
+const emitControllerBaseImport = () =>
+  Syntax.createNamedImportDeclaration(
+    Defs.CONTROLLER_BASE_CLASS_NAME,
+    `../${Defs.CONTROLLER_BASE_MODULE_PATH}`);
 
-function emitClass(controller: Controller): ts.ClassDeclaration {
-  return ts.factory.createClassDeclaration(
+const emitClientBaseImport = () =>
+  Syntax.createNamedImportDeclaration(
+    Defs.CLIENT_BASE_CLASS_NAME,
+    `../${Defs.CLIENT_BASE_MODULE_PATH}`);
+
+const emitClass = (controller: Controller) =>
+  ts.factory.createClassDeclaration(
     undefined,
-    [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)],
+    [Syntax.createExportModifier()],
     controller.name,
     undefined,
-    [emitHeritageClause()],
-    [emitConstructor(controller)]
-  );
-}
+    [Syntax.createExtendsClause(Defs.CONTROLLER_BASE_CLASS_NAME)],
+    [emitConstructor(controller)]);
 
-function emitHeritageClause(): ts.HeritageClause {
-  return ts.factory.createHeritageClause(
-    ts.SyntaxKind.ExtendsKeyword,
-    [ts.factory.createExpressionWithTypeArguments(
-      ts.factory.createIdentifier("ControllerBase"),
-      undefined
-    )]
-  );
-}
-
-function emitConstructor(controller: Controller): ts.ConstructorDeclaration {
-  return ts.factory.createConstructorDeclaration(
+const emitConstructor = (controller: Controller) =>
+  ts.factory.createConstructorDeclaration(
     undefined,
-    [ts.factory.createModifier(ts.SyntaxKind.PublicKeyword)],
-    [
-      ts.factory.createParameterDeclaration(
-        undefined,
-        undefined,
-        undefined,
-        "clientBase",
-        undefined,
-        ts.factory.createTypeReferenceNode("ClientBase")
-      ), 
-      ts.factory.createParameterDeclaration(
-        undefined,
-        undefined,
-        undefined,
-        "path",
-        undefined,
-        ts.factory.createTypeReferenceNode("string"),
-        ts.factory.createStringLiteral(controller.path)
-      )
-    ],
+    [Syntax.createPublicModifier()],
+    [ts.factory.createParameterDeclaration(
+      undefined,
+      undefined,
+      undefined,
+      ts.factory.createIdentifier("clientBase"),
+      undefined,
+      ts.factory.createTypeReferenceNode(Defs.CLIENT_BASE_CLASS_NAME)),
+    ts.factory.createParameterDeclaration(
+      undefined,
+      undefined,
+      undefined,
+      ts.factory.createIdentifier("path"),
+      undefined,
+      ts.factory.createTypeReferenceNode("string"),
+      ts.factory.createStringLiteral(controller.path))],
     ts.factory.createBlock([
       ts.factory.createExpressionStatement(
         ts.factory.createCallExpression(
           ts.factory.createSuper(),
           undefined,
-          [
-            ts.factory.createIdentifier("clientBase"),
-            ts.factory.createIdentifier("path")
-          ]
-        )
-      )
-    ])
-  );
-}
+          [ts.factory.createIdentifier("clientBase"), ts.factory.createIdentifier("path")]))]));

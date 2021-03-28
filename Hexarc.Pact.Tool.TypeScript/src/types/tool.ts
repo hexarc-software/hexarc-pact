@@ -59,3 +59,8 @@ export interface EmitClientSettings {
   readonly apiBasePath: string;
   readonly controllers: ImportedController[];
 }
+
+export interface IndexEmitterSettings {
+  typeDefinitionPaths: string[];
+  clientClassName: string;
+}
