@@ -27,7 +27,7 @@ namespace Hexarc.Pact.AspNetCore.Readers
             new(methodCandidate.MethodInfo.Name.ToConventionalString(namingConvention),
                 this.ReadPath(methodCandidate.RouteAttribute!),
                 this.ReadHttpMethod(methodCandidate.HttpMethodAttribute!),
-                this.ReadMethodReturnType(methodCandidate.MethodInfo.ReturnType.ToContextualType()),
+                this.ReadMethodReturnType(methodCandidate.MethodInfo.ReturnParameter.ToContextualParameter()),
                 this.ReadMethodParameters(methodCandidate.MethodInfo.GetContextualParameters()));
 
         private String ReadPath(RouteAttribute routeAttribute) =>
