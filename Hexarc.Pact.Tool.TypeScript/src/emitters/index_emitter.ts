@@ -4,16 +4,20 @@ import * as Syntax from "./syntax";
 import type { IndexEmitterSettings } from "../types/tool";
 
 
-export const emit = (settings: IndexEmitterSettings) =>
-  Syntax.createBundle(
+export function emit(settings: IndexEmitterSettings) {
+  return Syntax.createBundle(
     emitDeclarations(settings),
     emitTypeDefinitionSources(settings.typeDefinitionPaths));
+}
 
-const emitTypeDefinitionSources = (paths: string[]) =>
-  paths.map(x => emitTypeDefinitionSource(x));
+function emitTypeDefinitionSources(paths: string[]) {
+  return paths.map(x => emitTypeDefinitionSource(x));
+}
 
-const emitTypeDefinitionSource = (path: string) =>
-  ts.createUnparsedSourceFile(`/// <reference path="${path}" />`);
+function emitTypeDefinitionSource(path: string) {
+  return ts.createUnparsedSourceFile(`/// <reference path="${path}" />`);
+}
 
-const emitDeclarations = (settings: IndexEmitterSettings) =>
-  [Syntax.createNamedExportDeclaration(settings.clientClassName, `./${Defs.API_MODULE_PATH}`)];
+function emitDeclarations(settings: IndexEmitterSettings) {
+  return [Syntax.createNamedExportDeclaration(settings.clientClassName, `./${Defs.API_MODULE_PATH}`)];
+}

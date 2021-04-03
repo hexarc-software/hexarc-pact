@@ -6,44 +6,52 @@ import { Controller, HttpMethod, Method, MethodParameter } from "../types/protoc
 import type { TypeReferenceEmitter } from "../types/tool";
 
 
-export const emit = (controller: Controller, typeDefinitionPaths: string[], typeReferenceEmitter: TypeReferenceEmitter) =>
-  Syntax.createBundle(
+export function emit(controller: Controller, typeDefinitionPaths: string[], typeReferenceEmitter: TypeReferenceEmitter) {
+  return Syntax.createBundle(
     emitDeclarations(controller, typeReferenceEmitter),
     emitTypeDefinitionSources(typeDefinitionPaths));
+}
 
-const emitTypeDefinitionSources = (paths: string[]) =>
-  paths.map(x => emitTypeDefinitionSource(x));
+function emitTypeDefinitionSources(paths: string[]) {
+  return paths.map(x => emitTypeDefinitionSource(x));
+}
 
-const emitTypeDefinitionSource = (path: string) =>
-  ts.createUnparsedSourceFile(`/// <reference path="${path}" />`);
+function emitTypeDefinitionSource(path: string) {
+  return ts.createUnparsedSourceFile(`/// <reference path="${path}" />`);
+}
 
-const emitDeclarations = (controller: Controller, typeReferenceEmitter: TypeReferenceEmitter) =>
-  [...emitImports(), emitClass(controller, typeReferenceEmitter)];
+function emitDeclarations(controller: Controller, typeReferenceEmitter: TypeReferenceEmitter) {
+  return [...emitImports(), emitClass(controller, typeReferenceEmitter)];
+}
 
-const emitImports = () =>
-  [emitControllerBaseImport(), emitClientBaseImport()];
+function emitImports() {
+  return [emitControllerBaseImport(), emitClientBaseImport()];
+}
 
-const emitControllerBaseImport = () =>
-  Syntax.createNamedImportDeclaration(
+function emitControllerBaseImport() {
+  return Syntax.createNamedImportDeclaration(
     Defs.CONTROLLER_BASE_CLASS_NAME,
     `../${Defs.CONTROLLER_BASE_MODULE_PATH}`);
+}
 
-const emitClientBaseImport = () =>
-  Syntax.createNamedImportDeclaration(
+function emitClientBaseImport() {
+  return Syntax.createNamedImportDeclaration(
     Defs.CLIENT_BASE_CLASS_NAME,
     `../${Defs.CLIENT_BASE_MODULE_PATH}`);
+}
 
-const emitClass = (controller: Controller, typeReferenceEmitter: TypeReferenceEmitter) =>
-  ts.factory.createClassDeclaration(
+function emitClass(controller: Controller, typeReferenceEmitter: TypeReferenceEmitter) {
+  return ts.factory.createClassDeclaration(
     undefined,
     [Syntax.createExportModifier()],
     controller.name,
     undefined,
     [Syntax.createExtendsClause(Defs.CONTROLLER_BASE_CLASS_NAME)],
     [emitConstructor(controller), ...emitMethods(controller.methods, typeReferenceEmitter)]);
+}
 
-const emitConstructor = (controller: Controller) =>
-  ts.factory.createConstructorDeclaration(
+function emitConstructor(controller: Controller) {
+  return ts.factory.createConstructorDeclaration(
     undefined,
     [Syntax.createPublicModifier()],
     [ts.factory.createParameterDeclaration(
@@ -68,12 +76,14 @@ const emitConstructor = (controller: Controller) =>
           undefined,
           [ts.factory.createIdentifier("clientBase"), ts.factory.createIdentifier("path")]))],
       true));
+}
 
-const emitMethods = (methods: Method[], typeReferenceEmitter: TypeReferenceEmitter) =>
-  methods.map(x => emitMethod(x, typeReferenceEmitter));
+function emitMethods(methods: Method[], typeReferenceEmitter: TypeReferenceEmitter) {
+  return methods.map(x => emitMethod(x, typeReferenceEmitter));
+}
 
-const emitMethod = (method: Method, typeReferenceEmitter: TypeReferenceEmitter) =>
-  ts.factory.createMethodDeclaration(
+function emitMethod(method: Method, typeReferenceEmitter: TypeReferenceEmitter) {
+  return ts.factory.createMethodDeclaration(
     undefined,
     [Syntax.createPublicModifier(), Syntax.createAsyncModifier()],
     undefined,
@@ -83,12 +93,14 @@ const emitMethod = (method: Method, typeReferenceEmitter: TypeReferenceEmitter) 
     emitMethodParameters(method.parameters, typeReferenceEmitter),
     typeReferenceEmitter.emit(method.returnType, undefined),
     emitMethodBody(method));
+}
 
-const emitMethodParameters = (parameters: MethodParameter[], typeReferenceEmitter: TypeReferenceEmitter) =>
-  parameters.map(x => emitMethodParameter(x, typeReferenceEmitter));
+function emitMethodParameters(parameters: MethodParameter[], typeReferenceEmitter: TypeReferenceEmitter) {
+  return parameters.map(x => emitMethodParameter(x, typeReferenceEmitter));
+}
 
-const emitMethodParameter = (parameter: MethodParameter, typeReferenceEmitter: TypeReferenceEmitter) =>
-  ts.factory.createParameterDeclaration(
+function emitMethodParameter(parameter: MethodParameter, typeReferenceEmitter: TypeReferenceEmitter) {
+  return ts.factory.createParameterDeclaration(
     undefined,
     undefined,
     undefined,
@@ -96,8 +108,9 @@ const emitMethodParameter = (parameter: MethodParameter, typeReferenceEmitter: T
     parameter.type.kind === TypeReferenceKind.Nullable ? ts.factory.createToken(ts.SyntaxKind.QuestionToken) : undefined,
     typeReferenceEmitter.emit(parameter.type, undefined),
     undefined);
+}
 
-const emitMethodBody = (method: Method) => {
+function emitMethodBody(method: Method) {
   switch (method.httpMethod) {
     case HttpMethod.Get: return emitGetMethodBody(method);
     case HttpMethod.Post: return emitPostBody(method);
@@ -105,19 +118,22 @@ const emitMethodBody = (method: Method) => {
   }
 }
 
-const emitGetMethodBody = (method: Method) =>
-  ts.factory.createBlock([
-    emitGetMethodArgumentsVar(method.parameters),
-    emitGetJsonInvocation(method.path)
-  ], true);
+function emitGetMethodBody(method: Method) {
+  const hasArguments = method.parameters.length > 0;
+  return ts.factory.createBlock(
+    hasArguments 
+      ? [emitGetMethodArgumentsVar(method.parameters), emitGetJsonInvocation(method.path, hasArguments)]
+      : [emitGetJsonInvocation(method.path)], true);
+}
 
-const emitPostBody = (method: Method) =>
-  ts.factory.createBlock([
+function emitPostBody(method: Method) {
+  return ts.factory.createBlock([
     emitPostJsonInvocation(method)
   ], true);
+}
 
-const emitGetMethodArgumentsVar = (parameters: MethodParameter[]) =>
-  ts.factory.createVariableStatement(
+function emitGetMethodArgumentsVar(parameters: MethodParameter[]) {
+  return ts.factory.createVariableStatement(
     undefined,
     ts.factory.createVariableDeclarationList([
       ts.factory.createVariableDeclaration(
@@ -126,29 +142,33 @@ const emitGetMethodArgumentsVar = (parameters: MethodParameter[]) =>
         undefined,
         emitGetMethodArguments(parameters))],
       ts.NodeFlags.Const));
+}
 
-const emitGetMethodArguments = (parameters: MethodParameter[]) =>
-  ts.factory.createArrayLiteralExpression(
-    parameters.map(x => emitGetMethodArgument(x)),
-    true);
+function emitGetMethodArguments(parameters: MethodParameter[]) {
+  return ts.factory.createArrayLiteralExpression(parameters.map(x => emitGetMethodArgument(x)));
+}
 
-const emitGetMethodArgument = (parameter: MethodParameter) =>
-  ts.factory.createObjectLiteralExpression([
+function emitGetMethodArgument(parameter: MethodParameter) {
+  return ts.factory.createObjectLiteralExpression([
     ts.factory.createPropertyAssignment("name", ts.factory.createStringLiteral(parameter.name)),
-    ts.factory.createPropertyAssignment("value", ts.factory.createIdentifier(parameter.name))], true);
+    ts.factory.createPropertyAssignment("value", ts.factory.createIdentifier(parameter.name))], false);
+}
 
-const emitGetJsonInvocation = (path: string) =>
-  ts.factory.createReturnStatement(
+function emitGetJsonInvocation(path: string, hasArguments: boolean = false) {
+  return ts.factory.createReturnStatement(
     ts.factory.createAwaitExpression(
       ts.factory.createCallExpression(
         ts.factory.createPropertyAccessExpression(
           ts.factory.createThis(),
           ts.factory.createIdentifier("getJson")),
         undefined,
-        [ts.factory.createStringLiteral(path), ts.factory.createIdentifier("args")])));
+        hasArguments 
+          ? [ts.factory.createStringLiteral(path), ts.factory.createIdentifier("args")]
+          : [ts.factory.createStringLiteral(path)])));
+}
 
-const emitPostJsonInvocation = (method: Method) =>
-  ts.factory.createReturnStatement(
+function emitPostJsonInvocation(method: Method) {
+  return ts.factory.createReturnStatement(
     ts.factory.createAwaitExpression(
       ts.factory.createCallExpression(
         ts.factory.createPropertyAccessExpression(
@@ -156,3 +176,4 @@ const emitPostJsonInvocation = (method: Method) =>
           ts.factory.createIdentifier("postJson")),
         undefined,
         [ts.factory.createStringLiteral(method.path), ts.factory.createIdentifier(method.parameters[0].name)])));
+}
