@@ -25,7 +25,7 @@ function toNamingConventionQuery(namingConvention: NamingConvention) {
 }
 
 function toScopeQuery(scopes: string[]) {
-  scopes.map(x => `scope={x}`).join("&");
+  return scopes.map(x => `scope=${x}`).join("&");
 }
 
 const enum NamingConvention {
