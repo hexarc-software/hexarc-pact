@@ -1,3 +1,5 @@
+import { HttpError } from "./http_error";
+
 export abstract class ClientBase {
   private _path: string;
   public get path() { return this._path; }
@@ -7,8 +9,13 @@ export abstract class ClientBase {
   public get headers() { return this._headers };
   public set headers(value: Record<string, string>) { this._headers = value; }
 
-  public constructor(path: string, headers?: Record<string, string>) {
+  private _onError: (error: HttpError) => void = () => { };
+  public get onError() { return this._onError; }
+  public set onError(value: (error: HttpError) => void) { this._onError = value; }
+
+  public constructor(path: string, headers?: Record<string, string>, onError?: (error: HttpError) => void) {
     this._path = path;
     this._headers = headers ? Object.assign(this._headers, headers) : this._headers;
+    this._onError = onError ?? this._onError;
   }
 }

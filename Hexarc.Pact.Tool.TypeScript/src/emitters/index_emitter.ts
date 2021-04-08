@@ -19,5 +19,8 @@ function emitTypeDefinitionSource(path: string) {
 }
 
 function emitDeclarations(settings: IndexEmitterSettings) {
-  return [Syntax.createNamedExportDeclaration(settings.clientClassName, `./${Defs.API_MODULE_PATH}`)];
+  return [
+    Syntax.createNamedExportDeclaration(Defs.HTTP_ERROR_CLASS_NAME, `./${Defs.HTTP_ERROR_MODULE_PATH}`),
+    Syntax.createNamedExportDeclaration(settings.clientClassName, `./${Defs.API_MODULE_PATH}`)
+  ];
 }

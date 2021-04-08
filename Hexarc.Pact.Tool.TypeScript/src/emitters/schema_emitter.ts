@@ -38,6 +38,9 @@ export function create(schema: Schema, clientSettings: ClientSettings): SchemaEm
     await File.copy(
       path.resolve(__dirname, Defs.CONTROLLER_BASE_SOURCE_PATH), 
       path.join(outputDirectory, Defs.CONTROLLER_BASE_TARGET_PATH));
+    await File.copy(
+      path.resolve(__dirname, Defs.HTTP_ERROR_SOURCE_PATH), 
+      path.join(outputDirectory, Defs.HTTP_ERROR_TARGET_PATH));
   }
 
   async function emitDistinctTypesFile() {

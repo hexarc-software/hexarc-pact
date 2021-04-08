@@ -1,5 +1,6 @@
 
 import { ClientBase } from "./client_base";
+import { HttpError } from "./http_error";
 
 
 export abstract class ControllerBase {
@@ -21,8 +22,7 @@ export abstract class ControllerBase {
     const url = `${this.client.path}${this._path}${path}${query}`;
     const headers = Object.assign(this.client.headers, { "Content-Type": "application/json" });
     const response = await fetch(url, { method: "GET", headers });
-    if (!response.ok) throw new Error(`Request filed with status ${response.statusText}`);
-    return await response.json();
+    return await this._processResponse(response);
   }
 
   protected async postJson<TRequest, TResponse>(path: string, request: TRequest): Promise<TResponse> {
@@ -30,9 +30,45 @@ export abstract class ControllerBase {
     const body = JSON.stringify(request);
     const headers = Object.assign(this.client.headers, { "Content-Type": "application/json" });
     const response = await fetch(url, { method: "POST", body, headers });
-    if (!response.ok) throw new Error(`Request filed with status ${response.statusText}`)
-    return await response.json();
+    return await this._processResponse(response);
   }
+
+  private async _processResponse<TResponse>(response: Response): Promise<TResponse> {
+    if (response.ok) return await response.json();
+    const httpError = await HttpErrorUtils.extractHttpError(response);
+    this.client.onError(httpError);
+    throw httpError;
+  }
+}
+
+module HttpErrorUtils {
+
+  export async function extractHttpError(response: Response): Promise<HttpError> {
+    const code = response.status;
+    const body = await tryReadBody(response);
+    return new HttpError(code, body);
+  }
+
+  async function tryReadBody(response: Response): Promise<any> {
+    return await tryReadJson(response) ?? await tryReadText(response);
+  }
+
+  async function tryReadJson(response: Response): Promise<any> {
+    try {
+      return await response.json();
+    } catch {
+      return undefined;
+    }
+  }
+
+  async function tryReadText(response: Response): Promise<any> {
+    try {
+      return await response.text();
+    } catch {
+      return undefined;
+    }
+  }
+
 }
 
 export interface GetMethodArgument {
