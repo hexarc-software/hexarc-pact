@@ -265,7 +265,7 @@ namespace Hexarc.Pact.Tool.Emitters
         private Boolean IsNotNullReferenceType(TypeReference reference) => reference switch
         {
             ArrayTypeReference { ArrayLikeTypeId: null } => true,
-            ArrayTypeReference { ArrayLikeTypeId: var typeId } => this.TypeRegistry.GetType(typeId.Value).IsReference,
+            ArrayTypeReference { ArrayLikeTypeId: {} typeId } => this.TypeRegistry.GetType(typeId).IsReference,
             DictionaryTypeReference dictionary => this.TypeRegistry.GetType(dictionary.TypeId).IsReference,
             DistinctTypeReference distinct => this.TypeRegistry.GetType(distinct.TypeId).IsReference,
             DynamicTypeReference dynamic => this.TypeRegistry.GetType(dynamic.TypeId).IsReference,
