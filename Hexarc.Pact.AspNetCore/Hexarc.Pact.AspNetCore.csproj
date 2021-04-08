@@ -8,7 +8,7 @@
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Hexarc.Serialization.Union" Version="[1.0.0,2.0.0)" />
-    <PackageReference Include="Namotion.Reflection" Version="1.0.18" />
+    <PackageReference Include="Namotion.Reflection" Version="1.0.18" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,7 +17,7 @@
 
   <PropertyGroup>
     <PackageId>Hexarc.Pact.AspNetCore</PackageId>
-    <Version>1.5.1</Version>
+    <Version>1.5.2</Version>
     <Authors>Max Koverdyaev</Authors>
     <Company>Hexarc Software</Company>
     <PackageTags>Discovery;WebApi;AspNet;Protocol;Pact</PackageTags>
