@@ -1,6 +1,6 @@
 #!/bin/sh
 source .env
-PACKAGE="./nupkg/Hexarc.Pact.Tool.1.4.0.nupkg"
+PACKAGE="./nupkg/Hexarc.Pact.Tool.1.5.0.nupkg"
 
 if [ -z $NUGET_API_KEY ]; then
   echo "No NUGET_API_KEY found in .env file";
