@@ -110,12 +110,12 @@ namespace Hexarc.Pact.AspNetCore.Readers
                 : this.ReadObjectProperty(property, namingConvention);
 
         private ObjectProperty ReadObjectProperty(ContextualPropertyInfo property, NamingConvention? namingConvention) =>
-            new(this.ReadObjectPropertyType(property), property.Name.ToConventionalString(namingConvention));
+            new(this.ReadObjectPropertyType(property, namingConvention), property.Name.ToConventionalString(namingConvention));
 
         private ObjectProperty ReadUnionTagProperty(UnionTag tag, NamingConvention? namingConvention) =>
             new(new LiteralTypeReference(tag.Value), tag.Name.ToConventionalString(namingConvention));
 
-        private TypeReference ReadObjectPropertyType(ContextualPropertyInfo property) =>
-            this.TypeReferenceReader.Read(property);
+        private TypeReference ReadObjectPropertyType(ContextualPropertyInfo property, NamingConvention? namingConvention) =>
+            this.TypeReferenceReader.Read(property, namingConvention);
     }
 }

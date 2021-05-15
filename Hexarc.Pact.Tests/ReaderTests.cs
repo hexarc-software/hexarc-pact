@@ -5,6 +5,7 @@ using Namotion.Reflection;
 using Hexarc.Annotations;
 using Hexarc.Pact.Protocol.TypeProviders;
 using Hexarc.Pact.AspNetCore.Internals;
+using Hexarc.Pact.AspNetCore.Models;
 using Hexarc.Pact.AspNetCore.Readers;
 
 namespace Hexarc.Pact.Tests
@@ -34,7 +35,7 @@ namespace Hexarc.Pact.Tests
 
             foreach (var t in types)
             {
-                Console.WriteLine(ObjectDumper.Dump(typeReferenceReader.Read(t.ToContextualType())));
+                Console.WriteLine(ObjectDumper.Dump(typeReferenceReader.Read(t.ToContextualType(), NamingConvention.CamelCase)));
             }
 
             while (distinctTypeQueue.TryDequeue(out var t))

@@ -27,22 +27,22 @@ namespace Hexarc.Pact.AspNetCore.Readers
             new(methodCandidate.MethodInfo.Name.ToConventionalString(namingConvention),
                 this.ReadPath(methodCandidate.RouteAttribute!),
                 this.ReadHttpMethod(methodCandidate.HttpMethodAttribute!),
-                this.ReadMethodReturnType(methodCandidate.MethodInfo.ReturnParameter.ToContextualParameter()),
-                this.ReadMethodParameters(methodCandidate.MethodInfo.GetContextualParameters()));
+                this.ReadMethodReturnType(methodCandidate.MethodInfo.ReturnParameter.ToContextualParameter(), namingConvention),
+                this.ReadMethodParameters(methodCandidate.MethodInfo.GetContextualParameters(), namingConvention));
 
         private String ReadPath(RouteAttribute routeAttribute) =>
             routeAttribute.Template.StartsWith("/") ? routeAttribute.Template : $"/{routeAttribute.Template}";
 
-        private TaskTypeReference ReadMethodReturnType(ContextualType returnType) =>
+        private TaskTypeReference ReadMethodReturnType(ContextualType returnType, NamingConvention? namingConvention) =>
             this.TypeChecker.IsTaskType(returnType)
-                ? (TaskTypeReference)this.TypeReferenceReader.Read(returnType)
-                : new TaskTypeReference(default, this.TypeReferenceReader.Read(returnType));
+                ? (TaskTypeReference)this.TypeReferenceReader.Read(returnType, namingConvention)
+                : new TaskTypeReference(default, this.TypeReferenceReader.Read(returnType, namingConvention));
 
-        private MethodParameter[] ReadMethodParameters(ContextualParameterInfo[] parameterInfos) =>
-            parameterInfos.Select(this.ReadMethodParameter).ToArray();
+        private MethodParameter[] ReadMethodParameters(ContextualParameterInfo[] parameterInfos, NamingConvention? namingConvention) =>
+            parameterInfos.Select(x => this.ReadMethodParameter(x, namingConvention)).ToArray();
 
-        private MethodParameter ReadMethodParameter(ContextualParameterInfo parameterInfo) =>
-            new(this.TypeReferenceReader.Read(parameterInfo), parameterInfo.Name!);
+        private MethodParameter ReadMethodParameter(ContextualParameterInfo parameterInfo, NamingConvention? namingConvention) =>
+            new(this.TypeReferenceReader.Read(parameterInfo, namingConvention), parameterInfo.Name!);
 
         private HttpMethod ReadHttpMethod(HttpMethodAttribute methodAttribute) => methodAttribute switch
         {

@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Namotion.Reflection;
 
 namespace Hexarc.Pact.AspNetCore.Extensions
@@ -9,6 +11,14 @@ namespace Hexarc.Pact.AspNetCore.Extensions
     /// </summary>
     public static class ContextualTypeExtensions
     {
+        /// <summary>
+        /// Extracts the tuple element names if provided.
+        /// </summary>
+        /// <param name="contextualType">The contextual type for a ValueTuple type.</param>
+        /// <returns>Returns the tuple element names or null.</returns>
+        public static IList<String?>? GetTupleElementNames(this ContextualType contextualType) =>
+            contextualType.GetContextAttribute<TupleElementNamesAttribute>()?.TransformNames;
+
         /// <summary>
         /// Extracts the generic arguments from the tuple contextual type.
         /// </summary>
