@@ -80,4 +80,5 @@ export type TypeReference =
   | TaskTypeReference
   | PrimitiveTypeReference
   | DynamicTypeReference
-  | LiteralTypeReference;
+  | LiteralTypeReference
+  | TupleTypeReference;

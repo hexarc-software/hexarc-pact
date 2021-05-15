@@ -2,12 +2,13 @@ import * as ts from "typescript";
 import * as TypeUtils from "../utils/type_utils";
 import * as PrimitiveTypeChecker from "./primitive_type_checker";
 
-import { TypeReferenceKind } from "../types/protocol/type_references";
+import { TupleElement, TypeReferenceKind } from "../types/protocol/type_references";
 import type { TypeReferenceEmitter, TypeRegistry } from "../types/tool";
 import type {
   TypeReference, PrimitiveTypeReference, NullableTypeReference,
   ArrayTypeReference, DictionaryTypeReference, TaskTypeReference,
-  TypeParameterReference, LiteralTypeReference, DistinctTypeReference
+  TypeParameterReference, LiteralTypeReference, DistinctTypeReference,
+  TupleTypeReference
 } from "../types/protocol/type_references";
 
 
@@ -23,6 +24,7 @@ export function create(typeRegistry: TypeRegistry): TypeReferenceEmitter {
       case TypeReferenceKind.Task: return emitTaskTypeReference(typeReference, currentNamespace);
       case TypeReferenceKind.TypeParameter: return emitTypeParameterReference(typeReference);
       case TypeReferenceKind.Literal: return emitLiteralTypeReference(typeReference);
+      case TypeReferenceKind.Tuple: return emitTupleTypeReference(typeReference, currentNamespace);
       case TypeReferenceKind.Distinct: return emitDistinctTypeReference(typeReference, currentNamespace);
       default: throw new Error(`Couldn't emit a Hexarc Pact type reference for ${JSON.stringify(typeReference)}`);
     }
@@ -83,6 +85,22 @@ export function create(typeRegistry: TypeRegistry): TypeReferenceEmitter {
 
   function emitLiteralTypeReference(typeReference: LiteralTypeReference): ts.TypeNode {
     return ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral(typeReference.name));
+  }
+
+  function emitTupleTypeReference(typeReference: TupleTypeReference, currentNamespace: string | undefined): ts.TypeNode {
+    const elements = emitTupleElements(typeReference.elements, currentNamespace)
+    return ts.factory.createTupleTypeNode(elements);
+  }
+
+  function emitTupleElements(elements: TupleElement[], currentNamespace: string | undefined): (ts.TypeNode | ts.NamedTupleMember)[] {
+    return (elements.every(x => x.name != null)) ? 
+      elements.map(x => emitNamedTupleElement(x, currentNamespace)) :
+      elements.map(x => emit(x.type, currentNamespace));
+  }
+
+  function emitNamedTupleElement(element: TupleElement, currentNamespace: string | undefined): ts.NamedTupleMember {
+    const identifier = ts.factory.createIdentifier(element.name!);
+    return ts.factory.createNamedTupleMember(undefined, identifier, undefined, emit(element.type, currentNamespace))
   }
 
   function emitDistinctTypeReference(typeReference: DistinctTypeReference, currentNamespace: string | undefined): ts.TypeReferenceNode {
