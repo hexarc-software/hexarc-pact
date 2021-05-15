@@ -1,7 +1,6 @@
 using System;
-using Hexarc.Pact.Protocol.TypeReferences;
 
-namespace Hexarc.Pact.Protocol.Types
+namespace Hexarc.Pact.Protocol.TypeReferences
 {
     /// <summary>
     /// Describes a tuple element object.

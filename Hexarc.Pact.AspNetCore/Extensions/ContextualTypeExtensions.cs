@@ -9,13 +9,17 @@ namespace Hexarc.Pact.AspNetCore.Extensions
     /// </summary>
     public static class ContextualTypeExtensions
     {
+        /// <summary>
+        /// Extracts the generic arguments from the tuple contextual type.
+        /// </summary>
+        /// <param name="contextualType">The contextual type for a ValueTuple type.</param>
+        /// <returns>Returns the generic arguments from the tuple contextual type.</returns>
         public static ContextualType[] GetTupleArguments(this ContextualType contextualType) =>
             contextualType.EnumerateFlattenTupleArguments().ToArray();
 
         private static IEnumerable<ContextualType> EnumerateFlattenTupleArguments(this ContextualType contextualType)
         {
-            // We have to flat a tuple generic arguments
-            // in the case of a tuple of eight elements.
+            // We have to flat a tuple generic arguments in the case of a tuple with eight elements.
             // If the eighth element is presented it contains a folded tuple
             // with the rest tuple generic arguments from the top level definition.
 

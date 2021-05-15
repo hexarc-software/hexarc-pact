@@ -4,7 +4,6 @@ using Namotion.Reflection;
 using Hexarc.Pact.AspNetCore.Internals;
 using Hexarc.Pact.AspNetCore.Models;
 using Hexarc.Pact.Protocol.TypeReferences;
-using Hexarc.Pact.Protocol.Types;
 using Hexarc.Pact.AspNetCore.Extensions;
 
 namespace Hexarc.Pact.AspNetCore.Readers

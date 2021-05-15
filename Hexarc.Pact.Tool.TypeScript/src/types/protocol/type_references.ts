@@ -7,7 +7,8 @@ export const enum TypeReferenceKind {
   Task = "Task",
   Primitive = "Primitive",
   Dynamic = "Dynamic",
-  Literal = "Literal"
+  Literal = "Literal",
+  Tuple = "Tuple"
 }
 
 export interface ArrayTypeReference {
@@ -58,6 +59,16 @@ export interface DynamicTypeReference {
 export interface LiteralTypeReference {
   readonly kind: TypeReferenceKind.Literal;
   readonly name: string;
+}
+
+export interface TupleTypeReference {
+  readonly kind: TypeReferenceKind.Tuple;
+  readonly elements: TupleElement[];
+}
+
+export interface TupleElement {
+  readonly type: TypeReference;
+  readonly name?: string;
 }
 
 export type TypeReference =

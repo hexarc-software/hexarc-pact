@@ -1,5 +1,4 @@
 using System;
-using Hexarc.Pact.Protocol.Types;
 
 namespace Hexarc.Pact.Protocol.TypeReferences
 {
