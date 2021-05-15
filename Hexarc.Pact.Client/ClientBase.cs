@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Text.Json;
+using Hexarc.Serialization.Tuple;
 using Hexarc.Serialization.Union;
 
 namespace Hexarc.Pact.Client
@@ -14,7 +15,7 @@ namespace Hexarc.Pact.Client
         public JsonSerializerOptions JsonSerializerOptions { get; } = new()
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            Converters = { new UnionConverterFactory() }
+            Converters = { new UnionConverterFactory(), new TupleConverterFactory() }
         };
 
         protected ClientBase(HttpClient httpClient) =>

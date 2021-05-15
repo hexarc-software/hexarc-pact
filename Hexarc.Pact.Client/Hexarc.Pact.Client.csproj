@@ -6,12 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hexarc.Serialization.Union" Version="1.0.0" />
+    <PackageReference Include="Hexarc.Serialization.Union" Version="1.0.3" />
+    <PackageReference Include="Hexarc.Serialization.Tuple" Version="1.0.0" />
   </ItemGroup>
 
   <PropertyGroup>
     <PackageId>Hexarc.Pact.Client</PackageId>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <Authors>Max Koverdyaev</Authors>
     <Company>Hexarc Software</Company>
     <PackageTags>CodeGen;Http;Api;Client;Pact</PackageTags>
