@@ -1,0 +1,29 @@
+using System;
+using Hexarc.Pact.Protocol.TypeReferences;
+
+namespace Hexarc.Pact.Protocol.Types
+{
+    /// <summary>
+    /// Describes a tuple element object.
+    /// </summary>
+    public sealed class TupleElement
+    {
+        /// <summary>
+        /// Gets the tuple element type by it's reference.
+        /// </summary>
+        public TypeReference Type { get; }
+
+        /// <summary>
+        /// Gets the tuple element name.
+        /// </summary>
+        public String? Name { get; }
+
+        /// <summary>
+        /// Creates an instance of TupleElement type.
+        /// </summary>
+        /// <param name="type">The tuple element type.</param>
+        /// <param name="name">The tuple element name if presented.</param>
+        public TupleElement(TypeReference type, String? name) =>
+            (this.Type, this.Name) = (type, name);
+    }
+}

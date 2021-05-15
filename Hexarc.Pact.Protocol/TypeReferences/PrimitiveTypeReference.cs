@@ -10,7 +10,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         /// <summary>
         /// Gets the PrimitiveTypeReference kind.
         /// </summary>
-        public override String Kind { get; } = TypeReferenceKind.Primitive;
+        public override String Kind => TypeReferenceKind.Primitive;
 
         /// <summary>
         /// Gets the unique type id.

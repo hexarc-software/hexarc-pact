@@ -10,7 +10,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         /// <summary>
         /// Gets the TaskTypeReference kind.
         /// </summary>
-        public override String Kind { get; } = TypeReferenceKind.Task;
+        public override String Kind => TypeReferenceKind.Task;
 
         /// <summary>
         /// Gets the unique task type id.

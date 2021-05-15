@@ -12,7 +12,7 @@ namespace Hexarc.Pact.Protocol.Types
         /// <summary>
         /// Gets the TaskType kind.
         /// </summary>
-        public override String Kind { get; } = TypeKind.Task;
+        public override String Kind => TypeKind.Task;
 
         /// <summary>
         /// Creates an instance of the TaskType class.

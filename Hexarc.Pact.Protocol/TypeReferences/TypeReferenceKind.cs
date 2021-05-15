@@ -51,5 +51,10 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         /// The literal type reference literal.
         /// </summary>
         public const String Literal = nameof(Literal);
+
+        /// <summary>
+        /// The literal type reference literal.
+        /// </summary>
+        public const String Tuple = nameof(Tuple);
     }
 }

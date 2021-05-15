@@ -10,7 +10,7 @@ namespace Hexarc.Pact.Protocol.Types
         /// <summary>
         /// Gets the ClassType kind.
         /// </summary>
-        public override String Kind { get; } = TypeKind.Class;
+        public override String Kind => TypeKind.Class;
 
         /// <summary>
         /// Creates an instance of ClassType class.

@@ -15,6 +15,7 @@ namespace Hexarc.Pact.AspNetCore.Middlewares
             services.AddScoped<ArrayLikeTypeProvider>();
             services.AddScoped<DictionaryTypeProvider>();
             services.AddScoped<TaskTypeProvider>();
+            services.AddScoped<TupleTypeProvider>();
             services.AddScoped<TypeChecker>();
             services.AddScoped<TypeReferenceReader>();
             services.AddScoped<DistinctTypeReader>();

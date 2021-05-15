@@ -10,7 +10,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         /// <summary>
         /// Gets the TypeParameter kind.
         /// </summary>
-        public override String Kind { get; } = TypeReferenceKind.TypeParameter;
+        public override String Kind => TypeReferenceKind.TypeParameter;
 
         /// <summary>
         /// Gets the type parameter name.

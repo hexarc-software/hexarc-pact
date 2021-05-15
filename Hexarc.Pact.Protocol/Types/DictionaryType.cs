@@ -12,7 +12,7 @@ namespace Hexarc.Pact.Protocol.Types
         /// <summary>
         /// Gets the DictionaryType kind.
         /// </summary>
-        public override String Kind { get; } = TypeKind.Dictionary;
+        public override String Kind => TypeKind.Dictionary;
 
         /// <summary>
         /// Creates an instance of the DictionaryType class.

@@ -10,7 +10,7 @@ namespace Hexarc.Pact.Protocol.Types
         /// <summary>
         /// Gets the EnumType kind.
         /// </summary>
-        public override String Kind { get; } = TypeKind.Enum;
+        public override String Kind => TypeKind.Enum;
 
         /// <summary>
         /// Gets the enum members.

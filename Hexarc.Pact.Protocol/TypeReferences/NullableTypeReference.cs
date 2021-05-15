@@ -10,7 +10,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         /// <summary>
         /// Gets the NullableTypeReference kind.
         /// </summary>
-        public override String Kind { get; } = TypeReferenceKind.Nullable;
+        public override String Kind => TypeReferenceKind.Nullable;
 
         /// <summary>
         /// Gets the unwrapped underlying type.

@@ -10,7 +10,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         /// <summary>
         /// Gets the LiteralTypeReference kind.
         /// </summary>
-        public override String Kind { get; } = TypeReferenceKind.Literal;
+        public override String Kind => TypeReferenceKind.Literal;
 
         /// <summary>
         /// Gets the literal name.

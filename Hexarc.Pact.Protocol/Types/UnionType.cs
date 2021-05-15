@@ -10,7 +10,7 @@ namespace Hexarc.Pact.Protocol.Types
         /// <summary>
         /// Gets the UnionType kind.
         /// </summary>
-        public override String Kind { get; } = TypeKind.Union;
+        public override String Kind => TypeKind.Union;
 
         /// <summary>
         /// Gets the union tag name.

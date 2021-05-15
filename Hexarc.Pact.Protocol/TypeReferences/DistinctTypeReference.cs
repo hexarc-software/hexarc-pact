@@ -10,7 +10,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         /// <summary>
         /// Gets the DistinctTypeReference kind.
         /// </summary>
-        public override String Kind { get; } = TypeReferenceKind.Distinct;
+        public override String Kind => TypeReferenceKind.Distinct;
 
         /// <summary>
         /// Gets the distinct type of the reference.

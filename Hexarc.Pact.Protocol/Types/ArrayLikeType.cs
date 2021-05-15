@@ -12,7 +12,7 @@ namespace Hexarc.Pact.Protocol.Types
         /// <summary>
         /// Gets the ArrayLikeType kind.
         /// </summary>
-        public override String Kind { get; } = TypeKind.ArrayLike;
+        public override String Kind => TypeKind.ArrayLike;
 
         /// <summary>
         /// Creates an instance of the ArrayLikeType class.

@@ -10,7 +10,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         /// <summary>
         /// Gets the DynamicTypeReference kind.
         /// </summary>
-        public override String Kind { get; } = TypeReferenceKind.Dynamic;
+        public override String Kind => TypeReferenceKind.Dynamic;
 
         /// <summary>
         /// Gets the unique dynamic type id.

@@ -21,18 +21,22 @@ namespace Hexarc.Pact.AspNetCore.Internals
 
         private IReadOnlySet<Guid> TaskTypeIds { get; }
 
+        private IReadOnlySet<Guid> TupleTypeIds { get; }
+
         public TypeChecker(
             PrimitiveTypeProvider primitiveTypeProvider,
             DynamicTypeProvider dynamicTypeProvider,
             ArrayLikeTypeProvider arrayLikeTypeProvider,
             DictionaryTypeProvider dictionaryTypeProvider,
-            TaskTypeProvider taskTypeProvider)
+            TaskTypeProvider taskTypeProvider,
+            TupleTypeProvider tupleTypeProvider)
         {
             this.PrimitiveTypeIds = primitiveTypeProvider.TypeIds;
             this.DynamicTypeIds = dynamicTypeProvider.TypeIds;
             this.ArrayLikeTypeIds = arrayLikeTypeProvider.TypeIds;
             this.DictionaryTypeIds = dictionaryTypeProvider.TypeIds;
             this.TaskTypeIds = taskTypeProvider.TypeIds;
+            this.TupleTypeIds = tupleTypeProvider.TypeIds;
         }
 
         public Boolean IsActionResultOfT(Type type) =>
@@ -53,6 +57,8 @@ namespace Hexarc.Pact.AspNetCore.Internals
         public Boolean IsPrimitiveType(Type type) => this.PrimitiveTypeIds.Contains(type.GUID);
 
         public Boolean IsDynamicType(Type type) => this.DynamicTypeIds.Contains(type.GUID);
+
+        public Boolean IsTupleType(Type type) => this.TupleTypeIds.Contains(type.GUID);
 
         public Boolean IsUnionType(Type type) => type.GetCustomAttribute<UnionTagAttribute>() is not null;
 

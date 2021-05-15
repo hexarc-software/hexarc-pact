@@ -7,6 +7,7 @@ node_modules
 *.nupkg
 *.DotSettings.user
 .DS_Store
+aws.xml
 
 !/Hexarc.Pact.Tool.TypeScript/bin/*
 /Hexarc.Pact.Tool.TypeScript/lib/*

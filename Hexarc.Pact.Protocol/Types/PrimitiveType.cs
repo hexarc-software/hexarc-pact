@@ -12,7 +12,7 @@ namespace Hexarc.Pact.Protocol.Types
         /// <summary>
         /// Gets the PrimitiveType kind.
         /// </summary>
-        public override String Kind { get; } = TypeKind.Primitive;
+        public override String Kind => TypeKind.Primitive;
 
         /// <summary>
         /// Creates an instance of the PrimitiveType class.

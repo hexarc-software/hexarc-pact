@@ -12,7 +12,7 @@ namespace Hexarc.Pact.Protocol.Types
         /// <summary>
         /// Gets the DynamicType kind.
         /// </summary>
-        public override String Kind { get; } = TypeKind.Dynamic;
+        public override String Kind => TypeKind.Dynamic;
 
         /// <summary>
         /// Creates an instance of the DynamicType class.

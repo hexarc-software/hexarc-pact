@@ -11,7 +11,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         /// <summary>
         /// Gets the DictionaryTypeReference kind.
         /// </summary>
-        public override String Kind { get; } = TypeReferenceKind.Dictionary;
+        public override String Kind => TypeReferenceKind.Dictionary;
 
         /// <summary>
         /// Gets the unique dictionary type id.

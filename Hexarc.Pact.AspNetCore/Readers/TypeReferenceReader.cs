@@ -2,7 +2,10 @@ using System;
 using System.Linq;
 using Namotion.Reflection;
 using Hexarc.Pact.AspNetCore.Internals;
+using Hexarc.Pact.AspNetCore.Models;
 using Hexarc.Pact.Protocol.TypeReferences;
+using Hexarc.Pact.Protocol.Types;
+using Hexarc.Pact.AspNetCore.Extensions;
 
 namespace Hexarc.Pact.AspNetCore.Readers
 {
@@ -31,6 +34,7 @@ namespace Hexarc.Pact.AspNetCore.Readers
             var x when this.TypeChecker.IsArrayLikeType(x.OriginalType) => this.ReadArrayLikeTypeReference(x),
             var x when this.TypeChecker.IsDictionaryType(x.OriginalType) => this.ReadDictionaryTypeReference(x),
             var x when this.TypeChecker.IsPrimitiveType(x.OriginalType) => this.ReadPrimitiveTypeReference(x),
+            var x when this.TypeChecker.IsTupleType(x.OriginalType) => this.ReadTupleTypeReference(x),
             var x when this.TypeChecker.IsDynamicType(x.OriginalType) => this.ReadDynamicTypeReference(x),
             var x => this.ReadDistinctTypeReference(x)
         };
@@ -61,6 +65,18 @@ namespace Hexarc.Pact.AspNetCore.Readers
 
         private PrimitiveTypeReference ReadPrimitiveTypeReference(ContextualType contextualType) =>
             new(contextualType.OriginalType.GUID);
+
+        private TupleTypeReference ReadTupleTypeReference(ContextualType contextualType) =>
+            new(this.ReadTupleElements(contextualType.GetTupleArguments()));
+
+        private TupleElement[] ReadTupleElements(ContextualType[] elementTypes) =>
+            elementTypes.Select(this.ReadTupleElement).ToArray();
+        private TupleElement ReadTupleElement(ContextualType elementType) =>
+            this.ReadTupleElement(elementType, default, default);
+
+        private TupleElement ReadTupleElement(
+            ContextualType elementType, String? name, NamingConvention? namingConvention
+        ) => new(this.Read(elementType), name?.ToConventionalString(namingConvention));
 
         private DynamicTypeReference ReadDynamicTypeReference(ContextualType contextualType) =>
             new(contextualType.OriginalType.GUID);

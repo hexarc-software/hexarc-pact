@@ -20,7 +20,8 @@ namespace Hexarc.Pact.Tests
                 new DynamicTypeProvider(),
                 new ArrayLikeTypeProvider(),
                 new DictionaryTypeProvider(),
-                new TaskTypeProvider());
+                new TaskTypeProvider(),
+                new TupleTypeProvider());
             var distinctTypeQueue = new DistinctTypeQueue();
             var typeReferenceReader = new TypeReferenceReader(typeChecker, distinctTypeQueue);
             var distinctTypeReader = new DistinctTypeReader(typeChecker, typeReferenceReader);

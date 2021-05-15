@@ -10,7 +10,7 @@ namespace Hexarc.Pact.Protocol.Types
         /// <summary>
         /// Gets the StructType kind.
         /// </summary>
-        public override String Kind { get; } = TypeKind.Struct;
+        public override String Kind => TypeKind.Struct;
 
         /// <summary>
         /// Creates an instance of StructType class.

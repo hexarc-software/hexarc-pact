@@ -11,7 +11,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         /// <summary>
         /// Gets the ArrayTypeReference kind.
         /// </summary>
-        public override String Kind { get; } = TypeReferenceKind.Array;
+        public override String Kind => TypeReferenceKind.Array;
 
         /// <summary>
         /// Gets the array-like type id when the type is not presented by the system array type.
