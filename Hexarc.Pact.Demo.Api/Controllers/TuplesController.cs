@@ -19,6 +19,9 @@ namespace Hexarc.Pact.Demo.Api.Controllers
         public (Int32 X, Int32 Y) GetPoint() => default;
 
         [HttpPost, Route(nameof(SetPoint))]
-        public (Int32 X, Int32 Y) SetPoint((Int32 NewX, Int32 NewY) point) => default;
+        public (Int32? X, Int32? Y) SetPoint((Int32? NewX, Int32? NewY) point) => default;
+
+        [HttpPost, Route(nameof(SetTriangle))]
+        public Boolean SetTriangle(((Int32 X1, Int32 Y1) P1, (Int32 X2, Int32 Y2) P2, (Int32 X3, Int32 Y3) P3) triangle) => default;
     }
 }
