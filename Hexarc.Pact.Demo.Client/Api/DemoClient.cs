@@ -11,12 +11,16 @@ namespace Hexarc.Pact.Demo.Client
         public Hexarc.Pact.Demo.Api.Controllers.AnimalController Animal { get; }
         public Hexarc.Pact.Demo.Api.Controllers.GeometryController Geometry { get; }
         public Hexarc.Pact.Demo.Api.Controllers.MiscController Misc { get; }
+        public Hexarc.Pact.Demo.Api.Controllers.PrimitivesController Primitives { get; }
+        public Hexarc.Pact.Demo.Api.Controllers.TuplesController Tuples { get; }
 
         public DemoClient(System.Net.Http.HttpClient httpClient) : base(httpClient)
         {
             this.Animal = new Hexarc.Pact.Demo.Api.Controllers.AnimalController(this);
             this.Geometry = new Hexarc.Pact.Demo.Api.Controllers.GeometryController(this);
             this.Misc = new Hexarc.Pact.Demo.Api.Controllers.MiscController(this);
+            this.Primitives = new Hexarc.Pact.Demo.Api.Controllers.PrimitivesController(this);
+            this.Tuples = new Hexarc.Pact.Demo.Api.Controllers.TuplesController(this);
         }
     }
 }

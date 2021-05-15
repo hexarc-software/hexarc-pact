@@ -31,6 +31,7 @@ namespace Hexarc.Pact.Tool.Emitters
             TaskTypeReference task => this.EmitTaskTypeReference(task, currentNamespace),
             TypeParameterReference typeParameter => this.EmitTypeParameterReference(typeParameter),
             LiteralTypeReference => this.EmitLiteralTypeReference(),
+            TupleTypeReference tuple => this.EmitTupleTypeReference(tuple, currentNamespace),
             DistinctTypeReference distinct => this.EmitDistinctTypeReference(distinct, currentNamespace),
             _ => throw new InvalidOperationException($"Could not emit a Hexarc Pact type reference from {typeReference}")
         };
@@ -76,6 +77,17 @@ namespace Hexarc.Pact.Tool.Emitters
 
         private NameSyntax EmitTypeParameterReference(TypeParameterReference reference) =>
             ParseName(reference.Name);
+
+        private TupleTypeSyntax EmitTupleTypeReference(TupleTypeReference reference, String? currentNamespace) =>
+            TupleType(this.EmitTupleElements(reference.Elements, currentNamespace));
+
+        private SeparatedSyntaxList<TupleElementSyntax> EmitTupleElements(TupleElement[] elements, String? currentNamespace) =>
+            SeparatedListWithCommas(elements.Select(x => this.EmitTupleElement(x, currentNamespace)).ToArray());
+
+        private TupleElementSyntax EmitTupleElement(TupleElement element, String? currentNamespace) =>
+            element.Name is null ?
+                TupleElement(this.Emit(element.Type, currentNamespace)) :
+                TupleElement(this.Emit(element.Type, currentNamespace), Identifier(element.Name));
 
         private NameSyntax EmitLiteralTypeReference() =>
             ParseName(typeof(String).FullName!);
