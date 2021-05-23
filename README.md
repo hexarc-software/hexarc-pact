@@ -17,7 +17,7 @@ Hexarc Pact provides a toolchain for exposing and consuming Web API for .NET/Typ
 * Hassle-free API integrations in seconds.
 * No type information loosing. Consume exact API that is provided.
 * Code first. No need to describe your API protocol in external IDL/DSL.
-* Charged with advanced types. Not only simple DTOs but enums, generics, tagged union and etc.
+* Charged with advanced types. Not only simple DTOs but enums, generics, tagged union, etc.
 
 ## Type System
 The Pact type system based on the .NET CLR types with some bespoke ones
