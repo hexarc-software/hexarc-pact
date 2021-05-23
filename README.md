@@ -1,11 +1,5 @@
 # Hexarc Pact
-Hexarc Pact provides tools for exposing and consuming Web API for .NET-based projects.
-
-## Features
-* Hassle-free API integrations in seconds.
-* No type information loosing. Consume exactly API that is provided.
-* Code first. No need to describe your API protocol in external IDL/DSL.
-* Charged with advanced types. Not only simple DTOs but enums, generics, tagged union and etc.
+Hexarc Pact provides a toolchain for exposing and consuming Web API for .NET/TypeScript-based projects.
 
 ## Packages
 |Package|Platform|Version|Downloads|
@@ -17,8 +11,27 @@ Hexarc Pact provides tools for exposing and consuming Web API for .NET-based pro
 |`@hexarc/pact-tool`| TypeScript | [![Version](http://img.shields.io/npm/v/@hexarc/pact-tool.svg)](https://www.npmjs.org/package/@hexarc/pact-tool) | [![Downloads](http://img.shields.io/npm/dt/@hexarc/pact-tool.svg)](https://www.npmjs.org/package/@hexarc/pact-tool) |
 
 ## Getting started
-* [Expose Pact API schema](#expose-pact-api-schema)
-* [Consume Pact API schema](#consume-pact-api-schema)
+* [Expose Pact API schema](#expose-pact-api-schema) (.NET Web API service)
+* [Consume Pact API schema](#consume-pact-api-schema) (.NET client application)
+
+## Features
+* Hassle-free API integrations in seconds.
+* No type information loosing. Consume exact API that is provided.
+* Code first. No need to describe your API protocol in external IDL/DSL.
+* Charged with advanced types. Not only simple DTOs but enums, generics, tagged union and etc.
+
+## Type System
+The Pact type system based on the .NET CLR types with some bespoke ones
+for the best development experience. 
+
+What's inside the Pact type system:
+* Primitive types (including `Guid` and `DateTime`)
+* Value/Reference type semantics
+* Collections and generics (not only simple arrays and dictionaries)
+* Complete support for Nullable Reference Type annotations (NRT)
+* Enums (string-base and number-based)
+* Tagged Unions (via [Hexarc.Serialization.Union](https://github.com/hexarc-software/hexarc-serialization))
+* Tuples (via [Hexarc.Serialization.Tuple](https://github.com/hexarc-software/hexarc-serialization))
 
 ## Expose Pact API schema
 1. Install the `Hexarc.Pact.AspNetCore` package in a .NET Web API project:
