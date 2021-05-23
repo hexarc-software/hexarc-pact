@@ -1,7 +1,6 @@
 # Hexarc Pact
 Hexarc Pact provides a toolchain for exposing and consuming Web API for .NET/TypeScript-based projects.
 
-## Packages
 |Package|Platform|Version|Downloads|
 |-------|--------|-------|---------|
 |`Hexarch.Pact.Protocol`| .NET 5.0+ | [![NuGet](https://img.shields.io/nuget/v/Hexarc.Pact.Protocol.svg)](https://nuget.org/packages/Hexarc.Pact.Protocol) | [![Nuget](https://img.shields.io/nuget/dt/Hexarc.Pact.Protocol.svg)](https://nuget.org/packages/Hexarc.Pact.Protocol) |
