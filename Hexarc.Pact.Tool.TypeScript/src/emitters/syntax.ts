@@ -2,8 +2,8 @@ import * as ts from "typescript";
 
 
 // Emits: import { identifierName } from "modulePath";
-export const createNamedImportDeclaration = (identifierName: string, modulePath: string) =>
-  ts.factory.createImportDeclaration(
+export function createNamedImportDeclaration(identifierName: string, modulePath: string) {
+  return ts.factory.createImportDeclaration(
     undefined,
     undefined,
     ts.factory.createImportClause(
@@ -14,10 +14,11 @@ export const createNamedImportDeclaration = (identifierName: string, modulePath:
           undefined,
           ts.factory.createIdentifier(identifierName))])),
     ts.factory.createStringLiteral(modulePath));
+}
 
 // Emits: export { identifierName } from "modulePath";
-export const createNamedExportDeclaration = (identifierName: string, modulePath: string) =>
-  ts.factory.createExportDeclaration(
+export function createNamedExportDeclaration(identifierName: string, modulePath: string) {
+  return ts.factory.createExportDeclaration(
     undefined,
     undefined,
     false,
@@ -26,25 +27,29 @@ export const createNamedExportDeclaration = (identifierName: string, modulePath:
         undefined,
         ts.factory.createIdentifier(identifierName))]),
     ts.factory.createStringLiteral(modulePath));
+}
 
 // Emits: extends SomeClass
-export const createExtendsClause = (className: string) =>
-  ts.factory.createHeritageClause(
+export function createExtendsClause(className: string) {
+  return ts.factory.createHeritageClause(
     ts.SyntaxKind.ExtendsKeyword,
     [ts.factory.createExpressionWithTypeArguments(
       ts.factory.createIdentifier(className),
       undefined)]);
+}
 
-export const createBundle = (statements: ts.Statement[], prepends?: ts.UnparsedSource[] | undefined) =>
-  ts.factory.createBundle(
+export function createBundle(statements: ts.Statement[], prepends?: ts.UnparsedSource[] | undefined) {
+  return ts.factory.createBundle(
     [createSourceFile(statements)],
     prepends);
+}
 
-export const createSourceFile = (statements: ts.Statement[]) =>
-  ts.factory.createSourceFile(
+export function createSourceFile(statements: ts.Statement[]) {
+  return ts.factory.createSourceFile(
     statements,
     ts.factory.createToken(ts.SyntaxKind.EndOfFileToken),
     ts.NodeFlags.None);
+}
 
 export const createPublicModifier = () => ts.factory.createModifier(ts.SyntaxKind.PublicKeyword);
 export const createAsyncModifier = () => ts.factory.createModifier(ts.SyntaxKind.AsyncKeyword);
