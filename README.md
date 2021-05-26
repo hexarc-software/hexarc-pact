@@ -28,9 +28,20 @@ What's inside the Pact type system:
 * Value/Reference type semantics
 * Collections and generics (not only simple arrays and dictionaries)
 * Complete support for Nullable Reference Type annotations (NRT)
-* Enums (string-base and number-based)
+* Enums (string-based and number-based)
 * Tagged Unions (via [Hexarc.Serialization.Union](https://github.com/hexarc-software/hexarc-serialization))
 * Tuples (via [Hexarc.Serialization.Tuple](https://github.com/hexarc-software/hexarc-serialization))
+
+## API annotation rules
+The Pact API schema is designed to have an RPC-like semantic. In doing so 
+an exposed API must follow these rules:
+* API controllers must be marked with `ApiController` and `Route` attributes.
+* Route attribute must have only a constant string path without templating (e.g. `[Route("Entities")]`). 
+* API methods must be marked with the `Route` attribute. The same rule as for controllers is applied.
+* API methods must be marked with one of the supported HTTP verbs (`HttpGet` or `HttpPost`). Others are not supported at the moment. 
+   * `HttpGet` methods can have query parameters which must be bind via the `FromQuery` attribute.
+   * `HttpPost` methods must have only one parameter which is the request body.
+* API methods must return a non-void value.
 
 ## Expose Pact API schema
 1. Install the `Hexarc.Pact.AspNetCore` package in a .NET Web API project:
