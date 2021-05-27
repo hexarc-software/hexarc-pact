@@ -33,8 +33,8 @@ namespace Hexarc.Pact.Tool.Internals
 
         public TypeRegistry(Type[] types)
         {
-            var groups = types.GroupBy(x => x.Kind, x => x).ToDictionary(x => x.Key, x=> x.ToArray());
-            this.Types = types.ToDictionary(x => x.Id, x => x);
+            var groups = types.GroupBy(x => x.Kind).ToDictionary(x => x.Key, x=> x.ToArray());
+            this.Types = types.ToDictionary(x => x.Id);
             this.PrimitiveTypes = ExtractGroup<PrimitiveType>(groups, TypeKind.Primitive);
             this.DynamicTypes = ExtractGroup<DynamicType>(groups, TypeKind.Dynamic);
             this.ArrayLikeTypes = ExtractGroup<ArrayLikeType>(groups, TypeKind.ArrayLike);
@@ -52,7 +52,7 @@ namespace Hexarc.Pact.Tool.Internals
         private static Dictionary<Guid, TType> ExtractGroup<TType>(Dictionary<String, Type[]> groups, String groupKind) where TType : Type =>
             groups.GetValueOrDefault(groupKind, Array.Empty<Type>())
                 .Cast<TType>()
-                .ToDictionary(x => x.Id, x => x);
+                .ToDictionary(x => x.Id);
 
         public Type GetType(Guid typeId) => this.Types[typeId];
 

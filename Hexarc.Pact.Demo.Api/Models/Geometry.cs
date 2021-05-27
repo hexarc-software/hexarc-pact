@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Hexarc.Pact.Demo.Api.Models
 {
@@ -12,10 +13,13 @@ namespace Hexarc.Pact.Demo.Api.Models
 
     public class Triangle
     {
+        [JsonPropertyName("Vertex1")]
         public Point V1 { get; set; } = default!;
 
+        [JsonPropertyName("Vertex2")]
         public Point V2 { get; set; } = default!;
 
+        [JsonPropertyName("Vertex3")]
         public Point V3 { get; set; } = default!;
 
         public Double CalculateArea() =>

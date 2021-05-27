@@ -1,5 +1,7 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Text.Json.Serialization;
 using Hexarc.Pact.AspNetCore.Models;
 
 namespace Hexarc.Pact.AspNetCore.Extensions
@@ -22,5 +24,26 @@ namespace Hexarc.Pact.AspNetCore.Extensions
         /// </remarks>
         public static Boolean IsUnionTag(this PropertyInfo propertyInfo, UnionTag tag, NamingConvention? namingConvention) =>
             propertyInfo.Name.ToConventionalString(namingConvention) == tag.Name;
+
+        public static Boolean TryReadJsonPropertyName(this PropertyInfo propertyInfo, [NotNullWhen(true)] out String? name)
+        {
+            var attribute = propertyInfo.GetCustomAttribute<JsonPropertyNameAttribute>();
+            if (attribute is null)
+            {
+                name = default;
+                return false;
+            }
+            else
+            {
+                name = attribute.Name;
+                return true;
+            }
+        }
+
+        public static String GetName(this PropertyInfo propertyInfo, NamingConvention? namingConvention)
+        {
+            if (propertyInfo.TryReadJsonPropertyName(out var name)) return name;
+            else return propertyInfo.Name.ToConventionalString(namingConvention);
+        }
     }
 }
