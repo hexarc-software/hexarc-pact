@@ -3,7 +3,7 @@ Hexarc Pact provides a toolchain for exposing and consuming Web API for .NET/Typ
 
 |Package|Platform|Version|Downloads|
 |-------|--------|-------|---------|
-|`Hexarch.Pact.Protocol`| .NET 5.0+ | [![NuGet](https://img.shields.io/nuget/v/Hexarc.Pact.Protocol.svg)](https://nuget.org/packages/Hexarc.Pact.Protocol) | [![Nuget](https://img.shields.io/nuget/dt/Hexarc.Pact.Protocol.svg)](https://nuget.org/packages/Hexarc.Pact.Protocol) |
+|`Hexarch.Pact.Protocol`| .NET 5.0+ | [![Version](https://img.shields.io/nuget/v/Hexarc.Pact.Protocol.svg)](https://nuget.org/packages/Hexarc.Pact.Protocol) | [![Downloads](https://img.shields.io/nuget/dt/Hexarc.Pact.Protocol.svg)](https://nuget.org/packages/Hexarc.Pact.Protocol) |
 |`Hexarch.Pact.AspNetCore`| .NET 5.0+ | [![Version](http://img.shields.io/nuget/v/Hexarc.Pact.AspNetCore.svg)](https://nuget.org/packages/Hexarc.Pact.AspNetCore) | [![Downloads](https://img.shields.io/nuget/dt/Hexarc.Pact.AspNetCore.svg)](https://nuget.org/packages/Hexarc.Pact.AspNetCore) |
 |`Hexarch.Pact.Client`| .NET 5.0+ | [![Version](http://img.shields.io/nuget/v/Hexarc.Pact.Client.svg)](https://nuget.org/packages/Hexarc.Pact.Client) | [![Downloads](https://img.shields.io/nuget/dt/Hexarc.Pact.Client.svg)](https://nuget.org/packages/Hexarc.Pact.Client) |
 |`Hexarch.Pact.Tool`| .NET 5.0+ | [![Version](http://img.shields.io/nuget/v/Hexarc.Pact.Tool.svg)](https://nuget.org/packages/Hexarc.Pact.Tool) | [![Downloads](https://img.shields.io/nuget/dt/Hexarc.Pact.Tool.svg)](https://nuget.org/packages/Hexarc.Pact.Tool) |
@@ -13,11 +13,16 @@ Hexarc Pact provides a toolchain for exposing and consuming Web API for .NET/Typ
 * [Expose Pact API schema](#expose-pact-api-schema) (.NET Web API service)
 * [Consume Pact API schema](#consume-pact-api-schema) (.NET client application)
 
+## Demo API server
+Demo API server can be found at https://hexarc-demo-api.herokuapp.com/. The Pact schema is exposed
+at https://hexarc-demo-api.herokuapp.com/pact/schema. An API client can be generated using
+the [instruction]((#consume-pact-api-schema)) below.
+
 ## Features
 * Hassle-free API integrations in seconds.
 * No type information loosing. Consume exact API that is provided.
 * Code first. No need to describe your API protocol in external IDL/DSL.
-* Charged with advanced types. Not only simple DTOs but enums, generics, tagged union, etc.
+* Charged with advanced types. Not only simple DTOs but enums, generics, tagged unions, etc.
 
 ## Type System
 The Pact type system is based on the .NET CLR types with some bespoke ones
@@ -35,7 +40,7 @@ What's inside the Pact type system:
 ## API annotation rules
 The Pact API schema is designed to have an RPC-like semantic. In doing so 
 an exposed API must follow these rules:
-* API controllers must be marked with `ApiController` and `Route` attributes.
+* API controllers must be marked with standard `ApiController` and `Route` attributes.
 * Route attribute must have only a constant string path without templating (e.g. `[Route("Entities")]`). 
 * API methods must be marked with the `Route` attribute. The same rule as for controllers is applied.
 * API methods must be marked with one of the supported HTTP verbs (`HttpGet` or `HttpPost`). Others are not supported at the moment. 
@@ -69,7 +74,7 @@ public void Configure(IApplicationBuilder app)
     app.UseEndpoints(endpoints => endpoints.MapControllers());
 }
 ```
-4. Implement an API controller according to the Pact conventions:
+4. Implement an API controller according to the Pact annotation rules:
 ```c#
 [ApiController, Route("Misc")]
 public sealed class MiscController : ControllerBase
