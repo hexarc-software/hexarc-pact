@@ -9,14 +9,14 @@ Hexarc Pact provides a toolchain for exposing and consuming Web API for .NET/Typ
 |`Hexarch.Pact.Tool`| .NET 5.0+ | [![Version](http://img.shields.io/nuget/v/Hexarc.Pact.Tool.svg)](https://nuget.org/packages/Hexarc.Pact.Tool) | [![Downloads](https://img.shields.io/nuget/dt/Hexarc.Pact.Tool.svg)](https://nuget.org/packages/Hexarc.Pact.Tool) |
 |`@hexarc/pact-tool`| TypeScript | [![Version](http://img.shields.io/npm/v/@hexarc/pact-tool.svg)](https://www.npmjs.org/package/@hexarc/pact-tool) | [![Downloads](http://img.shields.io/npm/dt/@hexarc/pact-tool.svg)](https://www.npmjs.org/package/@hexarc/pact-tool) |
 
-## Getting started
-* [Expose Pact API schema](#expose-pact-api-schema) (.NET Web API service)
-* [Consume Pact API schema](#consume-pact-api-schema) (.NET client application)
-
-## Demo API server
-Demo API server can be found at https://hexarc-demo-api.herokuapp.com/. The Pact schema is exposed
-at https://hexarc-demo-api.herokuapp.com/pact/schema. An API client can be generated using
-the [instruction]((#consume-pact-api-schema)) below.
+## What's in Pact?
+* [Features](#features)
+* [Type System](#type-system)
+* [API annotation rules](#api-annotation-rules)
+* [Demo API](#demo-api-server)
+* [How to use](#how-to-use)
+  * [Expose Pact API schema](#expose-pact-api-schema) (.NET Web API service)
+  * [Consume Pact API schema](#consume-pact-api-schema) (.NET client application)
 
 ## Features
 * Hassle-free API integrations in seconds.
@@ -48,7 +48,18 @@ an exposed API must follow these rules:
    * `HttpPost` methods must have only one parameter which is the request body.
 * API methods must return a non-void value.
 
-## Expose Pact API schema
+## Demo API server
+Demo API server can be found at https://hexarc-demo-api.herokuapp.com/.
+
+The Pact API schema is exposed at https://hexarc-demo-api.herokuapp.com/pact/schema.
+
+To generate An API client use the [instruction]((#consume-pact-api-schema))
+below.
+
+## How to use
+Find out how to use Pact to expose and consume a typical Web API.
+
+### Expose Pact API schema
 1. Install the `Hexarc.Pact.AspNetCore` package in a .NET Web API project:
 ```shell
 dotnet add package Hexarc.Pact.AspNetCore
@@ -86,7 +97,7 @@ public sealed class MiscController : ControllerBase
 5. Start the app and open the `YOUR_API_HOST/pact/schema` address to ensure 
    the Pact API schema is generated.
    
-## Consume Pact API schema
+### Consume Pact API schema
 1. Install the `Hexarc.Pact.Client` package in a .NET project:
 ```shell
 dotnet add package Hexarc.Pact.Client
@@ -112,7 +123,7 @@ dotnet new tool-manifest
 ```
 where
 * `schemaUri` - link to a Pact API schema
-* `clientClassName` - name for generated API client class
+* `clientClassName` - name for a generated API client class
 * `clientClassNamespace` - namespace where to put in the generated API client class
 * `outputDirectory` - output directory for generated sources
 4. Generate the API client via the Pact CLI tool:
