@@ -53,7 +53,7 @@ Demo API server can be found at https://hexarc-demo-api.herokuapp.com/.
 
 The Pact API schema is exposed at https://hexarc-demo-api.herokuapp.com/pact/schema.
 
-To generate An API client use the [instruction]((#consume-pact-api-schema))
+To generate an API client use the [instruction]((#consume-pact-api-schema))
 below.
 
 ## How to use
@@ -125,7 +125,7 @@ where
 * `schemaUri` - link to a Pact API schema
 * `clientClassName` - name for a generated API client class
 * `clientClassNamespace` - namespace where to put in the generated API client class
-* `outputDirectory` - output directory for generated sources
+* `outputDirectory` - output directory for the generated sources
 4. Generate the API client via the Pact CLI tool:
 ```shell
 dotnet pact
