@@ -47,12 +47,17 @@ an exposed API must follow these rules:
    * `HttpGet` methods can have query parameters which must be bind via the `FromQuery` attribute.
    * `HttpPost` methods must have only one parameter which is the request body.
 
+### Additional attributes
+Pact provides some useful attributes for API annotation:
+* `PactIgnoreAttribute` can be applied to API controllers or methods to be excluded from an API schema.
+* `PactScopeAttribute` can be applied to API controllers to be isolated into specific scope in an API schema.
+
 ## Demo API server
 Demo API server can be found at https://hexarc-demo-api.herokuapp.com/.
 
 The Pact API schema is exposed at https://hexarc-demo-api.herokuapp.com/pact/schema.
 
-To generate an API client use the [instruction]((#consume-pact-api-schema))
+To generate an API client use the [instruction](#consume-pact-api-schema)
 below.
 
 ## How to use
@@ -137,4 +142,3 @@ var client = new DemoClient(new HttpClient { BaseAddress = new Uri("YOUR_API_HOS
 var pong = await client.Misc.Ping("World");
 Console.WriteLine(pong); // Prints "Hello, World" to the output.
 ```
-
