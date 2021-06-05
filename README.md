@@ -13,6 +13,7 @@ Hexarc Pact provides a toolchain for exposing and consuming Web API for .NET/Typ
 * [Features](#features)
 * [Type system](#type-system)
 * [API annotation rules](#api-annotation-rules)
+  * [Additional attributes](#additional-attributes)
 * [Demo API](#demo-api-server)
 * [How to use](#how-to-use)
   * [Expose Pact API schema](#expose-pact-api-schema) (.NET Web API service)
