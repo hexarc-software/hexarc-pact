@@ -46,7 +46,6 @@ an exposed API must follow these rules:
 * API methods must be marked with one of the supported HTTP verbs (`HttpGet` or `HttpPost`). Others are not supported at the moment. 
    * `HttpGet` methods can have query parameters which must be bind via the `FromQuery` attribute.
    * `HttpPost` methods must have only one parameter which is the request body.
-* API methods must return a non-void value.
 
 ## Demo API server
 Demo API server can be found at https://hexarc-demo-api.herokuapp.com/.
