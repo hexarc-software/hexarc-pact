@@ -43,7 +43,7 @@ export interface NullableTypeReference {
 export interface TaskTypeReference {
   readonly kind: TypeReferenceKind.Task;
   readonly typeId?: string;
-  readonly resultType: TypeReference;
+  readonly resultType?: TypeReference;
 }
 
 export interface PrimitiveTypeReference {

@@ -120,15 +120,17 @@ function emitMethodBody(method: Method) {
 
 function emitGetMethodBody(method: Method) {
   const hasArguments = method.parameters.length > 0;
+  const isVoid = method.returnType.resultType == null;
   return ts.factory.createBlock(
-    hasArguments 
-      ? [emitGetMethodArgumentsVar(method.parameters), emitGetJsonInvocation(method.path, hasArguments)]
-      : [emitGetJsonInvocation(method.path)], true);
+    hasArguments
+      ? [emitGetMethodArgumentsVar(method.parameters), emitGetJsonInvocation(method.path, isVoid, hasArguments)]
+      : [emitGetJsonInvocation(method.path, isVoid)], true);
 }
 
 function emitPostBody(method: Method) {
+  const isVoid = method.returnType.resultType == null;
   return ts.factory.createBlock([
-    emitPostJsonInvocation(method)
+    emitPostJsonInvocation(method, isVoid)
   ], true);
 }
 
@@ -154,26 +156,32 @@ function emitGetMethodArgument(parameter: MethodParameter) {
     ts.factory.createPropertyAssignment("value", ts.factory.createIdentifier(parameter.name))], false);
 }
 
-function emitGetJsonInvocation(path: string, hasArguments: boolean = false) {
-  return ts.factory.createReturnStatement(
+function emitGetJsonInvocation(path: string, isVoid: boolean, hasArguments: boolean = false) {
+  const [statement, methodName] = isVoid ?
+    [ts.factory.createExpressionStatement, "_getVoid"] :
+    [ts.factory.createReturnStatement, "_getJson"];
+  return statement(
     ts.factory.createAwaitExpression(
       ts.factory.createCallExpression(
         ts.factory.createPropertyAccessExpression(
           ts.factory.createThis(),
-          ts.factory.createIdentifier("getJson")),
+          ts.factory.createIdentifier(methodName)),
         undefined,
-        hasArguments 
+        hasArguments
           ? [ts.factory.createStringLiteral(path), ts.factory.createIdentifier("args")]
           : [ts.factory.createStringLiteral(path)])));
 }
 
-function emitPostJsonInvocation(method: Method) {
-  return ts.factory.createReturnStatement(
+function emitPostJsonInvocation(method: Method, isVoid: boolean) {
+  const [statement, methodName] = isVoid ?
+    [ts.factory.createExpressionStatement, "_postJsonVoid"] :
+    [ts.factory.createReturnStatement, "_postJson"];
+  return statement(
     ts.factory.createAwaitExpression(
       ts.factory.createCallExpression(
         ts.factory.createPropertyAccessExpression(
           ts.factory.createThis(),
-          ts.factory.createIdentifier("postJson")),
+          ts.factory.createIdentifier(methodName)),
         undefined,
         [ts.factory.createStringLiteral(method.path), ts.factory.createIdentifier(method.parameters[0].name)])));
 }

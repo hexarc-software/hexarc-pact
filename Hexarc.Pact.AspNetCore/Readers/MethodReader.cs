@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-
+using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 
@@ -27,16 +27,21 @@ namespace Hexarc.Pact.AspNetCore.Readers
             new(methodCandidate.MethodInfo.Name.ToConventionalString(namingConvention),
                 this.ReadPath(methodCandidate.RouteAttribute!),
                 this.ReadHttpMethod(methodCandidate.HttpMethodAttribute!),
-                this.ReadMethodReturnType(methodCandidate.MethodInfo.ReturnParameter.ToContextualParameter(), namingConvention),
+                this.ReadMethodReturnType(methodCandidate.MethodInfo.ReturnParameter, namingConvention),
                 this.ReadMethodParameters(methodCandidate.MethodInfo.GetContextualParameters(), namingConvention));
 
         private String ReadPath(RouteAttribute routeAttribute) =>
             routeAttribute.Template.StartsWith("/") ? routeAttribute.Template : $"/{routeAttribute.Template}";
 
-        private TaskTypeReference ReadMethodReturnType(ContextualType returnType, NamingConvention? namingConvention) =>
-            this.TypeChecker.IsTaskType(returnType)
-                ? (TaskTypeReference)this.TypeReferenceReader.Read(returnType, namingConvention)
-                : new TaskTypeReference(default, this.TypeReferenceReader.Read(returnType, namingConvention));
+        private TaskTypeReference ReadMethodReturnType(ParameterInfo returnType, NamingConvention? namingConvention)
+        {
+            if (returnType.ParameterType == typeof(void)) return new TaskTypeReference();
+            return returnType.ToContextualParameter() switch
+            {
+                { } x when this.TypeChecker.IsTaskType(x) => (TaskTypeReference) this.TypeReferenceReader.Read(x, namingConvention),
+                { } x => new TaskTypeReference(default, this.TypeReferenceReader.Read(x, namingConvention))
+            };
+        }
 
         private MethodParameter[] ReadMethodParameters(ContextualParameterInfo[] parameterInfos, NamingConvention? namingConvention) =>
             parameterInfos.Select(x => this.ReadMethodParameter(x, namingConvention)).ToArray();

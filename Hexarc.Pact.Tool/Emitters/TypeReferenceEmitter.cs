@@ -72,8 +72,10 @@ namespace Hexarc.Pact.Tool.Emitters
                 new[] { reference.KeyType, reference.ValueType },
                 currentNamespace);
 
-        private GenericNameSyntax EmitTaskTypeReference(TaskTypeReference reference, String? currentNamespace) =>
-            this.EmitGenericTypeName(this.TypeRegistry.GetTaskType(reference.TypeId), reference.ResultType, currentNamespace);
+        private NameSyntax EmitTaskTypeReference(TaskTypeReference reference, String? currentNamespace) =>
+            reference.ResultType is null
+                ? this.EmitTypeName(this.TypeRegistry.GetTaskType(reference.TypeId), currentNamespace)
+                : this.EmitGenericTypeName(this.TypeRegistry.GetTaskType(reference.TypeId), reference.ResultType, currentNamespace);
 
         private NameSyntax EmitTypeParameterReference(TypeParameterReference reference) =>
             ParseName(reference.Name);

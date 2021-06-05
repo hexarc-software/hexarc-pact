@@ -16,25 +16,49 @@ export abstract class ControllerBase {
     this._path = path;
   }
 
-  protected async getJson<TResponse>(path: string, args?: GetMethodArgument[]): Promise<TResponse> {
+  protected async _getJson<TResponse>(path: string, args?: GetMethodArgument[]): Promise<TResponse> {
     const pairs = args != null ? args.filter(x => x.value != null).map(x => `${x.name}=${x.value}`).join("&") : "";
     const query = !!pairs ? `?${pairs}` : "";
     const url = `${this.client.path}${this._path}${path}${query}`;
     const headers = Object.assign(this.client.headers, { "Content-Type": "application/json" });
     const response = await fetch(url, { method: "GET", headers });
-    return await this._processResponse(response);
+    return await this._processResponseWithBody(response);
   }
 
-  protected async postJson<TRequest, TResponse>(path: string, request: TRequest): Promise<TResponse> {
+  protected async _getVoid(path: string, args?: GetMethodArgument[]): Promise<void> {
+    const pairs = args != null ? args.filter(x => x.value != null).map(x => `${x.name}=${x.value}`).join("&") : "";
+    const query = !!pairs ? `?${pairs}` : "";
+    const url = `${this.client.path}${this._path}${path}${query}`;
+    const headers = Object.assign(this.client.headers, { "Content-Type": "application/json" });
+    const response = await fetch(url, { method: "GET", headers });
+    await this._processResponseWithoutBody(response);
+  }
+
+  protected async _postJson<TRequest, TResponse>(path: string, request: TRequest): Promise<TResponse> {
     const url = `${this.client.path}${this._path}${path}`;
     const body = JSON.stringify(request);
     const headers = Object.assign(this.client.headers, { "Content-Type": "application/json" });
     const response = await fetch(url, { method: "POST", body, headers });
-    return await this._processResponse(response);
+    return await this._processResponseWithBody(response);
   }
 
-  private async _processResponse<TResponse>(response: Response): Promise<TResponse> {
+  protected async _postJsonVoid<TRequest>(path: string, request: TRequest): Promise<void> {
+    const url = `${this.client.path}${this._path}${path}`;
+    const body = JSON.stringify(request);
+    const headers = Object.assign(this.client.headers, { "Content-Type": "application/json" });
+    const response = await fetch(url, { method: "POST", body, headers });
+    await this._processResponseWithoutBody(response);
+  }
+
+  private async _processResponseWithBody<TResponse>(response: Response): Promise<TResponse> {
     if (response.ok) return await response.json();
+    const httpError = await HttpErrorUtils.extractHttpError(response);
+    this.client.onError(httpError);
+    throw httpError;
+  }
+
+  private async _processResponseWithoutBody<TResponse>(response: Response): Promise<void> {
+    if (response.ok) return;
     const httpError = await HttpErrorUtils.extractHttpError(response);
     this.client.onError(httpError);
     throw httpError;

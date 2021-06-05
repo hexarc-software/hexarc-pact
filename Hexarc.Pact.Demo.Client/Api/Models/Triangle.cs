@@ -8,9 +8,9 @@ namespace Hexarc.Pact.Demo.Api.Models
 {
     public sealed class Triangle
     {
-        public Point V1 { get; set; } = default!;
-        public Point V2 { get; set; } = default!;
-        public Point V3 { get; set; } = default!;
+        public Point Vertex1 { get; set; } = default!;
+        public Point Vertex2 { get; set; } = default!;
+        public Point Vertex3 { get; set; } = default!;
     }
 }
 

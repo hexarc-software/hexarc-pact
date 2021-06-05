@@ -55,7 +55,9 @@ namespace Hexarc.Pact.AspNetCore.Readers
             new(this.ReadInternal(contextualType.Type.ToContextualType()));
 
         private TaskTypeReference ReadTaskTypeReference(ContextualType contextualType) =>
-            new(contextualType.OriginalType.GUID, this.ReadInternal(contextualType.GenericArguments.First()));
+            contextualType.GenericArguments.Length == 0
+                ? new TaskTypeReference(contextualType.OriginalType.GUID)
+                : new TaskTypeReference(contextualType.OriginalType.GUID, this.ReadInternal(contextualType.GenericArguments.First()));
 
         private TypeParameterReference ReadTypeParameterReference(ContextualType contextualType) =>
             new(contextualType.OriginalType.Name);

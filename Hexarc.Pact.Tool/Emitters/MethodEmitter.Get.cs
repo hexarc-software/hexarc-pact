@@ -16,28 +16,41 @@ namespace Hexarc.Pact.Tool.Emitters
 {
     public sealed partial class MethodEmitter
     {
-        private BlockSyntax EmitGetJsonMethodBody(Method method) =>
-            Block(SingletonList(ReturnStatement(this.EmitAwaitGetJson(method))));
+        private BlockSyntax EmitGetMethodBody(Method method) =>
+            method.ReturnType.ResultType is null
+                ? this.EmitGetVoidMethodBody(method)
+                : this.EmitGetJsonMethodBody(method);
 
-        private AwaitExpressionSyntax EmitAwaitGetJson(Method method) =>
-            AwaitExpression(
-                InvocationExpression(this.EmitGetJsonAccess(method))
-                    .WithArgumentList(this.EmitGetJsonArguments(method)));
+        private BlockSyntax EmitGetVoidMethodBody(Method method) =>
+            Block(SingletonList(ExpressionStatement(AwaitExpression(
+                InvocationExpression(this.EmitGetVoidAccess(method.ReturnType))
+                    .WithArgumentList(this.EmitGetMethodArguments(method))))));
 
-        private MemberAccessExpressionSyntax EmitGetJsonAccess(Method method) =>
+        private MemberAccessExpressionSyntax EmitGetVoidAccess(TaskTypeReference returnType) =>
             MemberAccessExpression(
                 SyntaxKind.SimpleMemberAccessExpression,
                 ThisExpression(),
-                GenericName(Identifier(this.PickGetMethodName(method.ReturnType)))
-                    .WithTypeArgumentList(this.EmitGetJsonParameters(method)));
+                IdentifierName(this.PickGetVoidMethodName(returnType)));
 
-        private TypeArgumentListSyntax EmitGetJsonParameters(Method method) =>
+        private BlockSyntax EmitGetJsonMethodBody(Method method) =>
+            Block(SingletonList(ReturnStatement(AwaitExpression(
+                InvocationExpression(this.EmitGetJsonAccess(method.ReturnType))
+                    .WithArgumentList(this.EmitGetMethodArguments(method))))));
+
+        private MemberAccessExpressionSyntax EmitGetJsonAccess(TaskTypeReference returnType) =>
+            MemberAccessExpression(
+                SyntaxKind.SimpleMemberAccessExpression,
+                ThisExpression(),
+                GenericName(Identifier(this.PickGetJsonMethodName(returnType)))
+                    .WithTypeArgumentList(this.EmitGetJsonParameters(returnType)));
+
+        private TypeArgumentListSyntax EmitGetJsonParameters(TaskTypeReference returnType) =>
             TypeArgumentList(
                 SeparatedList<SyntaxNode>(
                     new SyntaxNodeOrTokenList(
-                        this.TypeReferenceEmitter.Emit(method.ReturnType.ResultType))));
+                        this.TypeReferenceEmitter.Emit(returnType.ResultType!))));
 
-        private ArgumentListSyntax EmitGetJsonArguments(Method method) =>
+        private ArgumentListSyntax EmitGetMethodArguments(Method method) =>
             ArgumentList(
                 SeparatedListWithCommas(
                     Argument(LiteralExpressionFromString(method.Path)),
@@ -58,7 +71,9 @@ namespace Hexarc.Pact.Tool.Emitters
                             Argument(NameOfExpression(parameter.Name)),
                             Argument(IdentifierName(parameter.Name)))));
 
-        private String PickGetMethodName(TaskTypeReference returnType) =>
+        private String PickGetJsonMethodName(TaskTypeReference returnType) =>
             returnType.ResultType is NullableTypeReference ? "GetJsonOrNull" : "GetJson";
+
+        private String PickGetVoidMethodName(TaskTypeReference returnType) => "GetVoid";
     }
 }

@@ -11,6 +11,10 @@ namespace Hexarc.Pact.Protocol.TypeProviders
     /// </summary>
     public sealed class TaskTypeProvider
     {
+        private TaskType Task { get; } = new(typeof(Task));
+
+        private TaskType ValueTask { get; } = new(typeof(ValueTask));
+
         private TaskType TaskOfT { get; } = new(typeof(Task<>));
 
         private TaskType ValueTaskOfT { get; } = new(typeof(ValueTask<>));
@@ -21,7 +25,7 @@ namespace Hexarc.Pact.Protocol.TypeProviders
         public IReadOnlySet<Guid> TypeIds { get; }
 
         /// <summary>
-        /// Creates an instance of the TaskTypeProvider class.
+        /// Creates an instance of the <see cref="TaskTypeProvider"/> class.
         /// </summary>
         public TaskTypeProvider() =>
             this.TypeIds = this.Enumerate()
@@ -34,6 +38,8 @@ namespace Hexarc.Pact.Protocol.TypeProviders
         /// <returns>The registered task type collection.</returns>
         public IEnumerable<TaskType> Enumerate()
         {
+            yield return this.Task;
+            yield return this.ValueTask;
             yield return this.TaskOfT;
             yield return this.ValueTaskOfT;
         }

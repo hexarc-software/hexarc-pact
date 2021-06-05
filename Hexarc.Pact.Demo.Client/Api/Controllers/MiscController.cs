@@ -26,6 +26,26 @@ namespace Hexarc.Pact.Demo.Api.Controllers
         {
             return await this.GetJson<System.Double>("/Random", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
+
+        public async System.Threading.Tasks.Task GetVoid(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
+        {
+            await this.GetVoid("/GetVoid", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+        }
+
+        public async System.Threading.Tasks.Task GetVoidTask(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
+        {
+            await this.GetVoid("/GetVoidTask", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+        }
+
+        public async System.Threading.Tasks.Task PostVoid(System.Object payload, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
+        {
+            await this.PostJsonVoid<System.Object>("/PostVoid", payload, headers);
+        }
+
+        public async System.Threading.Tasks.Task PostVoidTask(System.Object payload, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
+        {
+            await this.PostJsonVoid<System.Object>("/PostVoidTask", payload, headers);
+        }
     }
 }
 

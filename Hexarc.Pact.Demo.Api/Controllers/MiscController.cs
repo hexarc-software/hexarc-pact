@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hexarc.Pact.Demo.Api.Controllers
@@ -14,5 +15,17 @@ namespace Hexarc.Pact.Demo.Api.Controllers
 
         [HttpGet, Route(nameof(Random))]
         public ActionResult<Double> Random() => new Random().NextDouble();
+
+        [HttpGet, Route(nameof(GetVoid))]
+        public void GetVoid() { }
+
+        [HttpGet, Route(nameof(GetVoidTask))]
+        public async Task GetVoidTask() => await Task.Delay(0);
+
+        [HttpPost, Route(nameof(PostVoid))]
+        public void PostVoid(Object payload) { }
+
+        [HttpPost, Route(nameof(PostVoidTask))]
+        public async Task PostVoidTask(Object payload) => await Task.Delay(0);
     }
 }

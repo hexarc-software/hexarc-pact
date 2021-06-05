@@ -76,7 +76,10 @@ export function create(typeRegistry: TypeRegistry): TypeReferenceEmitter {
   }
 
   function emitTaskTypeReference(typeReference: TaskTypeReference, currentNamespace: string | undefined): ts.TypeReferenceNode {
-    return ts.factory.createTypeReferenceNode("Promise", [emit(typeReference.resultType, currentNamespace)]);
+    const typeArguments = typeReference.resultType == null ? 
+      [ts.factory.createTypeReferenceNode("void")] :
+      [emit(typeReference.resultType, currentNamespace)];
+    return ts.factory.createTypeReferenceNode("Promise", typeArguments);
   }
 
   function emitTypeParameterReference(typeReference: TypeParameterReference): ts.TypeReferenceNode {
@@ -93,7 +96,7 @@ export function create(typeRegistry: TypeRegistry): TypeReferenceEmitter {
   }
 
   function emitTupleElements(elements: TupleElement[], currentNamespace: string | undefined): (ts.TypeNode | ts.NamedTupleMember)[] {
-    return (elements.every(x => x.name != null)) ? 
+    return (elements.every(x => x.name != null)) ?
       elements.map(x => emitNamedTupleElement(x, currentNamespace)) :
       elements.map(x => emit(x.type, currentNamespace));
   }

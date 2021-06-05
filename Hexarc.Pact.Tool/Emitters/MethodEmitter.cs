@@ -60,8 +60,8 @@ namespace Hexarc.Pact.Tool.Emitters
 
         private BlockSyntax EmitMethodBody(Method method) => method.HttpMethod switch
         {
-            HttpMethod.Get => this.EmitGetJsonMethodBody(method),
-            HttpMethod.Post => this.EmitPostJsonMethodBody(method),
+            HttpMethod.Get => this.EmitGetMethodBody(method),
+            HttpMethod.Post => this.EmitPostMethodBody(method),
             _ => NotImplementedExceptionBlock
         };
 

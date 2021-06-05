@@ -273,7 +273,7 @@ namespace Hexarc.Pact.Tool.Emitters
             LiteralTypeReference => true,
             NullableTypeReference => false,
             PrimitiveTypeReference primitive => this.TypeRegistry.GetType(primitive.TypeId).IsReference,
-            TaskTypeReference task => this.IsNotNullReferenceType(task.ResultType),
+            TaskTypeReference task => task.ResultType is not null && this.IsNotNullReferenceType(task.ResultType),
             _ => throw new NotSupportedException()
         };
     }
