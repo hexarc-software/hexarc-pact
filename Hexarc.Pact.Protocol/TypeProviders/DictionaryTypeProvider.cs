@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using Hexarc.Pact.Protocol.Types;
 
@@ -11,6 +12,12 @@ namespace Hexarc.Pact.Protocol.TypeProviders
     public sealed class DictionaryTypeProvider
     {
         private DictionaryType Dictionary { get; } = new(typeof(Dictionary<,>));
+
+        private DictionaryType IDictionary { get; } = new(typeof(IDictionary<,>));
+
+        private DictionaryType ReadOnlyDictionary { get; } = new(typeof(ReadOnlyDictionary<,>));
+
+        private DictionaryType IReadOnlyDictionary { get; } = new(typeof(IReadOnlyDictionary<,>));
 
         /// <summary>
         /// Gets the registered dictionary type ids.
@@ -32,6 +39,9 @@ namespace Hexarc.Pact.Protocol.TypeProviders
         public IEnumerable<DictionaryType> Enumerate()
         {
             yield return this.Dictionary;
+            yield return this.IDictionary;
+            yield return this.ReadOnlyDictionary;
+            yield return this.IReadOnlyDictionary;
         }
     }
 }

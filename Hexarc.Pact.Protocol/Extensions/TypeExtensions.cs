@@ -16,7 +16,7 @@ namespace Hexarc.Pact.Protocol.Extensions
         {
             var name = type.Name;
             var index = name.IndexOf("`", StringComparison.Ordinal);
-            return index == -1 ? name : name.Substring(0, index);
+            return index == -1 ? name : name[..index];
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Hexarc.Pact.Protocol.Extensions
         {
             var name = type.FullName ?? throw new InvalidOperationException();
             var index = name.IndexOf("`", StringComparison.Ordinal);
-            return index == -1 ? name : name.Substring(0, index);
+            return index == -1 ? name : name[..index];
         }
 
         /// <summary>
