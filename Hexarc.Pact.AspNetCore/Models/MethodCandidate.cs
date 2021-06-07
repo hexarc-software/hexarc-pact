@@ -22,7 +22,6 @@ namespace Hexarc.Pact.AspNetCore.Models
 
         public Boolean IsPactCompatible =>
             this.IgnoreAttribute is null &&
-            this.RouteAttribute is not null &&
             this.IsSupportedHttpMethod;
 
         public MethodCandidate(

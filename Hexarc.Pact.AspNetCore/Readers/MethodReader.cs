@@ -25,13 +25,17 @@ namespace Hexarc.Pact.AspNetCore.Readers
 
         public Method Read(MethodCandidate methodCandidate, NamingConvention? namingConvention) =>
             new(methodCandidate.MethodInfo.Name.ToConventionalString(namingConvention),
-                this.ReadPath(methodCandidate.RouteAttribute!),
+                this.ReadPath(methodCandidate.HttpMethodAttribute!, methodCandidate.RouteAttribute),
                 this.ReadHttpMethod(methodCandidate.HttpMethodAttribute!),
                 this.ReadMethodReturnType(methodCandidate.MethodInfo.ReturnParameter, namingConvention),
                 this.ReadMethodParameters(methodCandidate.MethodInfo.GetContextualParameters(), namingConvention));
 
-        private String ReadPath(RouteAttribute routeAttribute) =>
-            routeAttribute.Template.StartsWith("/") ? routeAttribute.Template : $"/{routeAttribute.Template}";
+        private String ReadPath(HttpMethodAttribute methodAttribute, RouteAttribute? routeAttribute)
+        {
+            var template = methodAttribute.Template ?? routeAttribute?.Template;
+            if (template is null) throw new NullReferenceException("Could not extract method path");
+            return template.StartsWith("/") ? template : $"/{template}";
+        }
 
         private TaskTypeReference ReadMethodReturnType(ParameterInfo returnType, NamingConvention? namingConvention)
         {

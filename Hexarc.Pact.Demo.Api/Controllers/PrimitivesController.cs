@@ -6,7 +6,7 @@ namespace Hexarc.Pact.Demo.Api.Controllers
     [ApiController, Route("Primitives")]
     public sealed class PrimitivesController : ControllerBase
     {
-        [HttpGet, Route(nameof(GetBoolean))]
+        [HttpGet(nameof(GetBoolean))]
         public Boolean GetBoolean() => true;
 
         [HttpGet, Route(nameof(GetByte))]
