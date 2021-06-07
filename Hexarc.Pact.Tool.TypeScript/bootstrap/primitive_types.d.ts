@@ -12,5 +12,5 @@ declare namespace Hexarc.Pact.Types {
   type Double = number;
   type Decimal = number;
   type DateTime = Date | string;
-  interface Guid extends String { }
+  type Guid = string;
 }
