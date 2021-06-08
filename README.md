@@ -42,11 +42,13 @@ What's inside the Pact type system:
 The Pact API schema is designed to have an RPC-like semantic. In doing so 
 an exposed API must follow these rules:
 * API controllers must be marked with standard `ApiController` and `Route` attributes.
-* Route attribute must have only a constant string path without templating (e.g. `[Route("Entities")]`). 
-* API methods must be marked with the `Route` attribute. The same rule as for controllers is applied.
-* API methods must be marked with one of the supported HTTP verbs (`HttpGet` or `HttpPost`). Others are not supported at the moment. 
+* Route attribute must have only a constant string path without templating (e.g. `[Route("Entities")]`).
+* API methods must be marked with one of the supported HTTP verbs (`HttpGet` or `HttpPost`). Verb attributes may contain an endpoint path. 
+  Others are not supported at the moment. 
    * `HttpGet` methods can have query parameters which must be bind via the `FromQuery` attribute.
    * `HttpPost` methods must have only one parameter which is the request body.
+* API method path can be specified in the HTTP verb attribute or the `Route` attribute. If the method path is not
+specified in the HTTP verb attribute it will be taken from the `Route` one or an exception will be raised.
 
 ### Additional attributes
 Pact provides some useful attributes for API annotation:
@@ -95,7 +97,7 @@ public void Configure(IApplicationBuilder app)
 [ApiController, Route("Misc")]
 public sealed class MiscController : ControllerBase
 {
-    [HttpGet, Route(nameof(Ping))]
+    [HttpGet(nameof(Ping))]
     public String Ping([FromQuery] String message) => $"Hello, {message}";
 }
 ```
