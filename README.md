@@ -18,6 +18,7 @@ Hexarc Pact provides a toolchain for exposing and consuming Web API for .NET/Typ
 * [How to use](#how-to-use)
   * [Expose Pact API schema](#expose-pact-api-schema) (.NET Web API service)
   * [Consume Pact API schema](#consume-pact-api-schema) (.NET client application)
+* [License](#license)
 
 ## Features
 * Hassle-free API integrations in seconds.
@@ -145,3 +146,6 @@ var client = new DemoClient(new HttpClient { BaseAddress = new Uri("YOUR_API_HOS
 var pong = await client.Misc.Ping("World");
 Console.WriteLine(pong); // Prints "Hello, World" to the output.
 ```
+
+## License
+MIT © [Max Koverdyaev](https://github.com/shadeglare)
