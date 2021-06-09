@@ -25,7 +25,7 @@ Develop your .NET Web API project with Pact in mind and consume it across the .N
 
 ## Features
 * Hassle-free API integrations in seconds.
-* No type information loosing. Consume exact API that is provided.
+* No type information loosing. Consume exact API as it's designed.
 * Code first. No need to describe your API protocol in external IDL/DSL.
 * Charged with advanced types. Not only simple DTOs but enums, generics, tagged unions, etc.
 
