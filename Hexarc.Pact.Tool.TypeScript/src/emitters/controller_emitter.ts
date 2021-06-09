@@ -158,8 +158,8 @@ function emitGetMethodArgument(parameter: MethodParameter) {
 
 function emitGetJsonInvocation(path: string, isVoid: boolean, hasArguments: boolean = false) {
   const [statement, methodName] = isVoid ?
-    [ts.factory.createExpressionStatement, "_getVoid"] :
-    [ts.factory.createReturnStatement, "_getJson"];
+    [ts.factory.createExpressionStatement, "_doGetRequestWithVoidResponse"] :
+    [ts.factory.createReturnStatement, "_doGetRequestWithJsonResponse"];
   return statement(
     ts.factory.createAwaitExpression(
       ts.factory.createCallExpression(
@@ -174,8 +174,8 @@ function emitGetJsonInvocation(path: string, isVoid: boolean, hasArguments: bool
 
 function emitPostJsonInvocation(method: Method, isVoid: boolean) {
   const [statement, methodName] = isVoid ?
-    [ts.factory.createExpressionStatement, "_postJsonVoid"] :
-    [ts.factory.createReturnStatement, "_postJson"];
+    [ts.factory.createExpressionStatement, "_doPostJsonRequestWithVoidResponse"] :
+    [ts.factory.createReturnStatement, "_doPostJsonRequestWithJsonResponse"];
   return statement(
     ts.factory.createAwaitExpression(
       ts.factory.createCallExpression(
