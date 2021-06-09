@@ -1,7 +1,7 @@
 # Hexarc Pact
 Hexarc Pact provides a toolchain for exposing and consuming Web API for .NET/TypeScript-based projects.
 
-Develop your .NET Web API project with Pact in mind and consume it across the .NET ecosystem 
+Develop your .NET Web API project with Pact to keep a single source of truth for the API metadata and consume it across the .NET ecosystem 
 (microservices, desktop and mobile applications) or on the Web via TypeScript.
 
 |Package|Platform|Version|Downloads|
