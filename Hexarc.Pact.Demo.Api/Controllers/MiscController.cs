@@ -27,5 +27,8 @@ namespace Hexarc.Pact.Demo.Api.Controllers
 
         [HttpPost, Route(nameof(PostVoidTask))]
         public async Task PostVoidTask(Object payload) => await Task.Delay(0);
+
+        [HttpPost(nameof(PostVoidTaskWithVoidRequest))]
+        public async Task PostVoidTaskWithVoidRequest() => await Task.Delay(0);
     }
 }

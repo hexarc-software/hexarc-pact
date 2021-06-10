@@ -113,7 +113,7 @@ function emitMethodParameter(parameter: MethodParameter, typeReferenceEmitter: T
 function emitMethodBody(method: Method) {
   switch (method.httpMethod) {
     case HttpMethod.Get: return emitGetMethodBody(method);
-    case HttpMethod.Post: return emitPostBody(method);
+    case HttpMethod.Post: return emitPostMethodBody(method);
     default: throw new Error(`Not supported method: ${method.httpMethod}`);
   }
 }
@@ -127,11 +127,8 @@ function emitGetMethodBody(method: Method) {
       : [emitGetJsonInvocation(method.path, isVoid)], true);
 }
 
-function emitPostBody(method: Method) {
-  const isVoid = method.returnType.resultType == null;
-  return ts.factory.createBlock([
-    emitPostJsonInvocation(method, isVoid)
-  ], true);
+function emitPostMethodBody(method: Method) {
+  return ts.factory.createBlock([emitDoPostRequestInvocation(method)], true);
 }
 
 function emitGetMethodArgumentsVar(parameters: MethodParameter[]) {
@@ -172,16 +169,55 @@ function emitGetJsonInvocation(path: string, isVoid: boolean, hasArguments: bool
           : [ts.factory.createStringLiteral(path)])));
 }
 
-function emitPostJsonInvocation(method: Method, isVoid: boolean) {
-  const [statement, methodName] = isVoid ?
-    [ts.factory.createExpressionStatement, "_doPostJsonRequestWithVoidResponse"] :
-    [ts.factory.createReturnStatement, "_doPostJsonRequestWithJsonResponse"];
-  return statement(
+function emitDoPostRequestInvocation(method: Method) {
+  const isVoidRequest = method.parameters.length === 0;
+  const isVoidResponse = method.returnType.resultType == null;
+  if (isVoidRequest && isVoidResponse) return emitDoPostVoidWithVoidResponseInvocation(method);
+  else if (isVoidResponse && !isVoidResponse) return emitDoPostVoidWithJsonResponseInvocation(method);
+  else if (!isVoidRequest && isVoidResponse) return emitDoPostJsonWithVoidResponseInvocation(method);
+  else return emitDoPostJsonWithJsonResponseInvocation(method);
+}
+
+function emitDoPostVoidWithVoidResponseInvocation(method: Method) {
+  return ts.factory.createExpressionStatement(
     ts.factory.createAwaitExpression(
       ts.factory.createCallExpression(
         ts.factory.createPropertyAccessExpression(
           ts.factory.createThis(),
-          ts.factory.createIdentifier(methodName)),
+          ts.factory.createIdentifier("_doPostVoidRequestWithVoidResponse")),
+        undefined,
+        [ts.factory.createStringLiteral(method.path)])));
+}
+
+function emitDoPostVoidWithJsonResponseInvocation(method: Method) {
+  return ts.factory.createReturnStatement(
+    ts.factory.createAwaitExpression(
+      ts.factory.createCallExpression(
+        ts.factory.createPropertyAccessExpression(
+          ts.factory.createThis(),
+          ts.factory.createIdentifier("_doPostVoidRequestWithJsonResponse")),
+        undefined,
+        [ts.factory.createStringLiteral(method.path)])));
+}
+
+function emitDoPostJsonWithVoidResponseInvocation(method: Method) {
+  return ts.factory.createExpressionStatement(
+    ts.factory.createAwaitExpression(
+      ts.factory.createCallExpression(
+        ts.factory.createPropertyAccessExpression(
+          ts.factory.createThis(),
+          ts.factory.createIdentifier("_doPostJsonRequestWithVoidResponse")),
+        undefined,
+        [ts.factory.createStringLiteral(method.path), ts.factory.createIdentifier(method.parameters[0].name)])));
+}
+
+function emitDoPostJsonWithJsonResponseInvocation(method: Method) {
+  return ts.factory.createReturnStatement(
+    ts.factory.createAwaitExpression(
+      ts.factory.createCallExpression(
+        ts.factory.createPropertyAccessExpression(
+          ts.factory.createThis(),
+          ts.factory.createIdentifier("_doPostJsonRequestWithJsonResponse")),
         undefined,
         [ts.factory.createStringLiteral(method.path), ts.factory.createIdentifier(method.parameters[0].name)])));
 }
