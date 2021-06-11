@@ -14,7 +14,7 @@ namespace Hexarc.Pact.Demo.Api.Controllers
 
         public async System.Threading.Tasks.Task<Hexarc.Pact.Demo.Api.Models.Animal?> GetAnimal(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.GetJsonOrNull<Hexarc.Pact.Demo.Api.Models.Animal?>("/GetAnimal", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            return await this.DoGetRequestWithJsonResponse<Hexarc.Pact.Demo.Api.Models.Animal?>("/GetAnimal", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
     }
 }

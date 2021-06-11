@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 
 using Microsoft.CodeAnalysis;
@@ -18,30 +17,30 @@ namespace Hexarc.Pact.Tool.Emitters
     {
         private BlockSyntax EmitGetMethodBody(Method method) =>
             method.ReturnType.ResultType is null
-                ? this.EmitGetVoidMethodBody(method)
-                : this.EmitGetJsonMethodBody(method);
+                ? this.EmitDoGetRequestWithVoidResponse(method)
+                : this.EmitDoGetRequestWithJsonResponse(method);
 
-        private BlockSyntax EmitGetVoidMethodBody(Method method) =>
+        private BlockSyntax EmitDoGetRequestWithVoidResponse(Method method) =>
             Block(SingletonList(ExpressionStatement(AwaitExpression(
-                InvocationExpression(this.EmitGetVoidAccess(method.ReturnType))
+                InvocationExpression(this.EmitDoGetRequestWithVoidResponseAccess())
                     .WithArgumentList(this.EmitGetMethodArguments(method))))));
 
-        private MemberAccessExpressionSyntax EmitGetVoidAccess(TaskTypeReference returnType) =>
+        private MemberAccessExpressionSyntax EmitDoGetRequestWithVoidResponseAccess() =>
             MemberAccessExpression(
                 SyntaxKind.SimpleMemberAccessExpression,
                 ThisExpression(),
-                IdentifierName(this.PickGetVoidMethodName(returnType)));
+                IdentifierName("DoGetRequestWithVoidResponse"));
 
-        private BlockSyntax EmitGetJsonMethodBody(Method method) =>
+        private BlockSyntax EmitDoGetRequestWithJsonResponse(Method method) =>
             Block(SingletonList(ReturnStatement(AwaitExpression(
-                InvocationExpression(this.EmitGetJsonAccess(method.ReturnType))
+                InvocationExpression(this.EmitDoGetRequestWithJsonResponseAccess(method.ReturnType))
                     .WithArgumentList(this.EmitGetMethodArguments(method))))));
 
-        private MemberAccessExpressionSyntax EmitGetJsonAccess(TaskTypeReference returnType) =>
+        private MemberAccessExpressionSyntax EmitDoGetRequestWithJsonResponseAccess(TaskTypeReference returnType) =>
             MemberAccessExpression(
                 SyntaxKind.SimpleMemberAccessExpression,
                 ThisExpression(),
-                GenericName(Identifier(this.PickGetJsonMethodName(returnType)))
+                GenericName(Identifier("DoGetRequestWithJsonResponse"))
                     .WithTypeArgumentList(this.EmitGetJsonParameters(returnType)));
 
         private TypeArgumentListSyntax EmitGetJsonParameters(TaskTypeReference returnType) =>
@@ -70,10 +69,5 @@ namespace Hexarc.Pact.Tool.Emitters
                         SeparatedListWithCommas(
                             Argument(NameOfExpression(parameter.Name)),
                             Argument(IdentifierName(parameter.Name)))));
-
-        private String PickGetJsonMethodName(TaskTypeReference returnType) =>
-            returnType.ResultType is NullableTypeReference ? "GetJsonOrNull" : "GetJson";
-
-        private String PickGetVoidMethodName(TaskTypeReference returnType) => "GetVoid";
     }
 }

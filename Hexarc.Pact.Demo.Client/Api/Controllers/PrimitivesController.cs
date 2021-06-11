@@ -14,77 +14,77 @@ namespace Hexarc.Pact.Demo.Api.Controllers
 
         public async System.Threading.Tasks.Task<System.Boolean> GetBoolean(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.GetJson<System.Boolean>("/GetBoolean", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            return await this.DoGetRequestWithJsonResponse<System.Boolean>("/GetBoolean", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
 
         public async System.Threading.Tasks.Task<System.Byte> GetByte(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.GetJson<System.Byte>("/GetByte", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            return await this.DoGetRequestWithJsonResponse<System.Byte>("/GetByte", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
 
         public async System.Threading.Tasks.Task<System.SByte> GetSByte(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.GetJson<System.SByte>("/GetSByte", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            return await this.DoGetRequestWithJsonResponse<System.SByte>("/GetSByte", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
 
         public async System.Threading.Tasks.Task<System.Char> GetChar(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.GetJson<System.Char>("/GetChar", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            return await this.DoGetRequestWithJsonResponse<System.Char>("/GetChar", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
 
         public async System.Threading.Tasks.Task<System.Int16> GetInt16(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.GetJson<System.Int16>("/GetInt16", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            return await this.DoGetRequestWithJsonResponse<System.Int16>("/GetInt16", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
 
         public async System.Threading.Tasks.Task<System.UInt16> GetUInt16(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.GetJson<System.UInt16>("/GetUInt16", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            return await this.DoGetRequestWithJsonResponse<System.UInt16>("/GetUInt16", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
 
         public async System.Threading.Tasks.Task<System.Int32> GetInt32(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.GetJson<System.Int32>("/GetInt32", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            return await this.DoGetRequestWithJsonResponse<System.Int32>("/GetInt32", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
 
         public async System.Threading.Tasks.Task<System.UInt32> GetUInt32(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.GetJson<System.UInt32>("/GetUInt32", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            return await this.DoGetRequestWithJsonResponse<System.UInt32>("/GetUInt32", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
 
         public async System.Threading.Tasks.Task<System.Int64> GetInt64(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.GetJson<System.Int64>("/GetInt64", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            return await this.DoGetRequestWithJsonResponse<System.Int64>("/GetInt64", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
 
         public async System.Threading.Tasks.Task<System.UInt64> GetUInt64(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.GetJson<System.UInt64>("/GetUInt64", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            return await this.DoGetRequestWithJsonResponse<System.UInt64>("/GetUInt64", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
 
         public async System.Threading.Tasks.Task<System.Single> GetSingle(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.GetJson<System.Single>("/GetSingle", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            return await this.DoGetRequestWithJsonResponse<System.Single>("/GetSingle", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
 
         public async System.Threading.Tasks.Task<System.Double> GetDouble(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.GetJson<System.Double>("/GetDouble", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            return await this.DoGetRequestWithJsonResponse<System.Double>("/GetDouble", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
 
         public async System.Threading.Tasks.Task<System.Decimal> GetDecimal(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.GetJson<System.Decimal>("/GetDecimal", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            return await this.DoGetRequestWithJsonResponse<System.Decimal>("/GetDecimal", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
 
         public async System.Threading.Tasks.Task<System.Guid> GetGuid(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.GetJson<System.Guid>("/GetGuid", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            return await this.DoGetRequestWithJsonResponse<System.Guid>("/GetGuid", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
 
         public async System.Threading.Tasks.Task<System.DateTime> GetDateTime(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.GetJson<System.DateTime>("/GetDateTime", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            return await this.DoGetRequestWithJsonResponse<System.DateTime>("/GetDateTime", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
     }
 }

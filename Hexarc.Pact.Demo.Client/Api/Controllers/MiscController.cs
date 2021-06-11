@@ -14,37 +14,42 @@ namespace Hexarc.Pact.Demo.Api.Controllers
 
         public async System.Threading.Tasks.Task<System.String> Ping(System.String message, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.GetJson<System.String>("/Ping", new[] { new Hexarc.Pact.Client.GetMethodParameter(nameof(message), message) }, headers);
+            return await this.DoGetRequestWithJsonResponse<System.String>("/Ping", new[] { new Hexarc.Pact.Client.GetMethodParameter(nameof(message), message) }, headers);
         }
 
         public async System.Threading.Tasks.Task<System.Int32> Sum(System.Int32 a, System.Int32 b, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.GetJson<System.Int32>("/Sum", new[] { new Hexarc.Pact.Client.GetMethodParameter(nameof(a), a), new Hexarc.Pact.Client.GetMethodParameter(nameof(b), b) }, headers);
+            return await this.DoGetRequestWithJsonResponse<System.Int32>("/Sum", new[] { new Hexarc.Pact.Client.GetMethodParameter(nameof(a), a), new Hexarc.Pact.Client.GetMethodParameter(nameof(b), b) }, headers);
         }
 
         public async System.Threading.Tasks.Task<System.Double> Random(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.GetJson<System.Double>("/Random", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            return await this.DoGetRequestWithJsonResponse<System.Double>("/Random", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
 
         public async System.Threading.Tasks.Task GetVoid(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            await this.GetVoid("/GetVoid", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            await this.DoGetRequestWithVoidResponse("/GetVoid", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
 
         public async System.Threading.Tasks.Task GetVoidTask(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            await this.GetVoid("/GetVoidTask", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            await this.DoGetRequestWithVoidResponse("/GetVoidTask", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
 
         public async System.Threading.Tasks.Task PostVoid(System.Object payload, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            await this.PostJsonVoid<System.Object>("/PostVoid", payload, headers);
+            await this.DoPostJsonRequestWithVoidResponse<System.Object>("/PostVoid", payload, headers);
         }
 
         public async System.Threading.Tasks.Task PostVoidTask(System.Object payload, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            await this.PostJsonVoid<System.Object>("/PostVoidTask", payload, headers);
+            await this.DoPostJsonRequestWithVoidResponse<System.Object>("/PostVoidTask", payload, headers);
+        }
+
+        public async System.Threading.Tasks.Task PostVoidTaskWithVoidRequest(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
+        {
+            await this.DoPostVoidRequestWithVoidResponse("/PostVoidTaskWithVoidRequest", headers);
         }
     }
 }

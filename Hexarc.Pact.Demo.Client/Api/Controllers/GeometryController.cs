@@ -14,12 +14,12 @@ namespace Hexarc.Pact.Demo.Api.Controllers
 
         public async System.Threading.Tasks.Task<System.Double> Area(Hexarc.Pact.Demo.Api.Models.Triangle triangle, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.PostJson<Hexarc.Pact.Demo.Api.Models.Triangle, System.Double>("/Area", triangle, headers);
+            return await this.DoPostJsonRequestWithJsonResponse<Hexarc.Pact.Demo.Api.Models.Triangle, System.Double>("/Area", triangle, headers);
         }
 
         public async System.Threading.Tasks.Task<Hexarc.Pact.Demo.Api.Models.GeometryCollection?> ComputeCollection(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.GetJsonOrNull<Hexarc.Pact.Demo.Api.Models.GeometryCollection?>("/ComputeCollection", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            return await this.DoGetRequestWithJsonResponse<Hexarc.Pact.Demo.Api.Models.GeometryCollection?>("/ComputeCollection", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
     }
 }
