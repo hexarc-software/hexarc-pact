@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
 
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.Extensions.DependencyInjection;
 
 using Hexarc.Pact.AspNetCore.Extensions;
@@ -17,21 +14,15 @@ using Hexarc.Pact.AspNetCore.Readers;
 
 namespace Hexarc.Pact.AspNetCore.Middlewares
 {
-    public sealed class PactMiddleware
+    public sealed class PactSchemaService
     {
-        private readonly RequestDelegate _next;
-
         private readonly PactOptions _options;
-
-        private readonly TemplateMatcher _requestMatcher;
 
         private readonly JsonSerializerOptions _jsonOptions;
 
-        public PactMiddleware(RequestDelegate next, PactOptions options)
+        public PactSchemaService(PactOptions options)
         {
-            this._next = next;
             this._options = options;
-            this._requestMatcher = new TemplateMatcher(TemplateParser.Parse(options.Route), new RouteValueDictionary());
             this._jsonOptions = new JsonSerializerOptions
             {
                 Converters = { new UnionConverterFactory() },
@@ -40,14 +31,8 @@ namespace Hexarc.Pact.AspNetCore.Middlewares
             };
         }
 
-        public async Task Invoke(HttpContext httpContext)
+        public async Task HandleRequest(HttpContext httpContext)
         {
-            if (!this.IsPactSchemaRequested(httpContext.Request))
-            {
-                await this._next(httpContext);
-                return;
-            }
-
             var namingConvention = this.ExtractNamingConvention(httpContext.Request);
             var scopes = this.ExtractScopes(httpContext.Request);
             var schemaReader = httpContext.RequestServices.GetRequiredService<SchemaReader>();
@@ -59,10 +44,6 @@ namespace Hexarc.Pact.AspNetCore.Middlewares
             };
             await httpContext.Response.WriteAsJsonAsync(schema, this._jsonOptions);
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private Boolean IsPactSchemaRequested(HttpRequest request) =>
-            this._requestMatcher.TryMatch(request.Path, new RouteValueDictionary());
 
         private NamingConvention? ExtractNamingConvention(HttpRequest request) =>
             request.Query.ContainsKey("namingConvention")

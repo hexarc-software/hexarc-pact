@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Extensions.DependencyInjection;
 using Hexarc.Pact.Protocol.TypeProviders;
 using Hexarc.Pact.AspNetCore.Internals;
@@ -7,7 +8,12 @@ namespace Hexarc.Pact.AspNetCore.Middlewares
 {
     public static class PactServiceCollectionExtensions
     {
-        public static IServiceCollection AddPactGeneration(this IServiceCollection services)
+        public static IServiceCollection AddPactGeneration(this IServiceCollection services) =>
+            services.AddPactGeneration(() => new PactOptions());
+
+        public static IServiceCollection AddPactGeneration(
+            this IServiceCollection services,
+            Func<PactOptions> pactOptionsFactory)
         {
             services.AddScoped<DistinctTypeQueue>();
             services.AddScoped<PrimitiveTypeProvider>();
@@ -23,6 +29,8 @@ namespace Hexarc.Pact.AspNetCore.Middlewares
             services.AddScoped<MethodReader>();
             services.AddScoped<ControllerReader>();
             services.AddTransient<SchemaReader>();
+            services.AddTransient<PactSchemaService>(_ =>
+                new PactSchemaService(pactOptionsFactory()));
 
             return services;
         }
