@@ -18,7 +18,7 @@ namespace Hexarc.Pact.Protocol.Types
         public Int32 Value { get; }
 
         /// <summary>
-        /// Creates an instance of the EnumMember class.
+        /// Creates an instance of the <see cref="EnumMember"/> class.
         /// </summary>
         /// <param name="name">The enum member name.</param>
         /// <param name="value">The enum member value.</param>

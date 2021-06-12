@@ -19,7 +19,7 @@ namespace Hexarc.Pact.Protocol.Types
         public String Name { get; }
 
         /// <summary>
-        /// Creates an instance of the ObjectProperty class.
+        /// Creates an instance of the <see cref="ObjectProperty"/> class.
         /// </summary>
         /// <param name="type">The type reference to qualify the property's type</param>
         /// <param name="name">The property name.</param>

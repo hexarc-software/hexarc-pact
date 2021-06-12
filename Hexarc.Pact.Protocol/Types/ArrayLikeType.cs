@@ -10,12 +10,12 @@ namespace Hexarc.Pact.Protocol.Types
     public sealed class ArrayLikeType : Type
     {
         /// <summary>
-        /// Gets the ArrayLikeType kind.
+        /// Gets the <see cref="ArrayLikeType"/> kind.
         /// </summary>
         public override String Kind => TypeKind.ArrayLike;
 
         /// <summary>
-        /// Creates an instance of the ArrayLikeType class.
+        /// Creates an instance of the <see cref="ArrayLikeType"/> class.
         /// </summary>
         /// <param name="id">The unique type id.</param>
         /// <param name="namespace">The type namespace.</param>
@@ -26,7 +26,7 @@ namespace Hexarc.Pact.Protocol.Types
             base(id, @namespace, name, isReference) { }
 
         /// <summary>
-        /// Creates an instance of the ArrayLikeType class.
+        /// Creates an instance of the <see cref="ArrayLikeType"/> class.
         /// </summary>
         /// <param name="type">The native .NET type to create the class instance from.</param>
         public ArrayLikeType(System.Type type) :

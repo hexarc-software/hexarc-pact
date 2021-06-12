@@ -53,7 +53,7 @@ namespace Hexarc.Pact.Protocol.Types
         public String FullName => String.IsNullOrEmpty(this.Namespace) ? this.Name : $"{this.Namespace}.{this.Name}";
 
         /// <summary>
-        /// Creates an instance of the Type class.
+        /// Creates an instance of the <see cref="Type"/> class.
         /// </summary>
         /// <param name="id">The unique type id.</param>
         /// <param name="namespace">The type namespace.</param>
@@ -68,9 +68,9 @@ namespace Hexarc.Pact.Protocol.Types
         }
 
         /// <summary>
-        /// Creates an instance of the Type class.
+        /// Creates an instance of the <see cref="Type"/> class.
         /// </summary>
-        /// <param name="type">The System.Type object to build the Hexarc Type data.</param>
+        /// <param name="type">The <see cref="System.Type"/> object to build the Hexarc Type data.</param>
         protected Type(System.Type type) :
             this(type.GUID, type.Namespace, type.NameWithoutGenericArity(), type.IsReference()) { }
     }

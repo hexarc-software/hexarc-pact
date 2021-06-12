@@ -10,12 +10,12 @@ namespace Hexarc.Pact.Protocol.Types
     public sealed class TaskType : Type
     {
         /// <summary>
-        /// Gets the TaskType kind.
+        /// Gets the <see cref="TaskType"/> kind.
         /// </summary>
         public override String Kind => TypeKind.Task;
 
         /// <summary>
-        /// Creates an instance of the TaskType class.
+        /// Creates an instance of the <see cref="TaskType"/> class.
         /// </summary>
         /// <param name="id">The unique type id.</param>
         /// <param name="namespace">The type namespace.</param>
@@ -26,7 +26,7 @@ namespace Hexarc.Pact.Protocol.Types
             base(id, @namespace, name, isReference) { }
 
         /// <summary>
-        /// Creates an instance of the TaskType class.
+        /// Creates an instance of the <see cref="TaskType"/> class.
         /// </summary>
         /// <param name="type">The native .NET type to create the class instance from.</param>
         public TaskType(System.Type type) :

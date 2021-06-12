@@ -8,7 +8,7 @@ namespace Hexarc.Pact.Protocol.Types
     public sealed class UnionType : DistinctType
     {
         /// <summary>
-        /// Gets the UnionType kind.
+        /// Gets the <see cref="UnionType"/> kind.
         /// </summary>
         public override String Kind => TypeKind.Union;
 
@@ -23,7 +23,7 @@ namespace Hexarc.Pact.Protocol.Types
         public ClassType[] Cases { get; }
 
         /// <summary>
-        /// Creates an instance of the UnionType class.
+        /// Creates an instance of the <see cref="UnionType"/> class.
         /// </summary>
         /// <param name="id">The unique type id.</param>
         /// <param name="namespace">The type namespace.</param>

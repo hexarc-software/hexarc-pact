@@ -8,7 +8,7 @@ namespace Hexarc.Pact.Protocol.Types
     public sealed class EnumType : DistinctType
     {
         /// <summary>
-        /// Gets the EnumType kind.
+        /// Gets the <see cref="EnumType"/> kind.
         /// </summary>
         public override String Kind => TypeKind.Enum;
 
@@ -18,7 +18,7 @@ namespace Hexarc.Pact.Protocol.Types
         public EnumMember[] Members { get; }
 
         /// <summary>
-        /// Creates an instance of the EnumType class.
+        /// Creates an instance of the <see cref="EnumType"/> class.
         /// </summary>
         /// <param name="id">The unique type id.</param>
         /// <param name="namespace">The type namespace.</param>

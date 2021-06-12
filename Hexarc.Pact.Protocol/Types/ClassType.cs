@@ -8,12 +8,12 @@ namespace Hexarc.Pact.Protocol.Types
     public sealed class ClassType : ObjectType
     {
         /// <summary>
-        /// Gets the ClassType kind.
+        /// Gets the <see cref="ClassType"/> kind.
         /// </summary>
         public override String Kind => TypeKind.Class;
 
         /// <summary>
-        /// Creates an instance of ClassType class.
+        /// Creates an instance of <see cref="ClassType"/> class.
         /// </summary>
         /// <param name="id">The unique type id.</param>
         /// <param name="namespace">The type namespace.</param>

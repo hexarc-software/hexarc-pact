@@ -8,7 +8,7 @@ namespace Hexarc.Pact.Protocol.Types
     public abstract class DistinctType : Type
     {
         /// <summary>
-        /// Creates an instance of the DistinctType class.
+        /// Creates an instance of the <see cref="DistinctType"/> class.
         /// </summary>
         /// <param name="id">The unique type id.</param>
         /// <param name="namespace">The type namespace.</param>

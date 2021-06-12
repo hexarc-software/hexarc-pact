@@ -18,7 +18,7 @@ namespace Hexarc.Pact.Protocol.Types
         public ObjectProperty[] Properties { get; }
 
         /// <summary>
-        /// Creates an instance of the ObjectType class.
+        /// Creates an instance of the <see cref="ObjectType"/> class.
         /// </summary>
         /// <param name="id">The unique type id.</param>
         /// <param name="namespace">The type namespace.</param>

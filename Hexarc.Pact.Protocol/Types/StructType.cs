@@ -8,12 +8,12 @@ namespace Hexarc.Pact.Protocol.Types
     public sealed class StructType : ObjectType
     {
         /// <summary>
-        /// Gets the StructType kind.
+        /// Gets the <see cref="StructType"/> kind.
         /// </summary>
         public override String Kind => TypeKind.Struct;
 
         /// <summary>
-        /// Creates an instance of StructType class.
+        /// Creates an instance of <see cref="StructType"/> class.
         /// </summary>
         /// <param name="id">The unique type id</param>
         /// <param name="namespace">The type namespace.</param>
