@@ -1,6 +1,6 @@
 {
   "name": "@hexarc/pact-tool",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Node.js CLI tool to generate API clients from Hexarc Pact protocols for TypeScript.",
   "main": "./lib/pact.js",
   "types": "./lib/pact.d.ts",

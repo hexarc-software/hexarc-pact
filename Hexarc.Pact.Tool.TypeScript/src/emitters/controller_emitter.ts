@@ -173,7 +173,7 @@ function emitDoPostRequestInvocation(method: Method) {
   const isVoidRequest = method.parameters.length === 0;
   const isVoidResponse = method.returnType.resultType == null;
   if (isVoidRequest && isVoidResponse) return emitDoPostVoidWithVoidResponseInvocation(method);
-  else if (isVoidResponse && !isVoidResponse) return emitDoPostVoidWithJsonResponseInvocation(method);
+  else if (isVoidRequest && !isVoidResponse) return emitDoPostVoidWithJsonResponseInvocation(method);
   else if (!isVoidRequest && isVoidResponse) return emitDoPostJsonWithVoidResponseInvocation(method);
   else return emitDoPostJsonWithJsonResponseInvocation(method);
 }
