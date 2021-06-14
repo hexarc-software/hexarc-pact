@@ -8,7 +8,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
     public sealed class LiteralTypeReference : TypeReference
     {
         /// <summary>
-        /// Gets the LiteralTypeReference kind.
+        /// Gets the <see cref="LiteralTypeReference"/> kind.
         /// </summary>
         public override String Kind => TypeReferenceKind.Literal;
 
@@ -18,7 +18,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         public String Name { get; }
 
         /// <summary>
-        /// Creates an instance of the LiteralTypeReference class.
+        /// Creates an instance of the <see cref="LiteralTypeReference"/> class.
         /// </summary>
         /// <param name="name">The literal name.</param>
         public LiteralTypeReference(String name) =>

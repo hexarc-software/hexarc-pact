@@ -8,7 +8,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
     public sealed class NullableTypeReference : TypeReference
     {
         /// <summary>
-        /// Gets the NullableTypeReference kind.
+        /// Gets the <see cref="NullableTypeReference"/> kind.
         /// </summary>
         public override String Kind => TypeReferenceKind.Nullable;
 
@@ -18,7 +18,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         public TypeReference UnderlyingType { get; }
 
         /// <summary>
-        /// Creates an instance of the NullableTypeReference class.
+        /// Creates an instance of the <see cref="NullableTypeReference"/> class.
         /// </summary>
         /// <param name="underlyingType">The unwrapped underlying type of the given nullable type.</param>
         public NullableTypeReference(TypeReference underlyingType) =>

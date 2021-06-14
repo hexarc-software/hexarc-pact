@@ -8,7 +8,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
     public sealed class TypeParameterReference : TypeReference
     {
         /// <summary>
-        /// Gets the TypeParameter kind.
+        /// Gets the <see cref="TypeParameterReference"/> kind.
         /// </summary>
         public override String Kind => TypeReferenceKind.TypeParameter;
 
@@ -18,7 +18,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         public String Name { get; }
 
         /// <summary>
-        /// Creates an instance of the TypeParameterReference class.
+        /// Creates an instance of the <see cref="TypeParameterReference"/> class.
         /// </summary>
         /// <param name="name">The name of the type parameter.</param>
         public TypeParameterReference(String name) =>

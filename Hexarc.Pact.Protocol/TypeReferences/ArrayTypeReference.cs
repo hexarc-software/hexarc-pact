@@ -9,7 +9,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
     public sealed class ArrayTypeReference : TypeReference
     {
         /// <summary>
-        /// Gets the ArrayTypeReference kind.
+        /// Gets the <see cref="ArrayTypeReference"/> kind.
         /// </summary>
         public override String Kind => TypeReferenceKind.Array;
 
@@ -24,7 +24,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         public TypeReference ElementType { get; }
 
         /// <summary>
-        /// Creates an instance of the ArrayTypeReference class.
+        /// Creates an instance of the <see cref="ArrayTypeReference"/> class.
         /// </summary>
         /// <param name="arrayLikeTypeId">The array-like type id if presented.</param>
         /// <param name="elementType">The array element type.</param>
@@ -33,7 +33,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
             (this.ArrayLikeTypeId, this.ElementType) = (arrayLikeTypeId, elementType);
 
         /// <summary>
-        /// Creates an instance of the ArrayTypeReference class.
+        /// Creates an instance of the <see cref="ArrayTypeReference"/> class.
         /// </summary>
         /// <param name="elementType">The array element type.</param>
         public ArrayTypeReference(TypeReference elementType) :

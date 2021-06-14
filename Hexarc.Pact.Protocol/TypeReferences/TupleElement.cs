@@ -18,7 +18,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         public String? Name { get; }
 
         /// <summary>
-        /// Creates an instance of TupleElement type.
+        /// Creates an instance of <see cref="TupleElement"/> type.
         /// </summary>
         /// <param name="type">The tuple element type.</param>
         /// <param name="name">The tuple element name if presented.</param>

@@ -8,7 +8,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
     public sealed class PrimitiveTypeReference : TypeReference
     {
         /// <summary>
-        /// Gets the PrimitiveTypeReference kind.
+        /// Gets the <see cref="PrimitiveTypeReference"/> kind.
         /// </summary>
         public override String Kind => TypeReferenceKind.Primitive;
 
@@ -18,7 +18,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         public Guid TypeId { get; }
 
         /// <summary>
-        /// Creates an instance of the PrimitiveTypeReference class.
+        /// Creates an instance of the <see cref="PrimitiveTypeReference"/> class.
         /// </summary>
         /// <param name="typeId">The unique type id.</param>
         public PrimitiveTypeReference(Guid typeId) =>

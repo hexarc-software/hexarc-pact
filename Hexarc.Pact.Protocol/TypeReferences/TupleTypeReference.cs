@@ -8,7 +8,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
     public sealed class TupleTypeReference : TypeReference
     {
         /// <summary>
-        /// Gets the TupleTypeReference kind.
+        /// Gets the <see cref="TupleTypeReference"/> kind.
         /// </summary>
         public override String Kind => TypeReferenceKind.Tuple;
 
@@ -18,7 +18,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         public TupleElement[] Elements { get; }
 
         /// <summary>
-        /// Creates an instance of the TupleTypeReference class.
+        /// Creates an instance of the <see cref="TupleTypeReference"/> class.
         /// </summary>
         /// <param name="elements">The tuple elements.</param>
         public TupleTypeReference(TupleElement[] elements) =>

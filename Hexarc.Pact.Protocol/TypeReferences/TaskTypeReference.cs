@@ -8,7 +8,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
     public sealed class TaskTypeReference : TypeReference
     {
         /// <summary>
-        /// Gets the TaskTypeReference kind.
+        /// Gets the <see cref="TaskTypeReference"/> kind.
         /// </summary>
         public override String Kind => TypeReferenceKind.Task;
 
@@ -23,7 +23,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         public TypeReference? ResultType { get; }
 
         /// <summary>
-        /// Creates an instance of the TaskTypeReference class.
+        /// Creates an instance of the <see cref="TaskTypeReference"/> class.
         /// </summary>
         /// <param name="typeId">The unique task type id.</param>
         /// <param name="resultType">The reference to the task result type.</param>

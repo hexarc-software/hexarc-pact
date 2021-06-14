@@ -9,7 +9,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
     public sealed class DictionaryTypeReference : TypeReference
     {
         /// <summary>
-        /// Gets the DictionaryTypeReference kind.
+        /// Gets the <see cref="DictionaryTypeReference"/> kind.
         /// </summary>
         public override String Kind => TypeReferenceKind.Dictionary;
 
@@ -29,7 +29,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         public TypeReference ValueType { get; }
 
         /// <summary>
-        /// Creates an instance of the DictionaryTypeReference class.
+        /// Creates an instance of the <see cref="DictionaryTypeReference"/> class.
         /// </summary>
         /// <param name="typeId">The unique dictionary type id.</param>
         /// <param name="keyType">The dictionary key type.</param>
@@ -39,7 +39,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
             (this.TypeId, this.KeyType, this.ValueType) = (typeId, keyType, valueType);
 
         /// <summary>
-        /// Creates an instance of the DictionaryTypeReference type.
+        /// Creates an instance of the <see cref="DictionaryTypeReference"/> type.
         /// </summary>
         /// <param name="typeId">The unique dictionary type id.</param>
         /// <param name="keyAndValueTypes">

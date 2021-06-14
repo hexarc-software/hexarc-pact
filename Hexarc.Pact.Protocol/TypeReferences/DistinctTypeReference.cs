@@ -8,7 +8,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
     public sealed class DistinctTypeReference : TypeReference
     {
         /// <summary>
-        /// Gets the DistinctTypeReference kind.
+        /// Gets the <see cref="DistinctTypeReference"/> kind.
         /// </summary>
         public override String Kind => TypeReferenceKind.Distinct;
 
@@ -23,7 +23,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         public TypeReference[]? TypeArguments { get; }
 
         /// <summary>
-        /// Creates an instance of the DistinctTypeReference class.
+        /// Creates an instance of the <see cref="DistinctTypeReference"/> class.
         /// </summary>
         /// <param name="typeId">The unique distinct type id.</param>
         /// <param name="typeArguments">The distinct type arguments.</param>

@@ -8,7 +8,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
     public sealed class DynamicTypeReference : TypeReference
     {
         /// <summary>
-        /// Gets the DynamicTypeReference kind.
+        /// Gets the <see cref="DynamicTypeReference"/> kind.
         /// </summary>
         public override String Kind => TypeReferenceKind.Dynamic;
 
@@ -18,7 +18,7 @@ namespace Hexarc.Pact.Protocol.TypeReferences
         public Guid TypeId { get; }
 
         /// <summary>
-        /// Creates an instance of the DynamicTypeReference class.
+        /// Creates an instance of the <see cref="DynamicTypeReference"/> class.
         /// </summary>
         /// <param name="typeId">The unique dynamic type id.</param>
         public DynamicTypeReference(Guid typeId) =>
