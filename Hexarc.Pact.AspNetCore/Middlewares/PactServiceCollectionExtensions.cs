@@ -9,13 +9,7 @@ namespace Hexarc.Pact.AspNetCore.Middlewares
             services.AddPactGeneration(() => new PactOptions());
 
         public static IServiceCollection AddPactGeneration(
-            this IServiceCollection services,
-            Func<PactOptions> pactOptionsFactory)
-        {
-            services.AddTransient<PactSchemaService>(_ =>
-                new PactSchemaService(pactOptionsFactory()));
-
-            return services;
-        }
+            this IServiceCollection services, Func<PactOptions> pactOptionsFactory
+        ) => services.AddTransient<PactSchemaService>(_ => new PactSchemaService(pactOptionsFactory()));
     }
 }
