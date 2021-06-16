@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Hexarc.Pact.Protocol.Api;
 using Hexarc.Pact.Protocol.Types;
-using Hexarc.Pact.Protocol.TypeProviders;
 using Hexarc.Pact.AspNetCore.Attributes;
 using Hexarc.Pact.AspNetCore.Internals;
 using Hexarc.Pact.AspNetCore.Models;
@@ -20,34 +19,18 @@ namespace Hexarc.Pact.AspNetCore.Readers
 
         private ControllerReader ControllerReader { get; }
 
-        private PrimitiveTypeProvider PrimitiveTypeProvider { get; }
-
-        private DynamicTypeProvider DynamicTypeProvider { get; }
-
-        private ArrayLikeTypeProvider ArrayLikeTypeProvider { get; }
-
-        private DictionaryTypeProvider DictionaryTypeProvider { get; }
-
-        private TaskTypeProvider TaskTypeProvider { get; }
+        private TypeProvider TypeProvider { get; }
 
         public SchemaReader(
             DistinctTypeQueue distinctTypeQueue,
             DistinctTypeReader distinctTypeReader,
             ControllerReader controllerReader,
-            PrimitiveTypeProvider primitiveTypeProvider,
-            DynamicTypeProvider dynamicTypeProvider,
-            ArrayLikeTypeProvider arrayLikeTypeProvider,
-            DictionaryTypeProvider dictionaryTypeProvider,
-            TaskTypeProvider taskTypeProvider)
+            TypeProvider typeProvider)
         {
             this.DistinctTypeQueue = distinctTypeQueue;
             this.DistinctTypeReader = distinctTypeReader;
             this.ControllerReader = controllerReader;
-            this.PrimitiveTypeProvider = primitiveTypeProvider;
-            this.DynamicTypeProvider = dynamicTypeProvider;
-            this.ArrayLikeTypeProvider = arrayLikeTypeProvider;
-            this.DictionaryTypeProvider = dictionaryTypeProvider;
-            this.TaskTypeProvider = taskTypeProvider;
+            this.TypeProvider = typeProvider;
         }
 
         public Schema Read(Assembly assembly, NamingConvention? namingConvention = default) =>
@@ -77,11 +60,11 @@ namespace Hexarc.Pact.AspNetCore.Readers
 
         private Type[] ReadTypes(NamingConvention? namingConvention) =>
             this.EnumerateDistinctTypes(namingConvention)
-                .Concat(this.PrimitiveTypeProvider.Enumerate())
-                .Concat(this.DynamicTypeProvider.Enumerate())
-                .Concat(this.ArrayLikeTypeProvider.Enumerate())
-                .Concat(this.DictionaryTypeProvider.Enumerate())
-                .Concat(this.TaskTypeProvider.Enumerate())
+                .Concat(this.TypeProvider.PrimitiveTypes.Values)
+                .Concat(this.TypeProvider.DynamicTypes.Values)
+                .Concat(this.TypeProvider.ArrayLikeTypes.Values)
+                .Concat(this.TypeProvider.DictionaryTypes.Values)
+                .Concat(this.TypeProvider.TaskTypes.Values)
                 .ToArray();
 
         private IEnumerable<Type> EnumerateDistinctTypes(NamingConvention? namingConvention)

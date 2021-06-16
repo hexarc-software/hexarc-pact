@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Namotion.Reflection;
 using Hexarc.Annotations;
-using Hexarc.Pact.Protocol.TypeProviders;
 using Hexarc.Pact.AspNetCore.Internals;
 using Hexarc.Pact.AspNetCore.Models;
 using Hexarc.Pact.AspNetCore.Readers;
@@ -16,13 +15,8 @@ namespace Hexarc.Pact.Tests
         [Test]
         public void ReadTypes()
         {
-            var typeChecker = new TypeChecker(
-                new PrimitiveTypeProvider(),
-                new DynamicTypeProvider(),
-                new ArrayLikeTypeProvider(),
-                new DictionaryTypeProvider(),
-                new TaskTypeProvider(),
-                new TupleTypeProvider());
+            var typeProvider = new TypeProvider();
+            var typeChecker = new TypeChecker(typeProvider);
             var distinctTypeQueue = new DistinctTypeQueue();
             var typeReferenceReader = new TypeReferenceReader(typeChecker, distinctTypeQueue);
             var distinctTypeReader = new DistinctTypeReader(typeChecker, typeReferenceReader);

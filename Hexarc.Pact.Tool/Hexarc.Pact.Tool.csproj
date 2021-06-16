@@ -13,7 +13,7 @@
 
   <PropertyGroup>
     <PackageId>Hexarc.Pact.Tool</PackageId>
-    <Version>1.7.0</Version>
+    <Version>1.8.0</Version>
     <Authors>Max Koverdyaev</Authors>
     <Company>Hexarc Software</Company>
     <PackageTags>CodeGen;Api;WebApi;AspNet;Pact</PackageTags>

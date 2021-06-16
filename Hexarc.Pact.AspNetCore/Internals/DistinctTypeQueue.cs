@@ -18,7 +18,7 @@ namespace Hexarc.Pact.AspNetCore.Internals
             this.IncomeTypes.Enqueue(type);
         }
 
-        public Boolean TryDequeue([MaybeNullWhen(false)]out Type type) =>
+        public Boolean TryDequeue([MaybeNullWhen(false)] out Type type) =>
             this.IncomeTypes.TryDequeue(out type);
     }
 }

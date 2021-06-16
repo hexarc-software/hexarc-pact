@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using Namotion.Reflection;
 using Hexarc.Annotations;
 using Hexarc.Pact.AspNetCore.Extensions;
-using Hexarc.Pact.Protocol.TypeProviders;
 
 namespace Hexarc.Pact.AspNetCore.Internals
 {
@@ -23,20 +23,14 @@ namespace Hexarc.Pact.AspNetCore.Internals
 
         private IReadOnlySet<Guid> TupleTypeIds { get; }
 
-        public TypeChecker(
-            PrimitiveTypeProvider primitiveTypeProvider,
-            DynamicTypeProvider dynamicTypeProvider,
-            ArrayLikeTypeProvider arrayLikeTypeProvider,
-            DictionaryTypeProvider dictionaryTypeProvider,
-            TaskTypeProvider taskTypeProvider,
-            TupleTypeProvider tupleTypeProvider)
+        public TypeChecker(TypeProvider typeProvider)
         {
-            this.PrimitiveTypeIds = primitiveTypeProvider.TypeIds;
-            this.DynamicTypeIds = dynamicTypeProvider.TypeIds;
-            this.ArrayLikeTypeIds = arrayLikeTypeProvider.TypeIds;
-            this.DictionaryTypeIds = dictionaryTypeProvider.TypeIds;
-            this.TaskTypeIds = taskTypeProvider.TypeIds;
-            this.TupleTypeIds = tupleTypeProvider.TypeIds;
+            this.PrimitiveTypeIds = typeProvider.PrimitiveTypes.Keys.ToHashSet();
+            this.DynamicTypeIds = typeProvider.DynamicTypes.Keys.ToHashSet();
+            this.ArrayLikeTypeIds = typeProvider.ArrayLikeTypes.Keys.ToHashSet();
+            this.DictionaryTypeIds = typeProvider.DictionaryTypes.Keys.ToHashSet();
+            this.TaskTypeIds = typeProvider.TaskTypes.Keys.ToHashSet();
+            this.TupleTypeIds = typeProvider.TupleTypes.Keys.ToHashSet();
         }
 
         public Boolean IsActionResultOfT(Type type) =>
