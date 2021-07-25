@@ -3,7 +3,7 @@ import type { StringEnumType } from "../types/protocol/types";
 
 
 export function emit(type: StringEnumType): ts.EnumDeclaration {
-  const modifiers = [ts.factory.createModifier(ts.SyntaxKind.ConstKeyword)];
+  const modifiers = [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)];
   const members = type.members.map(x => emitMember(x));
   return ts.factory.createEnumDeclaration(undefined, modifiers, type.name, members);
 }

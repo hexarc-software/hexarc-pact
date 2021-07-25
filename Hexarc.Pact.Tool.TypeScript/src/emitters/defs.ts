@@ -1,6 +1,5 @@
 export const BOOTSTRAP_FOLDER_NAME = "bootstrap";
 export const CONTROLLERS_FOLDER_NAME = "controllers";
-export const TYPES_FOLDER_NAME = "types";
 
 export const CLIENT_BASE_CLASS_NAME = "ClientBase";
 export const CLIENT_BASE_FILE_NAME = "client_base";
@@ -27,11 +26,10 @@ export const API_TARGET_PATH = `${API_FILE_NAME}.ts`;
 export const INDEX_FILE_NAME = "index";
 export const INDEX_TARGET_PATH = `${INDEX_FILE_NAME}.ts`;
 
-export const PRIMITIVES_TYPES_FILE_NAME = "primitive_types";
-export const PRIMITIVES_TYPES_SOURCE_PATH = `../../${BOOTSTRAP_FOLDER_NAME}/${PRIMITIVES_TYPES_FILE_NAME}.d.ts`;
-export const PRIMITIVES_TYPES_TARGET_PATH = `${TYPES_FOLDER_NAME}/${PRIMITIVES_TYPES_FILE_NAME}.d.ts`;
-
-export const DISTINCT_TYPES_FILE_NAME = "distinct_types";
-export const DISTINCT_TYPES_TARGET_PATH = `${TYPES_FOLDER_NAME}/${DISTINCT_TYPES_FILE_NAME}.d.ts`;
+export const TYPES_FILE_NAME = "types";
+export const TYPES_NAMESPACE_NAME = "Types";
+export const TYPES_NAMESPACE_SHORT_NAME = "$";
+export const TYPES_MODULE_PATH = TYPES_FILE_NAME;
+export const TYPES_TARGET_PATH = `${TYPES_FILE_NAME}.ts`;
 
 export const CONTROLLER_SUFFIX = "Controller";

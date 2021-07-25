@@ -6,18 +6,9 @@ import { Controller, HttpMethod, Method, MethodParameter } from "../types/protoc
 import type { TypeReferenceEmitter } from "../types/tool";
 
 
-export function emit(controller: Controller, typeDefinitionPaths: string[], typeReferenceEmitter: TypeReferenceEmitter) {
+export function emit(controller: Controller, typeReferenceEmitter: TypeReferenceEmitter) {
   return Syntax.createBundle(
-    emitDeclarations(controller, typeReferenceEmitter),
-    emitTypeDefinitionSources(typeDefinitionPaths));
-}
-
-function emitTypeDefinitionSources(paths: string[]) {
-  return paths.map(x => emitTypeDefinitionSource(x));
-}
-
-function emitTypeDefinitionSource(path: string) {
-  return ts.createUnparsedSourceFile(`/// <reference path="${path}" />`);
+    emitDeclarations(controller, typeReferenceEmitter));
 }
 
 function emitDeclarations(controller: Controller, typeReferenceEmitter: TypeReferenceEmitter) {
@@ -25,7 +16,11 @@ function emitDeclarations(controller: Controller, typeReferenceEmitter: TypeRefe
 }
 
 function emitImports() {
-  return [emitControllerBaseImport(), emitClientBaseImport()];
+  return [
+    emitControllerBaseImport(),
+    emitClientBaseImport(),
+    emitTypesImport()
+  ];
 }
 
 function emitControllerBaseImport() {
@@ -38,6 +33,12 @@ function emitClientBaseImport() {
   return Syntax.createNamedImportDeclaration(
     Defs.CLIENT_BASE_CLASS_NAME,
     `../${Defs.CLIENT_BASE_MODULE_PATH}`);
+}
+
+function emitTypesImport() {
+  return Syntax.createNamespaceImportDeclaration(
+    Defs.TYPES_NAMESPACE_SHORT_NAME,
+    `../${Defs.TYPES_MODULE_PATH}`);
 }
 
 function emitClass(controller: Controller, typeReferenceEmitter: TypeReferenceEmitter) {
@@ -91,7 +92,7 @@ function emitMethod(method: Method, typeReferenceEmitter: TypeReferenceEmitter) 
     undefined,
     undefined,
     emitMethodParameters(method.parameters, typeReferenceEmitter),
-    typeReferenceEmitter.emit(method.returnType, undefined),
+    typeReferenceEmitter.emit(method.returnType, undefined, Defs.TYPES_NAMESPACE_SHORT_NAME),
     emitMethodBody(method));
 }
 
@@ -106,7 +107,7 @@ function emitMethodParameter(parameter: MethodParameter, typeReferenceEmitter: T
     undefined,
     parameter.name,
     parameter.type.kind === TypeReferenceKind.Nullable ? ts.factory.createToken(ts.SyntaxKind.QuestionToken) : undefined,
-    typeReferenceEmitter.emit(parameter.type, undefined),
+    typeReferenceEmitter.emit(parameter.type, undefined, Defs.TYPES_NAMESPACE_SHORT_NAME),
     undefined);
 }
 

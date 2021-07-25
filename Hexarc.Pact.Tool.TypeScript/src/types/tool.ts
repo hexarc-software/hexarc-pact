@@ -1,10 +1,10 @@
 import type { TypeNode } from "typescript";
 import type { TypeReference } from "./protocol/type_references";
-import type { 
-  ArrayLikeType, ClassType, DictionaryType, 
-  DistinctType, DynamicType, EnumType, 
-  PrimitiveType, StringEnumType, 
-  StructType, TaskType, UnionType 
+import type {
+  ArrayLikeType, ClassType, DictionaryType,
+  DistinctType, DynamicType, EnumType,
+  PrimitiveType, StringEnumType,
+  StructType, TaskType, UnionType
 } from "./protocol/types";
 
 
@@ -36,7 +36,11 @@ export interface TypeRegistry {
 }
 
 export interface TypeReferenceEmitter {
-  emit: (typeReference: TypeReference, currentNamespace: string | undefined) => TypeNode;
+  emit: (
+    typeReference: TypeReference,
+    currentNamespace: string | undefined,
+    moduleNamespace: string | undefined
+  ) => TypeNode;
 }
 
 export interface SchemaEmitter {
@@ -58,9 +62,4 @@ export interface EmitClientSettings {
   readonly clientClassName: string;
   readonly apiBasePath: string;
   readonly controllers: ImportedController[];
-}
-
-export interface IndexEmitterSettings {
-  typeDefinitionPaths: string[];
-  clientClassName: string;
 }

@@ -5,11 +5,12 @@ import type { TypeReferenceEmitter } from "../types/tool";
 
 
 export function emit(type: ObjectType, typeReferenceEmitter: TypeReferenceEmitter): ts.InterfaceDeclaration {
+  const modifiers = [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)];
   const properties = type.properties.map(x => emitProperty(x, type.namespace, typeReferenceEmitter));
   const typeParameters = emitTypeParameters(type.typeParameters);
   return ts.factory.createInterfaceDeclaration(
     undefined,
-    undefined,
+    modifiers,
     type.name,
     typeParameters,
     undefined,
@@ -27,7 +28,7 @@ function emitProperty(
 ): ts.TypeElement {
   const modifiers = [ts.factory.createModifier(ts.SyntaxKind.ReadonlyKeyword)];
   const questionToken = emitQuestionToken(property.type);
-  const propertyType = typeReferenceEmitter.emit(property.type, currentNamespace);
+  const propertyType = typeReferenceEmitter.emit(property.type, currentNamespace, undefined);
   return ts.factory.createPropertySignature(
     modifiers,
     property.name,

@@ -16,6 +16,19 @@ export function createNamedImportDeclaration(identifierName: string, modulePath:
     ts.factory.createStringLiteral(modulePath));
 }
 
+// Emits: import * as identifierName from "modulePath";
+export function createNamespaceImportDeclaration(identifierName: string, modulePath: string) {
+  return ts.factory.createImportDeclaration(
+    undefined,
+    undefined,
+    ts.factory.createImportClause(
+      false,
+      undefined,
+      ts.factory.createNamespaceImport(
+          ts.factory.createIdentifier(identifierName))),
+    ts.factory.createStringLiteral(modulePath));
+}
+
 // Emits: export { identifierName } from "modulePath";
 export function createNamedExportDeclaration(identifierName: string, modulePath: string) {
   return ts.factory.createExportDeclaration(
@@ -26,6 +39,17 @@ export function createNamedExportDeclaration(identifierName: string, modulePath:
       ts.factory.createExportSpecifier(
         undefined,
         ts.factory.createIdentifier(identifierName))]),
+    ts.factory.createStringLiteral(modulePath));
+}
+
+// Emits: export * as identifierName from "modulePath";
+export function createNamespaceExportDeclaration(identifierName: string, modulePath: string) {
+  return ts.factory.createExportDeclaration(
+    undefined,
+    undefined,
+    false,
+    ts.factory.createNamespaceExport(
+        ts.factory.createIdentifier(identifierName)),
     ts.factory.createStringLiteral(modulePath));
 }
 

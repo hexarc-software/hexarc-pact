@@ -3,7 +3,7 @@ export * as SchemaReader from "./utils/schema_reader";
 export * as TypeRegistry from "./utils/type_registry";
 export * as TypeReferenceEmitter from "./emitters/type_reference_emitter";
 export * as DistinctTypeEmitter from "./emitters/distinct_type_emitter";
-export * as DistinctTypesEmitter from "./emitters/distinct_types_emitter";
+export * as TypesEmitter from "./emitters/types_emitter";
 export * as ClientEmitter from "./emitters/client_emitter";
 export * as ControllerEmitter from "./emitters/controller_emitter";
 export * as IndexBundleEmitter from "./emitters/index_emitter";

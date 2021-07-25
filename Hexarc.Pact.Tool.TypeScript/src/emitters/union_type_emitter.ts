@@ -16,7 +16,8 @@ function emitCaseInterfaces(type: UnionType, typeReferenceEmitter: TypeReference
 }
 
 function emitUnionDeclaration(type: UnionType): ts.TypeAliasDeclaration {
+  const modifiers = [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)];
   const cases = type.cases.map(x => ts.factory.createTypeReferenceNode(x.name));
   const union = ts.factory.createUnionTypeNode(cases);
-  return ts.factory.createTypeAliasDeclaration(undefined, undefined, type.name, undefined, union);
+  return ts.factory.createTypeAliasDeclaration(undefined, modifiers, type.name, undefined, union);
 }

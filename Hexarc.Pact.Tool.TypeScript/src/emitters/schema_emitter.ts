@@ -7,7 +7,7 @@ import * as TypeRegistry from "../utils/type_registry";
 import * as TypeReferenceEmitter from "./type_reference_emitter";
 
 import * as Defs from "./defs";
-import * as DistinctTypesEmitter from "./distinct_types_emitter";
+import * as TypesEmitter from "./types_emitter";
 import * as ControllerEmitter from "./controller_emitter";
 import * as ClientEmitter from "./client_emitter";
 import * as IndexBundleEmitter from "./index_emitter";
@@ -27,7 +27,6 @@ export function create(schema: Schema, clientSettings: ClientSettings): SchemaEm
     await Directory.clear(outputDirectory);
     await Directory.create(outputDirectory);
     await Directory.create(path.join(outputDirectory, Defs.BOOTSTRAP_FOLDER_NAME));
-    await Directory.create(path.join(outputDirectory, Defs.TYPES_FOLDER_NAME));
     await Directory.create(path.join(outputDirectory, Defs.CONTROLLERS_FOLDER_NAME));
   }
 
@@ -43,22 +42,11 @@ export function create(schema: Schema, clientSettings: ClientSettings): SchemaEm
       path.join(outputDirectory, Defs.HTTP_ERROR_TARGET_PATH));
   }
 
-  async function emitDistinctTypesFile() {
-    const distinctTypes = typeRegistry.enumerateDistinctTypes();
-    const bundle = DistinctTypesEmitter.emit(distinctTypes, typeReferenceEmitter);
-    const result = printer.printBundle(bundle);
-    await File.writeString(path.join(outputDirectory, Defs.DISTINCT_TYPES_TARGET_PATH), result);
-  }
-
-  async function emitPrimitiveTypesFile() {
-    await File.copy(
-      path.resolve(__dirname, Defs.PRIMITIVES_TYPES_SOURCE_PATH), 
-      path.join(outputDirectory, Defs.PRIMITIVES_TYPES_TARGET_PATH));
-  }
-
   async function emitTypes() {
-    await emitPrimitiveTypesFile();
-    await emitDistinctTypesFile();
+    const distinctTypes = typeRegistry.enumerateDistinctTypes();
+    const bundle = TypesEmitter.emit(distinctTypes, typeReferenceEmitter);
+    const result = printer.printBundle(bundle);
+    await File.writeString(path.join(outputDirectory, Defs.TYPES_TARGET_PATH), result);
   }
 
   async function emitControllers() {
@@ -73,8 +61,7 @@ export function create(schema: Schema, clientSettings: ClientSettings): SchemaEm
   }
 
   async function emitController(controller: Controller, filePath: string) {
-    const typeDefinitionPaths = [`../${Defs.PRIMITIVES_TYPES_TARGET_PATH}`, `../${Defs.DISTINCT_TYPES_TARGET_PATH}`];
-    const bundle = ControllerEmitter.emit(controller, typeDefinitionPaths, typeReferenceEmitter);
+    const bundle = ControllerEmitter.emit(controller, typeReferenceEmitter);
     const result = printer.printBundle(bundle);
     await File.writeString(filePath, result);
   }
@@ -98,8 +85,7 @@ export function create(schema: Schema, clientSettings: ClientSettings): SchemaEm
   }
 
   async function emitIndex() {
-    const typeDefinitionPaths = [Defs.PRIMITIVES_TYPES_TARGET_PATH, Defs.DISTINCT_TYPES_TARGET_PATH];
-    const bundle = IndexBundleEmitter.emit({ typeDefinitionPaths, clientClassName: clientSettings.clientClassName });
+    const bundle = IndexBundleEmitter.emit(clientSettings.clientClassName);
     const result = printer.printBundle(bundle);
     await File.writeString(path.join(outputDirectory, Defs.INDEX_TARGET_PATH), result);
   }
