@@ -1,48 +1,43 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using Namotion.Reflection;
 
-namespace Hexarc.Pact.AspNetCore.Extensions
+namespace Hexarc.Pact.AspNetCore.Extensions;
+
+/// <summary>
+/// Extensions for the Namotion.Reflection.ContextualType class.
+/// </summary>
+public static class ContextualTypeExtensions
 {
     /// <summary>
-    /// Extensions for the Namotion.Reflection.ContextualType class.
+    /// Extracts the tuple element names if provided.
     /// </summary>
-    public static class ContextualTypeExtensions
+    /// <param name="contextualType">The contextual type for a ValueTuple type.</param>
+    /// <returns>Returns the tuple element names or null.</returns>
+    public static IList<String?>? GetTupleElementNames(this ContextualType contextualType) =>
+        contextualType.GetContextAttribute<TupleElementNamesAttribute>()?.TransformNames;
+
+    /// <summary>
+    /// Extracts the generic arguments from the tuple contextual type.
+    /// </summary>
+    /// <param name="contextualType">The contextual type for a ValueTuple type.</param>
+    /// <returns>Returns the generic arguments from the tuple contextual type.</returns>
+    public static ContextualType[] GetTupleArguments(this ContextualType contextualType) =>
+        contextualType.EnumerateFlattenTupleArguments().ToArray();
+
+    private static IEnumerable<ContextualType> EnumerateFlattenTupleArguments(this ContextualType contextualType)
     {
-        /// <summary>
-        /// Extracts the tuple element names if provided.
-        /// </summary>
-        /// <param name="contextualType">The contextual type for a ValueTuple type.</param>
-        /// <returns>Returns the tuple element names or null.</returns>
-        public static IList<String?>? GetTupleElementNames(this ContextualType contextualType) =>
-            contextualType.GetContextAttribute<TupleElementNamesAttribute>()?.TransformNames;
+        // We have to flat a tuple generic arguments in the case of a tuple with eight elements.
+        // If the eighth element is presented it contains a folded tuple
+        // with the rest tuple generic arguments from the top level definition.
 
-        /// <summary>
-        /// Extracts the generic arguments from the tuple contextual type.
-        /// </summary>
-        /// <param name="contextualType">The contextual type for a ValueTuple type.</param>
-        /// <returns>Returns the generic arguments from the tuple contextual type.</returns>
-        public static ContextualType[] GetTupleArguments(this ContextualType contextualType) =>
-            contextualType.EnumerateFlattenTupleArguments().ToArray();
+        var allArguments = contextualType.GenericArguments;
+        var hasRest = allArguments.Length == 8;
 
-        private static IEnumerable<ContextualType> EnumerateFlattenTupleArguments(this ContextualType contextualType)
-        {
-            // We have to flat a tuple generic arguments in the case of a tuple with eight elements.
-            // If the eighth element is presented it contains a folded tuple
-            // with the rest tuple generic arguments from the top level definition.
+        var regularArguments = hasRest ? allArguments[..7] : allArguments;
+        foreach (var argument in regularArguments) yield return argument;
 
-            var allArguments = contextualType.GenericArguments;
-            var hasRest = allArguments.Length == 8;
+        if (!hasRest) yield break;
 
-            var regularArguments = hasRest ? allArguments[..7] : allArguments;
-            foreach (var argument in regularArguments) yield return argument;
-
-            if (!hasRest) yield break;
-
-            var restArguments = allArguments[7].EnumerateFlattenTupleArguments();
-            foreach (var argument in restArguments) yield return argument;
-        }
+        var restArguments = allArguments[7].EnumerateFlattenTupleArguments();
+        foreach (var argument in restArguments) yield return argument;
     }
 }

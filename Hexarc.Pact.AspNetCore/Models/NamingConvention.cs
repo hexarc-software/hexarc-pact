@@ -1,7 +1,6 @@
-namespace Hexarc.Pact.AspNetCore.Models
+namespace Hexarc.Pact.AspNetCore.Models;
+
+public enum NamingConvention
 {
-    public enum NamingConvention
-    {
-        CamelCase
-    }
+    CamelCase
 }

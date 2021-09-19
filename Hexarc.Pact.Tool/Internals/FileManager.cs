@@ -1,70 +1,66 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Microsoft.CodeAnalysis.Text;
 using Hexarc.Pact.Tool.Models;
 
-namespace Hexarc.Pact.Tool.Internals
+namespace Hexarc.Pact.Tool.Internals;
+
+public sealed class FileManager
 {
-    public sealed class FileManager
+    private String OutputDirectory { get; }
+
+    private String ModelsPath { get; }
+
+    private String ControllersPath { get; }
+
+    public FileManager(String outputDirectory)
     {
-        private String OutputDirectory { get; }
+        this.OutputDirectory = outputDirectory;
+        this.ModelsPath = Path.Combine(this.OutputDirectory, "Models");
+        this.ControllersPath = Path.Combine(this.OutputDirectory, "Controllers");
+    }
 
-        private String ModelsPath { get; }
+    public void Save(EmittedApi emittedApi)
+    {
+        this.PrepareDirectories();
+        this.SaveEmittedClient(emittedApi.Client);
+        this.SaveEmittedModels(emittedApi.Models);
+        this.SaveEmittedControllers(emittedApi.Controllers);
+    }
 
-        private String ControllersPath { get; }
+    private void PrepareDirectories()
+    {
+        DirectoryOperations.CreateOrClear(this.OutputDirectory);
+        Directory.CreateDirectory(this.ModelsPath);
+        Directory.CreateDirectory(this.ControllersPath);
+    }
 
-        public FileManager(String outputDirectory)
+    private void SaveEmittedClient(EmittedSource emittedClient) =>
+        this.SaveSourceText(Path.Combine(this.OutputDirectory, emittedClient.FileName), emittedClient.SourceText);
+
+    private void SaveEmittedModels(IEnumerable<EmittedSource> emittedModels)
+    {
+        foreach (var emittedModel in emittedModels)
         {
-            this.OutputDirectory = outputDirectory;
-            this.ModelsPath = Path.Combine(this.OutputDirectory, "Models");
-            this.ControllersPath = Path.Combine(this.OutputDirectory, "Controllers");
+            this.SaveEmittedModel(emittedModel);
         }
+    }
 
-        public void Save(EmittedApi emittedApi)
+    private void SaveEmittedModel(EmittedSource emittedModel) =>
+        this.SaveSourceText(Path.Combine(this.ModelsPath, emittedModel.FileName), emittedModel.SourceText);
+
+    private void SaveEmittedControllers(IEnumerable<EmittedSource> emittedControllers)
+    {
+        foreach (var emittedSource in emittedControllers)
         {
-            this.PrepareDirectories();
-            this.SaveEmittedClient(emittedApi.Client);
-            this.SaveEmittedModels(emittedApi.Models);
-            this.SaveEmittedControllers(emittedApi.Controllers);
+            this.SaveEmittedController(emittedSource);
         }
+    }
 
-        private void PrepareDirectories()
-        {
-            DirectoryOperations.CreateOrClear(this.OutputDirectory);
-            Directory.CreateDirectory(this.ModelsPath);
-            Directory.CreateDirectory(this.ControllersPath);
-        }
+    private void SaveEmittedController(EmittedSource emittedController) =>
+        this.SaveSourceText(Path.Combine(this.ControllersPath, emittedController.FileName), emittedController.SourceText);
 
-        private void SaveEmittedClient(EmittedSource emittedClient) =>
-            this.SaveSourceText(Path.Combine(this.OutputDirectory, emittedClient.FileName), emittedClient.SourceText);
-
-        private void SaveEmittedModels(IEnumerable<EmittedSource> emittedModels)
-        {
-            foreach (var emittedModel in emittedModels)
-            {
-                this.SaveEmittedModel(emittedModel);
-            }
-        }
-
-        private void SaveEmittedModel(EmittedSource emittedModel) =>
-            this.SaveSourceText(Path.Combine(this.ModelsPath, emittedModel.FileName), emittedModel.SourceText);
-
-        private void SaveEmittedControllers(IEnumerable<EmittedSource> emittedControllers)
-        {
-            foreach (var emittedSource in emittedControllers)
-            {
-                this.SaveEmittedController(emittedSource);
-            }
-        }
-
-        private void SaveEmittedController(EmittedSource emittedController) =>
-            this.SaveSourceText(Path.Combine(this.ControllersPath, emittedController.FileName), emittedController.SourceText);
-
-        private void SaveSourceText(String path, SourceText sourceText)
-        {
-            using var file = File.CreateText(path);
-            sourceText.Write(file);
-        }
+    private void SaveSourceText(String path, SourceText sourceText)
+    {
+        using var file = File.CreateText(path);
+        sourceText.Write(file);
     }
 }

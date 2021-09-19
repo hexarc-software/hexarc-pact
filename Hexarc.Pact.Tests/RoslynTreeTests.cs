@@ -7,116 +7,115 @@ using NUnit.Framework;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Hexarc.Pact.Tool.Syntax.SyntaxFactory;
 
-namespace Hexarc.Pact.Tests
+namespace Hexarc.Pact.Tests;
+
+[TestFixture]
+public class RoslynTreeTests
 {
-    [TestFixture]
-    public class RoslynTreeTests
+    [Test]
+    public void NameOf()
     {
-        [Test]
-        public void NameOf()
-        {
-            Assert.AreEqual("nameof(Object)", NameOfExpression("Object")
-                .NormalizeWhitespace()
-                .ToFullString());
-        }
+        Assert.AreEqual("nameof(Object)", NameOfExpression("Object")
+            .NormalizeWhitespace()
+            .ToFullString());
+    }
 
-        [Test]
-        public void EmptyArray()
-        {
-            Assert.AreEqual("System.Array.Empty<System.Object>()", ArrayEmptyCall(typeof(Object))
-                .NormalizeWhitespace()
-                .ToFullString());
-        }
+    [Test]
+    public void EmptyArray()
+    {
+        Assert.AreEqual("System.Array.Empty<System.Object>()", ArrayEmptyCall(typeof(Object))
+            .NormalizeWhitespace()
+            .ToFullString());
+    }
 
-        [Test]
-        public void BuildTypeFromScratch()
-        {
-            var xProp = PropertyDeclaration(
-                NullableType(ParseName("System.Int32")), "X")
-                .AddModifiers(Token(SyntaxKind.PublicKeyword))
-                .AddAccessorListAccessors(
-                    AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
-                        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)),
-                    AccessorDeclaration(SyntaxKind.InitAccessorDeclaration)
-                        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)));
+    [Test]
+    public void BuildTypeFromScratch()
+    {
+        var xProp = PropertyDeclaration(
+            NullableType(ParseName("System.Int32")), "X")
+            .AddModifiers(Token(SyntaxKind.PublicKeyword))
+            .AddAccessorListAccessors(
+                AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
+                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)),
+                AccessorDeclaration(SyntaxKind.InitAccessorDeclaration)
+                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)));
 
-            var yProp = PropertyDeclaration(
-                ParseName("System.Int32"), "Y")
-                .AddModifiers(Token(SyntaxKind.PublicKeyword))
-                .AddAccessorListAccessors(
-                    AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
-                        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)),
-                    AccessorDeclaration(SyntaxKind.InitAccessorDeclaration)
-                        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)));
+        var yProp = PropertyDeclaration(
+            ParseName("System.Int32"), "Y")
+            .AddModifiers(Token(SyntaxKind.PublicKeyword))
+            .AddAccessorListAccessors(
+                AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
+                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)),
+                AccessorDeclaration(SyntaxKind.InitAccessorDeclaration)
+                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)));
 
-            var coordsProp = PropertyDeclaration(
-                ArrayType(
-                    ParseName("System.Int32"))
+        var coordsProp = PropertyDeclaration(
+            ArrayType(
+                ParseName("System.Int32"))
+                .WithRankSpecifiers(
+                    new SyntaxList<ArrayRankSpecifierSyntax>(new [] {
+                        ArrayRankSpecifier(
+                            SingletonSeparatedList<ExpressionSyntax>(
+                                OmittedArraySizeExpression())),
+                        ArrayRankSpecifier(
+                            SingletonSeparatedList<ExpressionSyntax>(
+                                OmittedArraySizeExpression()))
+                    })),
+            "XS")
+            .AddModifiers(Token(SyntaxKind.PublicKeyword))
+            .AddAccessorListAccessors(
+                AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
+                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)),
+                AccessorDeclaration(SyntaxKind.InitAccessorDeclaration)
+                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)));
+
+        var s = PropertyDeclaration(
+            ArrayType(
+                ArrayType(ParseName("System.Int32"))
                     .WithRankSpecifiers(
-                        new SyntaxList<ArrayRankSpecifierSyntax>(new [] {
+                        SingletonList(
                             ArrayRankSpecifier(
-                                SingletonSeparatedList<ExpressionSyntax>(
-                                    OmittedArraySizeExpression())),
-                            ArrayRankSpecifier(
-                                SingletonSeparatedList<ExpressionSyntax>(
-                                    OmittedArraySizeExpression()))
-                        })),
-                "XS")
-                .AddModifiers(Token(SyntaxKind.PublicKeyword))
-                .AddAccessorListAccessors(
-                    AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
-                        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)),
-                    AccessorDeclaration(SyntaxKind.InitAccessorDeclaration)
-                        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)));
-
-            var s = PropertyDeclaration(
-                ArrayType(
-                    ArrayType(ParseName("System.Int32"))
-                        .WithRankSpecifiers(
-                            SingletonList(
-                                ArrayRankSpecifier(
-                                        SingletonSeparatedList<ExpressionSyntax>(
-                                            OmittedArraySizeExpression())))))
-                        .WithRankSpecifiers(
-                            SingletonList(
-                                ArrayRankSpecifier(
                                     SingletonSeparatedList<ExpressionSyntax>(
-                                        OmittedArraySizeExpression())))),
-                "m")
-                .AddModifiers(Token(SyntaxKind.PublicKeyword))
-                .AddAccessorListAccessors(
-                    AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
-                        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)),
-                    AccessorDeclaration(SyntaxKind.InitAccessorDeclaration)
-                        .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)));
+                                        OmittedArraySizeExpression())))))
+                    .WithRankSpecifiers(
+                        SingletonList(
+                            ArrayRankSpecifier(
+                                SingletonSeparatedList<ExpressionSyntax>(
+                                    OmittedArraySizeExpression())))),
+            "m")
+            .AddModifiers(Token(SyntaxKind.PublicKeyword))
+            .AddAccessorListAccessors(
+                AccessorDeclaration(SyntaxKind.GetAccessorDeclaration)
+                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)),
+                AccessorDeclaration(SyntaxKind.InitAccessorDeclaration)
+                    .WithSemicolonToken(Token(SyntaxKind.SemicolonToken)));
 
-            var type = ClassDeclaration("Point")
-                .AddModifiers(
-                    Token(SyntaxKind.PublicKeyword),
-                    Token(SyntaxKind.SealedKeyword))
-                .AddMembers(
-                    xProp,
-                    yProp,
-                    coordsProp,
-                    s);
+        var type = ClassDeclaration("Point")
+            .AddModifiers(
+                Token(SyntaxKind.PublicKeyword),
+                Token(SyntaxKind.SealedKeyword))
+            .AddMembers(
+                xProp,
+                yProp,
+                coordsProp,
+                s);
 
-            var ns = NamespaceDeclaration(ParseName("Hexarc.Api.Models"))
-                .AddMembers(type);
+        var ns = NamespaceDeclaration(ParseName("Hexarc.Api.Models"))
+            .AddMembers(type);
 
-            var comment = TriviaList(
-                Comment("// <auto-generated>"),
-                Comment("// This code was generated by a tool. Do not edit."),
-                Comment("// </auto-generated>\r\n"));
+        var comment = TriviaList(
+            Comment("// <auto-generated>"),
+            Comment("// This code was generated by a tool. Do not edit."),
+            Comment("// </auto-generated>\r\n"));
 
-            var unit = CompilationUnit()
-                .AddMembers(ns)
-                .WithLeadingTrivia(comment)
-                .NormalizeWhitespace();
-            var text = unit.GetText();
-            Console.WriteLine(text);
+        var unit = CompilationUnit()
+            .AddMembers(ns)
+            .WithLeadingTrivia(comment)
+            .NormalizeWhitespace();
+        var text = unit.GetText();
+        Console.WriteLine(text);
 
-            using var file = File.CreateText("Point.cs");
-            text.Write(file);
-        }
+        using var file = File.CreateText("Point.cs");
+        text.Write(file);
     }
 }

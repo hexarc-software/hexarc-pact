@@ -1,17 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Net.Http.Headers;
+namespace Hexarc.Pact.Client;
 
-namespace Hexarc.Pact.Client
+internal static class HttpRequestHeadersExtensions
 {
-    internal static class HttpRequestHeadersExtensions
+    public static void AddRange(this HttpHeaders httpHeaders, IEnumerable<KeyValuePair<String, String>> headers)
     {
-        public static void AddRange(this HttpHeaders httpHeaders, IEnumerable<KeyValuePair<String, String>> headers)
+        foreach (var (key, value) in headers)
         {
-            foreach (var (key, value) in headers)
-            {
-                httpHeaders.Add(key, value);
-            }
+            httpHeaders.Add(key, value);
         }
     }
 }
