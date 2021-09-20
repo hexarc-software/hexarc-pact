@@ -1,3 +1,5 @@
+namespace Hexarc.Pact.AspNetCore.Readers;
+
 using Microsoft.AspNetCore.Mvc;
 using Hexarc.Pact.Protocol.Api;
 using Hexarc.Pact.AspNetCore.Attributes;
@@ -5,8 +7,6 @@ using Hexarc.Pact.AspNetCore.Internals;
 using Hexarc.Pact.AspNetCore.Models;
 using Controller = Hexarc.Pact.Protocol.Api.Controller;
 using Type = Hexarc.Pact.Protocol.Types.Type;
-
-namespace Hexarc.Pact.AspNetCore.Readers;
 
 public sealed class SchemaReader
 {

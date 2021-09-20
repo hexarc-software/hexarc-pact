@@ -1,3 +1,5 @@
+namespace Hexarc.Pact.AspNetCore.Readers;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 
@@ -8,8 +10,6 @@ using Hexarc.Pact.Protocol.TypeReferences;
 using Hexarc.Pact.AspNetCore.Extensions;
 using Hexarc.Pact.AspNetCore.Internals;
 using Hexarc.Pact.AspNetCore.Models;
-
-namespace Hexarc.Pact.AspNetCore.Readers;
 
 public sealed class MethodReader
 {

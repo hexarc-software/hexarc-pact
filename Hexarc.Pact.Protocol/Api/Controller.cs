@@ -3,7 +3,7 @@ namespace Hexarc.Pact.Protocol.Api;
 /// <summary>
 /// Provides information about an API controller type and it's endpoints.
 /// </summary>
-public class Controller
+public sealed class Controller
 {
     /// <summary>
     /// Gets the controller type namespace.

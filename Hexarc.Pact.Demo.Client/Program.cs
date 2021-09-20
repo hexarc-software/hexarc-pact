@@ -1,9 +1,9 @@
-﻿using System;
+﻿namespace Hexarc.Pact.Demo.Client;
+
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Hexarc.Pact.Demo.Api.Models;
-
-namespace Hexarc.Pact.Demo.Client;
 
 public static class Program
 {

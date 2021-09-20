@@ -1,8 +1,7 @@
-namespace Hexarc.Pact.Demo.Api.Models
+namespace Hexarc.Pact.Demo.Api.Models;
+
+public enum Flags
 {
-    public enum Flags
-    {
-        On = 1,
-        Off = 2
-    }
+    On = 1,
+    Off = 2
 }

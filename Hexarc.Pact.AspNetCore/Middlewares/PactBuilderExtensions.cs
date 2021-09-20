@@ -1,7 +1,7 @@
+namespace Hexarc.Pact.AspNetCore.Middlewares;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-
-namespace Hexarc.Pact.AspNetCore.Middlewares;
 
 public static class PactBuilderExtensions
 {

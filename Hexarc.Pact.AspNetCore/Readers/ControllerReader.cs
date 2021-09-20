@@ -1,11 +1,11 @@
+namespace Hexarc.Pact.AspNetCore.Readers;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Hexarc.Pact.AspNetCore.Attributes;
 using Hexarc.Pact.AspNetCore.Models;
 using Hexarc.Pact.Protocol.Api;
 using Controller = Hexarc.Pact.Protocol.Api.Controller;
-
-namespace Hexarc.Pact.AspNetCore.Readers;
 
 public sealed class ControllerReader
 {

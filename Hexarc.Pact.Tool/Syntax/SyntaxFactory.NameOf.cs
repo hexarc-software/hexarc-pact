@@ -1,7 +1,7 @@
+namespace Hexarc.Pact.Tool.Syntax;
+
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-
-namespace Hexarc.Pact.Tool.Syntax;
 
 public static partial class SyntaxFactory
 {

@@ -1,3 +1,5 @@
+namespace Hexarc.Pact.Tests;
+
 using System;
 using System.Linq;
 using System.Reflection;
@@ -5,8 +7,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Hexarc.Pact.Client;
 using NUnit.Framework;
-
-namespace Hexarc.Pact.Tests;
 
 [TestFixture]
 public class ResearchTests

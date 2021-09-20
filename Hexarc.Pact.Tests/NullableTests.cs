@@ -1,8 +1,8 @@
+namespace Hexarc.Pact.Tests;
+
 using System;
 using Namotion.Reflection;
 using NUnit.Framework;
-
-namespace Hexarc.Pact.Tests;
 
 [TestFixture]
 public class NullableTests

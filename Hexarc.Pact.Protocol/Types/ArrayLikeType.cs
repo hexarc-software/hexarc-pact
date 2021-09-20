@@ -1,6 +1,6 @@
-using Hexarc.Pact.Protocol.Extensions;
-
 namespace Hexarc.Pact.Protocol.Types;
+
+using Hexarc.Pact.Protocol.Extensions;
 
 /// <summary>
 /// Describes an array-like type that can be provided by the Hexarc Pact protocol.

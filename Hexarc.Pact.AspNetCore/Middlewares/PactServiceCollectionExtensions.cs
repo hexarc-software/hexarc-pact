@@ -1,6 +1,6 @@
-using Microsoft.Extensions.DependencyInjection;
-
 namespace Hexarc.Pact.AspNetCore.Middlewares;
+
+using Microsoft.Extensions.DependencyInjection;
 
 public static class PactServiceCollectionExtensions
 {

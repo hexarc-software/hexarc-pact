@@ -1,7 +1,7 @@
+namespace Hexarc.Pact.Tool.Internals;
+
 using Hexarc.Pact.Protocol.Types;
 using Type = Hexarc.Pact.Protocol.Types.Type;
-
-namespace Hexarc.Pact.Tool.Internals;
 
 public sealed class TypeRegistry
 {

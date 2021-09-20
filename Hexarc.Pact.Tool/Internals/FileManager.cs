@@ -1,7 +1,7 @@
+namespace Hexarc.Pact.Tool.Internals;
+
 using Microsoft.CodeAnalysis.Text;
 using Hexarc.Pact.Tool.Models;
-
-namespace Hexarc.Pact.Tool.Internals;
 
 public sealed class FileManager
 {

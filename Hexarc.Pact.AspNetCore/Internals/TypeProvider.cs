@@ -1,6 +1,6 @@
-using Hexarc.Pact.Protocol.Types;
-
 namespace Hexarc.Pact.AspNetCore.Internals;
+
+using Hexarc.Pact.Protocol.Types;
 
 public sealed class TypeProvider
 {

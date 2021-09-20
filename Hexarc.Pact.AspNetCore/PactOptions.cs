@@ -1,6 +1,6 @@
-using Hexarc.Pact.AspNetCore.Internals;
-
 namespace Hexarc.Pact.AspNetCore;
+
+using Hexarc.Pact.AspNetCore.Internals;
 
 public sealed class PactOptions
 {

@@ -1,6 +1,6 @@
-using Hexarc.Annotations;
-
 namespace Hexarc.Pact.Protocol.TypeReferences;
+
+using Hexarc.Annotations;
 
 /// <summary>
 /// Contains the common logic for all derived Hexarc Pact type references.

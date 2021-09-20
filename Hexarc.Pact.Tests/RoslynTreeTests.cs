@@ -1,3 +1,5 @@
+namespace Hexarc.Pact.Tests;
+
 using System;
 using System.IO;
 using Microsoft.CodeAnalysis;
@@ -6,8 +8,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using NUnit.Framework;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Hexarc.Pact.Tool.Syntax.SyntaxFactory;
-
-namespace Hexarc.Pact.Tests;
 
 [TestFixture]
 public class RoslynTreeTests

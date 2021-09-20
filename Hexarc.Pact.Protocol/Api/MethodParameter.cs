@@ -1,6 +1,6 @@
-using Hexarc.Pact.Protocol.TypeReferences;
-
 namespace Hexarc.Pact.Protocol.Api;
+
+using Hexarc.Pact.Protocol.TypeReferences;
 
 /// <summary>
 /// Provides information about an API endpoint method parameter.

@@ -1,6 +1,6 @@
-using Hexarc.Pact.Protocol.Api;
-
 namespace Hexarc.Pact.Tool.Internals;
+
+using Hexarc.Pact.Protocol.Api;
 
 public sealed class SchemaReader
 {

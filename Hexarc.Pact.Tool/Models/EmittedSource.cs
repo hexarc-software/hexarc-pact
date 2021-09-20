@@ -1,6 +1,6 @@
-using Microsoft.CodeAnalysis.Text;
-
 namespace Hexarc.Pact.Tool.Models;
+
+using Microsoft.CodeAnalysis.Text;
 
 public sealed class EmittedSource
 {

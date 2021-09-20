@@ -1,7 +1,7 @@
+namespace Hexarc.Pact.Protocol.Types;
+
 using Hexarc.Annotations;
 using Hexarc.Pact.Protocol.Extensions;
-
-namespace Hexarc.Pact.Protocol.Types;
 
 /// <summary>
 /// Contains the common logic for all derived Hexarc Pact types.

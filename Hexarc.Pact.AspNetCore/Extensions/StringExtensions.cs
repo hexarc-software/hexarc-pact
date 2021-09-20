@@ -1,6 +1,6 @@
-using Hexarc.Pact.AspNetCore.Models;
-
 namespace Hexarc.Pact.AspNetCore.Extensions;
+
+using Hexarc.Pact.AspNetCore.Models;
 
 internal static class StringExtensions
 {

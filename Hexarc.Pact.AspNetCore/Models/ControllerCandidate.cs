@@ -1,7 +1,7 @@
+namespace Hexarc.Pact.AspNetCore.Models;
+
 using Microsoft.AspNetCore.Mvc;
 using Hexarc.Pact.AspNetCore.Attributes;
-
-namespace Hexarc.Pact.AspNetCore.Models;
 
 public sealed class ControllerCandidate
 {

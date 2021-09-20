@@ -1,6 +1,6 @@
-using Namotion.Reflection;
-
 namespace Hexarc.Pact.AspNetCore.Extensions;
+
+using Namotion.Reflection;
 
 /// <summary>
 /// Extensions for the Namotion.Reflection.ContextualType class.

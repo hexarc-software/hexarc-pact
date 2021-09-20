@@ -1,4 +1,5 @@
-using System.Text.Json.Serialization;
+namespace Hexarc.Pact.AspNetCore.Readers;
+
 using Namotion.Reflection;
 using Hexarc.Annotations;
 using Hexarc.Pact.Protocol.Extensions;
@@ -7,8 +8,6 @@ using Hexarc.Pact.Protocol.Types;
 using Hexarc.Pact.AspNetCore.Extensions;
 using Hexarc.Pact.AspNetCore.Internals;
 using Hexarc.Pact.AspNetCore.Models;
-
-namespace Hexarc.Pact.AspNetCore.Readers;
 
 /// <summary>
 /// This class provides an ability to read distinct types of the Hexarc Pact protocol.

@@ -1,9 +1,9 @@
+namespace Hexarc.Pact.AspNetCore.Internals;
+
 using Microsoft.AspNetCore.Mvc;
 using Namotion.Reflection;
 using Hexarc.Annotations;
 using Hexarc.Pact.AspNetCore.Extensions;
-
-namespace Hexarc.Pact.AspNetCore.Internals;
 
 public sealed class TypeChecker
 {

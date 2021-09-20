@@ -1,6 +1,6 @@
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-
 namespace Hexarc.Pact.Tool.Models;
+
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 public sealed class EmittedEntity
 {

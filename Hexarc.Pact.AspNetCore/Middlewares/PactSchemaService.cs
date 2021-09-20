@@ -1,11 +1,11 @@
+namespace Hexarc.Pact.AspNetCore.Middlewares;
+
 using Microsoft.AspNetCore.Http;
 using Hexarc.Serialization.Union;
 using Hexarc.Pact.AspNetCore.Extensions;
 using Hexarc.Pact.AspNetCore.Internals;
 using Hexarc.Pact.AspNetCore.Models;
 using Hexarc.Pact.AspNetCore.Readers;
-
-namespace Hexarc.Pact.AspNetCore.Middlewares;
 
 public sealed class PactSchemaService
 {

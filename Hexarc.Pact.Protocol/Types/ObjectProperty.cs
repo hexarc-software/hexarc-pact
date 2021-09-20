@@ -1,6 +1,6 @@
-using Hexarc.Pact.Protocol.TypeReferences;
-
 namespace Hexarc.Pact.Protocol.Types;
+
+using Hexarc.Pact.Protocol.TypeReferences;
 
 /// <summary>
 /// Describes a property of an object-like type.

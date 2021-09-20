@@ -1,3 +1,5 @@
+namespace Hexarc.Pact.Tests;
+
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
@@ -6,8 +8,6 @@ using Hexarc.Annotations;
 using Hexarc.Pact.AspNetCore.Internals;
 using Hexarc.Pact.AspNetCore.Models;
 using Hexarc.Pact.AspNetCore.Readers;
-
-namespace Hexarc.Pact.Tests;
 
 [TestFixture]
 public class ReaderTests

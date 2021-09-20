@@ -1,10 +1,10 @@
+namespace Hexarc.Pact.AspNetCore.Readers;
+
 using Namotion.Reflection;
 using Hexarc.Pact.AspNetCore.Internals;
 using Hexarc.Pact.AspNetCore.Models;
 using Hexarc.Pact.Protocol.TypeReferences;
 using Hexarc.Pact.AspNetCore.Extensions;
-
-namespace Hexarc.Pact.AspNetCore.Readers;
 
 public sealed class TypeReferenceReader
 {
