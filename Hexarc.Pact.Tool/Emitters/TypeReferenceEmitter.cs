@@ -52,7 +52,7 @@ public sealed class TypeReferenceEmitter
         };
 
     private ArrayTypeSyntax EmitPureArrayTypeReference(TypeReference elementType, String? currentNamespace) =>
-        ArrayType(this.Emit(elementType, currentNamespace)!)
+        ArrayType(this.Emit(elementType, currentNamespace))
             .WithRankSpecifiers(
                 SingletonList(
                     ArrayRankSpecifier(

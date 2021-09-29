@@ -48,7 +48,7 @@ public sealed class MethodReader
         parameterInfos.Select(x => this.ReadMethodParameter(x, namingConvention)).ToArray();
 
     private MethodParameter ReadMethodParameter(ContextualParameterInfo parameterInfo, NamingConvention? namingConvention) =>
-        new(this.TypeReferenceReader.Read(parameterInfo, namingConvention), parameterInfo.Name!);
+        new(this.TypeReferenceReader.Read(parameterInfo, namingConvention), parameterInfo.Name);
 
     private HttpMethod ReadHttpMethod(HttpMethodAttribute methodAttribute) => methodAttribute switch
     {
