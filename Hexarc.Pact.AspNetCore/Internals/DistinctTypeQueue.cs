@@ -1,5 +1,7 @@
 namespace Hexarc.Pact.AspNetCore.Internals;
 
+using Type = System.Type;
+
 public sealed class DistinctTypeQueue
 {
     private HashSet<Type> AllTypes { get; } = new();

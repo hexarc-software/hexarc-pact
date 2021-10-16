@@ -1,11 +1,6 @@
 namespace Hexarc.Pact.AspNetCore.Middlewares;
 
 using Microsoft.AspNetCore.Http;
-using Hexarc.Serialization.Union;
-using Hexarc.Pact.AspNetCore.Extensions;
-using Hexarc.Pact.AspNetCore.Internals;
-using Hexarc.Pact.AspNetCore.Models;
-using Hexarc.Pact.AspNetCore.Readers;
 
 public sealed class PactSchemaService
 {
@@ -26,9 +21,10 @@ public sealed class PactSchemaService
         var typeProvider = this._options.TypeProvider ?? new TypeProvider();
         var typeChecker = new TypeChecker(typeProvider);
         var distinctTypeQueue = new DistinctTypeQueue();
+        var nullabilityInfoContext = new NullabilityInfoContext();
         var typeReferenceReader = new TypeReferenceReader(typeChecker, distinctTypeQueue);
-        var distinctTypeReader = new DistinctTypeReader(typeChecker, typeReferenceReader);
-        var methodReader = new MethodReader(typeChecker, typeReferenceReader);
+        var distinctTypeReader = new DistinctTypeReader(typeChecker, typeReferenceReader, nullabilityInfoContext);
+        var methodReader = new MethodReader(typeChecker, typeReferenceReader, nullabilityInfoContext);
         var controllerReader = new ControllerReader(methodReader);
         this._schemaReader = new SchemaReader(distinctTypeQueue, distinctTypeReader, controllerReader, typeProvider);
     }

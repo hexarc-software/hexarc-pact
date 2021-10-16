@@ -2,9 +2,6 @@ namespace Hexarc.Pact.AspNetCore.Readers;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Hexarc.Pact.AspNetCore.Attributes;
-using Hexarc.Pact.AspNetCore.Models;
-using Hexarc.Pact.Protocol.Api;
 using Controller = Hexarc.Pact.Protocol.Api.Controller;
 
 public sealed class ControllerReader
@@ -14,13 +11,13 @@ public sealed class ControllerReader
     public ControllerReader(MethodReader methodReader) =>
         this.MethodReader = methodReader;
 
-    public Controller Read(Type type, RouteAttribute routeAttribute, NamingConvention? namingConvention) =>
+    public Controller Read(System.Type type, RouteAttribute routeAttribute, NamingConvention? namingConvention) =>
         new(type.Namespace, type.Name, this.ReadPath(routeAttribute), this.ReadMethods(type, namingConvention));
 
     private String ReadPath(RouteAttribute routeAttribute) =>
         routeAttribute.Template.StartsWith("/") ? routeAttribute.Template : $"/{routeAttribute.Template}";
 
-    private Method[] ReadMethods(Type type, NamingConvention? namingConvention) =>
+    private Method[] ReadMethods(System.Type type, NamingConvention? namingConvention) =>
         type.GetMethods(BindingFlags.Instance | BindingFlags.Public)
             .Select(this.ReadMethodCandidate)
             .Where(x => x.IsPactCompatible)

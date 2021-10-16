@@ -1,14 +1,5 @@
 namespace Hexarc.Pact.AspNetCore.Readers;
 
-using Namotion.Reflection;
-using Hexarc.Annotations;
-using Hexarc.Pact.Protocol.Extensions;
-using Hexarc.Pact.Protocol.TypeReferences;
-using Hexarc.Pact.Protocol.Types;
-using Hexarc.Pact.AspNetCore.Extensions;
-using Hexarc.Pact.AspNetCore.Internals;
-using Hexarc.Pact.AspNetCore.Models;
-
 /// <summary>
 /// This class provides an ability to read distinct types of the Hexarc Pact protocol.
 /// </summary>
@@ -18,13 +9,23 @@ public sealed class DistinctTypeReader
 
     private TypeReferenceReader TypeReferenceReader { get; }
 
+    private NullabilityInfoContext NullabilityInfoContext { get; }
+
     /// <summary>
     /// Creates an instance of the DistinctTypeReader class.
     /// </summary>
     /// <param name="typeChecker">The type checker to determine what a target Hexarc Pact type for a given one.</param>
     /// <param name="typeReferenceReader">The type reference reader used during type reading.</param>
-    public DistinctTypeReader(TypeChecker typeChecker, TypeReferenceReader typeReferenceReader) =>
-        (this.TypeChecker, this.TypeReferenceReader) = (typeChecker, typeReferenceReader);
+    /// <param name="nullabilityInfoContext">The nullability info context.</param>
+    public DistinctTypeReader(
+        TypeChecker typeChecker,
+        TypeReferenceReader typeReferenceReader,
+        NullabilityInfoContext nullabilityInfoContext)
+    {
+        this.TypeChecker = typeChecker;
+        this.TypeReferenceReader = typeReferenceReader;
+        this.NullabilityInfoContext = nullabilityInfoContext;
+    }
 
     /// <summary>
     /// Reads a Hexarc Pact distinct type from a .NET system type.
@@ -92,25 +93,25 @@ public sealed class DistinctTypeReader
                 : genericParameters.Select(x => x.Name).ToArray()
             : default;
 
-    private ObjectProperty[] ReadObjectProperties(ContextualPropertyInfo[] properties, UnionTag tag, NamingConvention? namingConvention) =>
-        properties.Where(x => x.GetAttribute<JsonIgnoreAttribute>() is null)
+    private ObjectProperty[] ReadObjectProperties(PropertyInfo[] properties, UnionTag tag, NamingConvention? namingConvention) =>
+        properties.Where(x => x.GetCustomAttribute<JsonIgnoreAttribute>() is null)
             .Select(x => this.ReadObjectProperty(x, tag, namingConvention)).ToArray();
 
-    private ObjectProperty[] ReadObjectProperties(ContextualPropertyInfo[] properties, NamingConvention? namingConvention) =>
-        properties.Where(x => x.GetAttribute<JsonIgnoreAttribute>() is null)
+    private ObjectProperty[] ReadObjectProperties(PropertyInfo[] properties, NamingConvention? namingConvention) =>
+        properties.Where(x => x.GetCustomAttribute<JsonIgnoreAttribute>() is null)
             .Select(x => this.ReadObjectProperty(x, namingConvention)).ToArray();
 
-    private ObjectProperty ReadObjectProperty(ContextualPropertyInfo property, UnionTag tag, NamingConvention? namingConvention) =>
-        property.PropertyInfo.IsUnionTag(tag, namingConvention)
+    private ObjectProperty ReadObjectProperty(PropertyInfo property, UnionTag tag, NamingConvention? namingConvention) =>
+        property.IsUnionTag(tag, namingConvention)
             ? this.ReadUnionTagProperty(tag, namingConvention)
             : this.ReadObjectProperty(property, namingConvention);
 
-    private ObjectProperty ReadObjectProperty(ContextualPropertyInfo property, NamingConvention? namingConvention) =>
-        new(this.ReadObjectPropertyType(property, namingConvention), property.PropertyInfo.GetName(namingConvention));
+    private ObjectProperty ReadObjectProperty(PropertyInfo property, NamingConvention? namingConvention) =>
+        new(this.ReadObjectPropertyType(property, namingConvention), property.GetName(namingConvention));
 
     private ObjectProperty ReadUnionTagProperty(UnionTag tag, NamingConvention? namingConvention) =>
         new(new LiteralTypeReference(tag.Value), tag.Name.ToConventionalString(namingConvention));
 
-    private TypeReference ReadObjectPropertyType(ContextualPropertyInfo property, NamingConvention? namingConvention) =>
-        this.TypeReferenceReader.Read(property, namingConvention);
+    private TypeReference ReadObjectPropertyType(PropertyInfo property, NamingConvention? namingConvention) =>
+        this.TypeReferenceReader.Read(new ContextualType(property.PropertyType, this.NullabilityInfoContext.Create(property), property), namingConvention);
 }

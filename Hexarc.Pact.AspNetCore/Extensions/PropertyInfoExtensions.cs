@@ -1,7 +1,5 @@
 namespace Hexarc.Pact.AspNetCore.Extensions;
 
-using Hexarc.Pact.AspNetCore.Models;
-
 /// <summary>
 /// Extensions for the PropertyInfo class.
 /// </summary>

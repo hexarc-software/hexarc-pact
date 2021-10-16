@@ -3,29 +3,30 @@ namespace Hexarc.Pact.AspNetCore.Readers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 
-using Namotion.Reflection;
-
-using Hexarc.Pact.Protocol.Api;
-using Hexarc.Pact.Protocol.TypeReferences;
-using Hexarc.Pact.AspNetCore.Extensions;
-using Hexarc.Pact.AspNetCore.Internals;
-using Hexarc.Pact.AspNetCore.Models;
-
 public sealed class MethodReader
 {
     private TypeChecker TypeChecker { get; }
 
     private TypeReferenceReader TypeReferenceReader { get; }
 
-    public MethodReader(TypeChecker typeChecker, TypeReferenceReader typeReferenceReader) =>
-        (this.TypeChecker, this.TypeReferenceReader) = (typeChecker, typeReferenceReader);
+    private NullabilityInfoContext NullabilityInfoContext { get; }
+
+    public MethodReader(
+        TypeChecker typeChecker,
+        TypeReferenceReader typeReferenceReader,
+        NullabilityInfoContext nullabilityInfoContext)
+    {
+        this.TypeChecker = typeChecker;
+        this.TypeReferenceReader = typeReferenceReader;
+        this.NullabilityInfoContext = nullabilityInfoContext;
+    }
 
     public Method Read(MethodCandidate methodCandidate, NamingConvention? namingConvention) =>
         new(methodCandidate.MethodInfo.Name.ToConventionalString(namingConvention),
             this.ReadPath(methodCandidate.HttpMethodAttribute!, methodCandidate.RouteAttribute),
             this.ReadHttpMethod(methodCandidate.HttpMethodAttribute!),
             this.ReadMethodReturnType(methodCandidate.MethodInfo.ReturnParameter, namingConvention),
-            this.ReadMethodParameters(methodCandidate.MethodInfo.GetContextualParameters(), namingConvention));
+            this.ReadMethodParameters(methodCandidate.MethodInfo.GetParameters(), namingConvention));
 
     private String ReadPath(HttpMethodAttribute methodAttribute, RouteAttribute? routeAttribute)
     {
@@ -37,18 +38,22 @@ public sealed class MethodReader
     private TaskTypeReference ReadMethodReturnType(ParameterInfo returnType, NamingConvention? namingConvention)
     {
         if (returnType.ParameterType == typeof(void)) return new TaskTypeReference();
-        return returnType.ToContextualParameter() switch
+
+        var contextualType = new ContextualType(returnType.ParameterType, this.NullabilityInfoContext.Create(returnType), returnType);
+        return returnType switch
         {
-            { } x when this.TypeChecker.IsTaskType(x) => (TaskTypeReference) this.TypeReferenceReader.Read(x, namingConvention),
-            { } x => new TaskTypeReference(default, this.TypeReferenceReader.Read(x, namingConvention))
+            { } x when this.TypeChecker.IsTaskType(x.ParameterType) =>
+                (TaskTypeReference) this.TypeReferenceReader.Read(contextualType, namingConvention),
+            _ => new TaskTypeReference(default, this.TypeReferenceReader.Read(contextualType, namingConvention))
         };
     }
 
-    private MethodParameter[] ReadMethodParameters(ContextualParameterInfo[] parameterInfos, NamingConvention? namingConvention) =>
+    private MethodParameter[] ReadMethodParameters(ParameterInfo[] parameterInfos, NamingConvention? namingConvention) =>
         parameterInfos.Select(x => this.ReadMethodParameter(x, namingConvention)).ToArray();
 
-    private MethodParameter ReadMethodParameter(ContextualParameterInfo parameterInfo, NamingConvention? namingConvention) =>
-        new(this.TypeReferenceReader.Read(parameterInfo, namingConvention), parameterInfo.Name);
+    private MethodParameter ReadMethodParameter(ParameterInfo parameterInfo, NamingConvention? namingConvention) =>
+        new(this.TypeReferenceReader.Read(new ContextualType(parameterInfo.ParameterType, this.NullabilityInfoContext.Create(parameterInfo), parameterInfo), namingConvention),
+            parameterInfo.Name ?? throw new InvalidOperationException());
 
     private HttpMethod ReadHttpMethod(HttpMethodAttribute methodAttribute) => methodAttribute switch
     {

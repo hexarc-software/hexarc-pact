@@ -1,10 +1,6 @@
 namespace Hexarc.Pact.AspNetCore.Readers;
 
-using Namotion.Reflection;
-using Hexarc.Pact.AspNetCore.Internals;
-using Hexarc.Pact.AspNetCore.Models;
-using Hexarc.Pact.Protocol.TypeReferences;
-using Hexarc.Pact.AspNetCore.Extensions;
+using Type = System.Type;
 
 public sealed class TypeReferenceReader
 {
@@ -24,53 +20,61 @@ public sealed class TypeReferenceReader
 
     private TypeReference ReadInternal(ContextualType contextualType) => contextualType switch
     {
-        { Nullability: Nullability.Nullable, IsNullableType: false } => this.ReadNullableReferenceTypeReference(contextualType),
+        var x when this.TypeChecker.IsNullableValueType(x.Type) => this.ReadNullableValueTypeReference(x),
+        var x when x.IsNullable => this.ReadNullableReferenceTypeReference(contextualType),
         _ => this.ReadUnwrapped(contextualType)
     };
 
-    private TypeReference ReadUnwrapped(ContextualType contextualType) => contextualType switch
+    private TypeReference ReadUnwrapped(ContextualType nullabilityInfo) => nullabilityInfo switch
     {
-        var x when this.TypeChecker.IsActionResultOfT(x.OriginalType) => this.ReadFromActionResultOfT(x),
-        var x when this.TypeChecker.IsNullableValueType(x) => this.ReadNullableValueTypeReference(x),
-        var x when this.TypeChecker.IsTaskType(x.OriginalType) => this.ReadTaskTypeReference(x),
-        var x when this.TypeChecker.IsTypeParameter(x.OriginalType) => this.ReadTypeParameterReference(x),
-        var x when this.TypeChecker.IsArrayType(x.OriginalType) => this.ReadArrayTypeReference(x),
-        var x when this.TypeChecker.IsArrayLikeType(x.OriginalType) => this.ReadArrayLikeTypeReference(x),
-        var x when this.TypeChecker.IsDictionaryType(x.OriginalType) => this.ReadDictionaryTypeReference(x),
-        var x when this.TypeChecker.IsPrimitiveType(x.OriginalType) => this.ReadPrimitiveTypeReference(x),
-        var x when this.TypeChecker.IsTupleType(x.OriginalType) => this.ReadTupleTypeReference(x),
-        var x when this.TypeChecker.IsDynamicType(x.OriginalType) => this.ReadDynamicTypeReference(x),
+        var x when this.TypeChecker.IsActionResultOfT(x.Type) => this.ReadFromActionResultOfT(x),
+        var x when this.TypeChecker.IsTaskType(x.Type) => this.ReadTaskTypeReference(x),
+        var x when this.TypeChecker.IsTypeParameter(x.Type) => this.ReadTypeParameterReference(x.Type),
+        var x when this.TypeChecker.IsArrayType(x.Type) => this.ReadArrayTypeReference(x),
+        var x when this.TypeChecker.IsArrayLikeType(x.Type) => this.ReadArrayLikeTypeReference(x),
+        var x when this.TypeChecker.IsDictionaryType(x.Type) => this.ReadDictionaryTypeReference(x),
+        var x when this.TypeChecker.IsPrimitiveType(x.Type) => this.ReadPrimitiveTypeReference(x.Type),
+        var x when this.TypeChecker.IsTupleType(x.Type) => this.ReadTupleTypeReference(x),
+        var x when this.TypeChecker.IsDynamicType(x.Type) => this.ReadDynamicTypeReference(x.Type),
         var x => this.ReadDistinctTypeReference(x)
     };
+
+    private NullableTypeReference ReadNullableValueTypeReference(ContextualType contextualType)
+    {
+        var underlyingType = Nullable.GetUnderlyingType(contextualType.Type)!;
+        return new NullableTypeReference(this.ReadUnwrapped(new ContextualType(underlyingType, contextualType.NullabilityInfo, default)));
+    }
 
     private NullableTypeReference ReadNullableReferenceTypeReference(ContextualType contextualType) =>
         new(this.ReadUnwrapped(contextualType));
 
     private TypeReference ReadFromActionResultOfT(ContextualType contextualType) =>
-        this.ReadInternal(contextualType.GenericArguments.First());
-
-    private NullableTypeReference ReadNullableValueTypeReference(ContextualType contextualType) =>
-        new(this.ReadInternal(contextualType.Type.ToContextualType()));
+        this.ReadInternal(new ContextualType(contextualType.GenericArguments.First()));
 
     private TaskTypeReference ReadTaskTypeReference(ContextualType contextualType) =>
         contextualType.GenericArguments.Length == 0
-            ? new TaskTypeReference(contextualType.OriginalType.GUID)
-            : new TaskTypeReference(contextualType.OriginalType.GUID, this.ReadInternal(contextualType.GenericArguments.First()));
+            ? new TaskTypeReference(contextualType.Type.GUID)
+            : new TaskTypeReference(
+                contextualType.Type.GUID,
+                this.ReadInternal(contextualType.GenericArguments.First().ToContextualType()));
 
-    private TypeParameterReference ReadTypeParameterReference(ContextualType contextualType) =>
-        new(contextualType.OriginalType.Name);
+    private TypeParameterReference ReadTypeParameterReference(Type type) =>
+        new(type.Name);
 
     private ArrayTypeReference ReadArrayTypeReference(ContextualType contextualType) =>
-        new(this.ReadInternal(contextualType.ElementType!));
+        new(this.ReadInternal(contextualType.NullabilityInfo.ElementType!.ToContextualType()));
 
     private ArrayTypeReference ReadArrayLikeTypeReference(ContextualType contextualType) =>
-        new(contextualType.OriginalType.GUID, this.ReadInternal(contextualType.GenericArguments.First()));
+        new(contextualType.Type.GUID, this.ReadInternal(contextualType.GenericArguments.First().ToContextualType()));
 
     private DictionaryTypeReference ReadDictionaryTypeReference(ContextualType contextualType) =>
-        new(contextualType.OriginalType.GUID, contextualType.GenericArguments.Select(this.ReadInternal).ToArray());
+        new(contextualType.Type.GUID,
+            contextualType.GenericArguments
+                .Select(x => this.ReadInternal(x.ToContextualType()))
+                .ToArray());
 
-    private PrimitiveTypeReference ReadPrimitiveTypeReference(ContextualType contextualType) =>
-        new(contextualType.OriginalType.GUID);
+    private PrimitiveTypeReference ReadPrimitiveTypeReference(Type type) =>
+        new(type.GUID);
 
     private TupleTypeReference ReadTupleTypeReference(ContextualType contextualType) =>
         this.GetOrCreateState(contextualType).IsAnonymousTuple
@@ -84,9 +88,9 @@ public sealed class TypeReferenceReader
         return new TupleTypeReference(this.ReadTupleElements(elementTypes, elementNames));
     }
 
-    private TupleTypeReference ReadAnonymousTupleTypeReference(ContextualType contextualType)
+    private TupleTypeReference ReadAnonymousTupleTypeReference(ContextualType nullabilityInfo)
     {
-        var elementTypes = contextualType.GetTupleArguments();
+        var elementTypes = nullabilityInfo.GetTupleArguments();
         return new TupleTypeReference(this.ReadTupleElements(elementTypes));
     }
 
@@ -103,18 +107,19 @@ public sealed class TypeReferenceReader
         ContextualType elementType, String? name, NamingConvention? namingConvention
     ) => new(this.ReadInternal(elementType), name?.ToConventionalString(namingConvention));
 
-    private DynamicTypeReference ReadDynamicTypeReference(ContextualType contextualType) =>
-        new(contextualType.OriginalType.GUID);
+    private DynamicTypeReference ReadDynamicTypeReference(Type type) =>
+        new(type.GUID);
 
     private DistinctTypeReference ReadDistinctTypeReference(ContextualType contextualType)
     {
-        var type = contextualType.OriginalType;
+        var type = contextualType.Type;
+        var genericArguments = contextualType.GenericArguments.Select(x => x.ToContextualType()).ToArray();
         this.DistinctTypeQueue.Enqueue(type.IsGenericType ? type.GetGenericTypeDefinition() : type);
-        return new DistinctTypeReference(contextualType.OriginalType.GUID, this.ReadGenericArguments(contextualType.GenericArguments));
+        return new DistinctTypeReference(type.GUID, this.ReadGenericArguments(genericArguments));
     }
 
-    private TypeReference[]? ReadGenericArguments(ContextualType[] genericTypes) =>
-        genericTypes.Length != 0 ? Array.ConvertAll(genericTypes, this.ReadInternal) : default;
+    private TypeReference[]? ReadGenericArguments(ContextualType[] genericArguments) =>
+        genericArguments.Length != 0 ? Array.ConvertAll(genericArguments, this.ReadInternal) : default;
 
     private TypeReferenceReader ApplyNamingConvention(NamingConvention? namingConvention)
     {
@@ -122,8 +127,8 @@ public sealed class TypeReferenceReader
         return this;
     }
 
-    private ReaderState GetOrCreateState(ContextualType tupleContextualType) =>
-        this.State ??= ReaderState.Create(tupleContextualType);
+    private ReaderState GetOrCreateState(ContextualType tupleType) =>
+        this.State ??= ReaderState.Create(tupleType);
 
     private TypeReferenceReader ResetState()
     {
@@ -154,7 +159,7 @@ public sealed class TypeReferenceReader
             }
         }
 
-        public static ReaderState Create(ContextualType tupleContextualType) =>
-            new(tupleContextualType.GetTupleElementNames()?.ToArray(), 0);
+        public static ReaderState Create(ContextualType tupleType) =>
+            new(tupleType.GetTupleElementNames()?.ToArray(), 0);
     }
 }

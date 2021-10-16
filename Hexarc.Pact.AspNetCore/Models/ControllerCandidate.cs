@@ -1,11 +1,10 @@
 namespace Hexarc.Pact.AspNetCore.Models;
 
 using Microsoft.AspNetCore.Mvc;
-using Hexarc.Pact.AspNetCore.Attributes;
 
 public sealed class ControllerCandidate
 {
-    public Type Type { get; }
+    public System.Type Type { get; }
 
     public PactIgnoreAttribute? IgnoreAttribute { get; }
 
@@ -20,7 +19,7 @@ public sealed class ControllerCandidate
         this.RouteAttribute is not null;
 
     public ControllerCandidate(
-        Type type,
+        System.Type type,
         PactIgnoreAttribute? ignoreAttribute,
         ApiControllerAttribute? apiControllerAttribute,
         RouteAttribute? routeAttribute)

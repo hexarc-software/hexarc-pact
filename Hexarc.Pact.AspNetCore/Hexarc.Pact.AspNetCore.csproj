@@ -8,7 +8,6 @@
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Hexarc.Serialization.Union" Version="[1.0.0,2.0.0)" />
-    <PackageReference Include="Namotion.Reflection" Version="1.0.18" />
   </ItemGroup>
 
   <ItemGroup>

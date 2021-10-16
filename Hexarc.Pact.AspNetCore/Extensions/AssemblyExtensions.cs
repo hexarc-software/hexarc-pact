@@ -1,6 +1,6 @@
 namespace Hexarc.Pact.AspNetCore.Extensions;
 
-using Hexarc.Pact.AspNetCore.Attributes;
+using Type = System.Type;
 
 internal static class AssemblyExtensions
 {

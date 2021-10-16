@@ -1,9 +1,7 @@
 namespace Hexarc.Pact.AspNetCore.Internals;
 
 using Microsoft.AspNetCore.Mvc;
-using Namotion.Reflection;
-using Hexarc.Annotations;
-using Hexarc.Pact.AspNetCore.Extensions;
+using Type = System.Type;
 
 public sealed class TypeChecker
 {
@@ -32,7 +30,8 @@ public sealed class TypeChecker
     public Boolean IsActionResultOfT(Type type) =>
         type.IsGenericType && type.GetGenericTypeDefinition().IsAssignableFrom(typeof(ActionResult<>));
 
-    public Boolean IsNullableValueType(ContextualType contextualType) => contextualType.IsNullableType;
+    public Boolean IsNullableValueType(Type type) =>
+        Nullable.GetUnderlyingType(type) is not null;
 
     public Boolean IsTaskType(Type type) => this.TaskTypeIds.Contains(type.GUID);
 

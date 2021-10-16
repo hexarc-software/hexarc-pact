@@ -1,7 +1,5 @@
 namespace Hexarc.Pact.AspNetCore;
 
-using Hexarc.Pact.AspNetCore.Internals;
-
 public sealed class PactOptions
 {
     public Assembly AssemblyWithControllers { get; set; }

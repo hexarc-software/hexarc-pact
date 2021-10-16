@@ -1,7 +1,5 @@
 namespace Hexarc.Pact.AspNetCore.Internals;
 
-using Hexarc.Pact.Protocol.Types;
-
 public static class KnownTypes
 {
     public static IEnumerable<PrimitiveType> GetPrimitiveTypes()

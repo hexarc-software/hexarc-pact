@@ -2,7 +2,6 @@ namespace Hexarc.Pact.AspNetCore.Models;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using Hexarc.Pact.AspNetCore.Attributes;
 
 public sealed class MethodCandidate
 {
