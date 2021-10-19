@@ -1,7 +1,5 @@
 namespace Hexarc.Pact.Protocol.Types;
 
-using Hexarc.Pact.Protocol.Extensions;
-
 /// <summary>
 /// Describes a dynamic type that can be provided by the Hexarc Pact protocol.
 /// </summary>

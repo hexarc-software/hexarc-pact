@@ -1,7 +1,5 @@
 namespace Hexarc.Pact.Protocol.Types;
 
-using Hexarc.Pact.Protocol.Extensions;
-
 /// <summary>
 /// Describes a primitive type that can be provided by the Hexarc Pact protocol.
 /// </summary>
