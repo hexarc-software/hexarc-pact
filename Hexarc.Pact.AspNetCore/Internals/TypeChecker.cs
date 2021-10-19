@@ -30,9 +30,6 @@ public sealed class TypeChecker
     public Boolean IsActionResultOfT(Type type) =>
         type.IsGenericType && type.GetGenericTypeDefinition().IsAssignableFrom(typeof(ActionResult<>));
 
-    public Boolean IsNullableValueType(Type type) =>
-        Nullable.GetUnderlyingType(type) is not null;
-
     public Boolean IsTaskType(Type type) => this.TaskTypeIds.Contains(type.GUID);
 
     public Boolean IsTypeParameter(Type type) => type.IsGenericParameter;

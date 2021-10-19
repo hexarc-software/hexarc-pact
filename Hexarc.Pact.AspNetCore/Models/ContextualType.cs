@@ -6,18 +6,25 @@ public sealed class ContextualType
 {
     public Type Type { get; }
 
-    public NullabilityInfo NullabilityInfo { get; }
+    public Boolean IsNullable { get; }
 
-    public ICustomAttributeProvider? CustomAttributeProvider { get; }
+    public ContextualType[] GenericArguments { get; }
 
-    public Boolean IsNullable => this.NullabilityInfo.ReadState == NullabilityState.Nullable;
+    public ContextualType? ElementType { get; }
 
-    public NullabilityInfo[] GenericArguments => this.NullabilityInfo.GenericTypeArguments;
+    private ICustomAttributeProvider? CustomAttributeProvider { get; }
 
-    public ContextualType(Type type, NullabilityInfo nullabilityInfo, ICustomAttributeProvider? customAttributeProvider) =>
-        (this.Type, this.NullabilityInfo, this.CustomAttributeProvider) = (type, nullabilityInfo, customAttributeProvider);
-
-    public ContextualType(NullabilityInfo nullabilityInfo) : this(nullabilityInfo.Type, nullabilityInfo, default) { }
+    public ContextualType(NullabilityInfo nullabilityInfo, ICustomAttributeProvider? customAttributeProvider = default)
+    {
+        var underlyingType = Nullable.GetUnderlyingType(nullabilityInfo.Type);
+        this.Type = underlyingType ?? nullabilityInfo.Type;
+        this.ElementType = nullabilityInfo.ElementType is null ? default : new ContextualType(nullabilityInfo.ElementType);
+        this.IsNullable = nullabilityInfo.ReadState is NullabilityState.Nullable;
+        this.CustomAttributeProvider = customAttributeProvider;
+        this.GenericArguments = nullabilityInfo.GenericTypeArguments
+            .Select(x => new ContextualType(x))
+            .ToArray();
+    }
 
     /// <summary>
     /// Extracts the tuple element names if provided.
@@ -25,6 +32,7 @@ public sealed class ContextualType
     /// <returns>Returns the tuple element names or null.</returns>
     public IList<String?>? GetTupleElementNames() =>
         this.GetCustomAttribute<TupleElementNamesAttribute>()?.TransformNames;
+
 
     private T? GetCustomAttribute<T>(Boolean inherit = false) =>
         this.CustomAttributeProvider is not null
@@ -48,11 +56,11 @@ public sealed class ContextualType
         var hasRest = allArguments.Length == 8;
 
         var regularArguments = hasRest ? allArguments[..7] : allArguments;
-        foreach (var argument in regularArguments) yield return argument.ToContextualType();
+        foreach (var argument in regularArguments) yield return argument;
 
         if (!hasRest) yield break;
 
-        var restArguments = allArguments[7].ToContextualType().EnumerateFlattenTupleArguments();
+        var restArguments = allArguments[7].EnumerateFlattenTupleArguments();
         foreach (var argument in restArguments) yield return argument;
     }
 }

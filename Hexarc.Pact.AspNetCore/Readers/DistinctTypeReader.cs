@@ -113,5 +113,5 @@ public sealed class DistinctTypeReader
         new(new LiteralTypeReference(tag.Value), tag.Name.ToConventionalString(namingConvention));
 
     private TypeReference ReadObjectPropertyType(PropertyInfo property, NamingConvention? namingConvention) =>
-        this.TypeReferenceReader.Read(new ContextualType(property.PropertyType, this.NullabilityInfoContext.Create(property), property), namingConvention);
+        this.TypeReferenceReader.Read(new ContextualType(this.NullabilityInfoContext.Create(property), property), namingConvention);
 }

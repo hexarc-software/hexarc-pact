@@ -39,7 +39,7 @@ public sealed class MethodReader
     {
         if (returnType.ParameterType == typeof(void)) return new TaskTypeReference();
 
-        var contextualType = new ContextualType(returnType.ParameterType, this.NullabilityInfoContext.Create(returnType), returnType);
+        var contextualType = new ContextualType(this.NullabilityInfoContext.Create(returnType), returnType);
         return returnType switch
         {
             { } x when this.TypeChecker.IsTaskType(x.ParameterType) =>
@@ -52,7 +52,7 @@ public sealed class MethodReader
         parameterInfos.Select(x => this.ReadMethodParameter(x, namingConvention)).ToArray();
 
     private MethodParameter ReadMethodParameter(ParameterInfo parameterInfo, NamingConvention? namingConvention) =>
-        new(this.TypeReferenceReader.Read(new ContextualType(parameterInfo.ParameterType, this.NullabilityInfoContext.Create(parameterInfo), parameterInfo), namingConvention),
+        new(this.TypeReferenceReader.Read(new ContextualType(this.NullabilityInfoContext.Create(parameterInfo), parameterInfo), namingConvention),
             parameterInfo.Name ?? throw new InvalidOperationException());
 
     private HttpMethod ReadHttpMethod(HttpMethodAttribute methodAttribute) => methodAttribute switch

@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 public sealed class TuplesController : ControllerBase
 {
     [HttpGet, Route(nameof(GetTupleOfTwo))]
-    public (Int32 x, Int32) GetTupleOfTwo() => default;
+    public (Int32? x, Int32)? GetTupleOfTwo() => default;
 
     [HttpGet, Route(nameof(GetTupleOfTen))]
     public (Int32, Int32, Int32, Int32, Int32, Int32, Int32, Int32, Int32, Int32) GetTupleOfTen() => default;
 
     [HttpGet, Route(nameof(GetTupleWithNesting))]
-    public (Int32, (Int32, (Int32 X, Int32)), Int32) GetTupleWithNesting() => default;
+    public (String?, (Int32, (Int32 X, String?)), Int32) GetTupleWithNesting() => default;
 
     [HttpGet, Route(nameof(GetPoint))]
     public (Int32 X, Int32 Y) GetPoint() => default;

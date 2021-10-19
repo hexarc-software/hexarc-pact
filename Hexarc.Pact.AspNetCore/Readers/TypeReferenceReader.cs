@@ -20,12 +20,11 @@ public sealed class TypeReferenceReader
 
     private TypeReference ReadInternal(ContextualType contextualType) => contextualType switch
     {
-        var x when this.TypeChecker.IsNullableValueType(x.Type) => this.ReadNullableValueTypeReference(x),
-        var x when x.IsNullable => this.ReadNullableReferenceTypeReference(contextualType),
+        var x when x.IsNullable => this.ReadNullableTypeReference(contextualType),
         _ => this.ReadUnwrapped(contextualType)
     };
 
-    private TypeReference ReadUnwrapped(ContextualType nullabilityInfo) => nullabilityInfo switch
+    private TypeReference ReadUnwrapped(ContextualType contextualType) => contextualType switch
     {
         var x when this.TypeChecker.IsActionResultOfT(x.Type) => this.ReadFromActionResultOfT(x),
         var x when this.TypeChecker.IsTaskType(x.Type) => this.ReadTaskTypeReference(x),
@@ -39,38 +38,32 @@ public sealed class TypeReferenceReader
         var x => this.ReadDistinctTypeReference(x)
     };
 
-    private NullableTypeReference ReadNullableValueTypeReference(ContextualType contextualType)
-    {
-        var underlyingType = Nullable.GetUnderlyingType(contextualType.Type)!;
-        return new NullableTypeReference(this.ReadUnwrapped(new ContextualType(underlyingType, contextualType.NullabilityInfo, default)));
-    }
-
-    private NullableTypeReference ReadNullableReferenceTypeReference(ContextualType contextualType) =>
+    private NullableTypeReference ReadNullableTypeReference(ContextualType contextualType) =>
         new(this.ReadUnwrapped(contextualType));
 
     private TypeReference ReadFromActionResultOfT(ContextualType contextualType) =>
-        this.ReadInternal(new ContextualType(contextualType.GenericArguments.First()));
+        this.ReadInternal(contextualType.GenericArguments.First());
 
     private TaskTypeReference ReadTaskTypeReference(ContextualType contextualType) =>
         contextualType.GenericArguments.Length == 0
             ? new TaskTypeReference(contextualType.Type.GUID)
             : new TaskTypeReference(
                 contextualType.Type.GUID,
-                this.ReadInternal(contextualType.GenericArguments.First().ToContextualType()));
+                this.ReadInternal(contextualType.GenericArguments.First()));
 
     private TypeParameterReference ReadTypeParameterReference(Type type) =>
         new(type.Name);
 
     private ArrayTypeReference ReadArrayTypeReference(ContextualType contextualType) =>
-        new(this.ReadInternal(contextualType.NullabilityInfo.ElementType!.ToContextualType()));
+        new(this.ReadInternal(contextualType.ElementType!));
 
     private ArrayTypeReference ReadArrayLikeTypeReference(ContextualType contextualType) =>
-        new(contextualType.Type.GUID, this.ReadInternal(contextualType.GenericArguments.First().ToContextualType()));
+        new(contextualType.Type.GUID, this.ReadInternal(contextualType.GenericArguments.First()));
 
     private DictionaryTypeReference ReadDictionaryTypeReference(ContextualType contextualType) =>
         new(contextualType.Type.GUID,
             contextualType.GenericArguments
-                .Select(x => this.ReadInternal(x.ToContextualType()))
+                .Select(this.ReadInternal)
                 .ToArray());
 
     private PrimitiveTypeReference ReadPrimitiveTypeReference(Type type) =>
@@ -88,9 +81,9 @@ public sealed class TypeReferenceReader
         return new TupleTypeReference(this.ReadTupleElements(elementTypes, elementNames));
     }
 
-    private TupleTypeReference ReadAnonymousTupleTypeReference(ContextualType nullabilityInfo)
+    private TupleTypeReference ReadAnonymousTupleTypeReference(ContextualType contextualType)
     {
-        var elementTypes = nullabilityInfo.GetTupleArguments();
+        var elementTypes = contextualType.GetTupleArguments();
         return new TupleTypeReference(this.ReadTupleElements(elementTypes));
     }
 
@@ -113,7 +106,7 @@ public sealed class TypeReferenceReader
     private DistinctTypeReference ReadDistinctTypeReference(ContextualType contextualType)
     {
         var type = contextualType.Type;
-        var genericArguments = contextualType.GenericArguments.Select(x => x.ToContextualType()).ToArray();
+        var genericArguments = contextualType.GenericArguments;
         this.DistinctTypeQueue.Enqueue(type.IsGenericType ? type.GetGenericTypeDefinition() : type);
         return new DistinctTypeReference(type.GUID, this.ReadGenericArguments(genericArguments));
     }
