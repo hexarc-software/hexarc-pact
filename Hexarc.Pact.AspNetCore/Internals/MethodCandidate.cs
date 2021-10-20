@@ -1,4 +1,4 @@
-namespace Hexarc.Pact.AspNetCore.Models;
+namespace Hexarc.Pact.AspNetCore.Internals;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;

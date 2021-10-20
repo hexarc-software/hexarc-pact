@@ -1,4 +1,4 @@
-namespace Hexarc.Pact.AspNetCore.Models;
+namespace Hexarc.Pact.AspNetCore.Internals;
 
 /// <summary>
 /// The type describes a union tag used in a discriminated union case.

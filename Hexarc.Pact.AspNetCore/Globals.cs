@@ -17,6 +17,5 @@ global using Hexarc.Pact.Protocol.TypeReferences;
 global using Hexarc.Pact.Protocol.Extensions;
 global using Hexarc.Pact.AspNetCore.Extensions;
 global using Hexarc.Pact.AspNetCore.Internals;
-global using Hexarc.Pact.AspNetCore.Models;
 global using Hexarc.Pact.AspNetCore.Attributes;
 global using Hexarc.Pact.AspNetCore.Readers;
