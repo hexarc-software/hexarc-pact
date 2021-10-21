@@ -33,7 +33,6 @@ public sealed class ContextualType
     public IList<String?>? GetTupleElementNames() =>
         this.GetCustomAttribute<TupleElementNamesAttribute>()?.TransformNames;
 
-
     private T? GetCustomAttribute<T>(Boolean inherit = false) =>
         this.CustomAttributeProvider is not null
             ? this.CustomAttributeProvider.GetCustomAttributes(inherit).OfType<T>().FirstOrDefault()
