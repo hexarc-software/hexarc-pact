@@ -4,7 +4,7 @@ internal static class EnumExtensions
 {
     public static T? Parse<T>(String? value) where T : struct, Enum
     {
-        if (Enum.TryParse(typeof(T), value, out var convention)) return (T?) convention!;
+        if (Enum.TryParse(typeof(T), value, out var result)) return (T?) result!;
         else return default;
     }
 }

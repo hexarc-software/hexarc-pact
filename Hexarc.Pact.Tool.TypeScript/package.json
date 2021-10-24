@@ -1,6 +1,6 @@
 {
   "name": "@hexarc/pact-tool",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "Node.js CLI tool to generate API clients from Hexarc Pact protocols for TypeScript.",
   "main": "./lib/pact.js",
   "types": "./lib/pact.d.ts",
@@ -19,12 +19,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "node-fetch": "^2.6.1",
-    "typescript": "^4.3.2"
+    "node-fetch": "^2.6.2",
+    "typescript": "^4.4.4"
   },
   "devDependencies": {
-    "@types/node": "^15.12.2",
-    "@types/node-fetch": "^2.5.10"
+    "@types/node": "^16.11.4",
+    "@types/node-fetch": "2.5.12"
   },
   "repository": {
     "type": "git",

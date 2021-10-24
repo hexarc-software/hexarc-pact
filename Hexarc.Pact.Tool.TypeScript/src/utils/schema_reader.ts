@@ -5,7 +5,7 @@ import type { Schema } from "../types/protocol/api";
 export async function read(schemaUri: string, scopes: string[] | undefined): Promise<Schema> {
   const response = await fetch(buildUri(schemaUri, scopes));
   if (!response.ok) throw new Error("Couldn't read schema");
-  return await response.json();
+  return await response.json() as Schema;
 }
 
 function buildUri(schemaUri: string, scopes: string[] | undefined) {
