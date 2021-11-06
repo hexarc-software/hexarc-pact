@@ -1,9 +1,5 @@
 namespace Hexarc.Pact.Tool.Syntax;
 
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-
 public static partial class SyntaxFactory
 {
     public static ImplicitArrayCreationExpressionSyntax ImplicitArrayWithElements(ExpressionSyntax[] elements) =>

@@ -1,8 +1,5 @@
 namespace Hexarc.Pact.Tool.Syntax;
 
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-
 public static partial class SyntaxFactory
 {
     public static InvocationExpressionSyntax NameOfExpression(String argument) =>

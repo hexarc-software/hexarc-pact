@@ -1,14 +1,10 @@
 namespace Hexarc.Pact.Tool.Emitters;
 
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-
 using Hexarc.Pact.Client;
 using Hexarc.Pact.Protocol.Api;
 using Hexarc.Pact.Tool.Internals;
 using Hexarc.Pact.Tool.Models;
 
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Hexarc.Pact.Tool.Syntax.SyntaxFactory;
 
 public sealed class ControllerEmitter

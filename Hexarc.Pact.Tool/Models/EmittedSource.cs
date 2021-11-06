@@ -1,7 +1,5 @@
 namespace Hexarc.Pact.Tool.Models;
 
-using Microsoft.CodeAnalysis.Text;
-
 public sealed class EmittedSource
 {
     public String FileName { get; }

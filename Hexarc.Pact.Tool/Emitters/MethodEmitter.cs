@@ -1,13 +1,9 @@
 namespace Hexarc.Pact.Tool.Emitters;
 
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-
 using Hexarc.Pact.Protocol.Api;
 using Hexarc.Pact.Tool.Internals;
 
 using HttpMethod = Hexarc.Pact.Protocol.Api.HttpMethod;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Hexarc.Pact.Tool.Syntax.SyntaxFactory;
 
 public sealed partial class MethodEmitter

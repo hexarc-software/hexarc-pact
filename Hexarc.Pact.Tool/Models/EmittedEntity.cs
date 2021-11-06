@@ -1,7 +1,5 @@
 namespace Hexarc.Pact.Tool.Models;
 
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-
 public sealed class EmittedEntity
 {
     public String Name { get; }

@@ -1,12 +1,8 @@
 namespace Hexarc.Pact.Tool.Emitters;
 
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-
 using Hexarc.Pact.Protocol.TypeReferences;
 using Hexarc.Pact.Tool.Internals;
 
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Hexarc.Pact.Tool.Syntax.SyntaxFactory;
 using Type = Hexarc.Pact.Protocol.Types.Type;
 
