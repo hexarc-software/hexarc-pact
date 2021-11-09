@@ -11,7 +11,7 @@
         Condition="'$(Configuration)' == 'Debug'" />
     <PackageReference
         Include="Hexarc.Pact.AspNetCore"
-        Version="1.4.0"
+        Version="2.0.0"
         Condition="'$(Configuration)' == 'Release'" />
   </ItemGroup>
 
