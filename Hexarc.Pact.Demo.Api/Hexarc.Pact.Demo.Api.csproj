@@ -6,8 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hexarc.Pact.AspNetCore\Hexarc.Pact.AspNetCore.csproj" Condition="'$(Configuration)' == 'Debug'" />
-    <PackageReference Include="Hexarc.Pact.AspNetCore" Version="1.4.0" Condition="'$(Configuration)' == 'Release'" />
+    <ProjectReference
+        Include="..\Hexarc.Pact.AspNetCore\Hexarc.Pact.AspNetCore.csproj"
+        Condition="'$(Configuration)' == 'Debug'" />
+    <PackageReference
+        Include="Hexarc.Pact.AspNetCore"
+        Version="1.4.0"
+        Condition="'$(Configuration)' == 'Release'" />
   </ItemGroup>
 
 </Project>
