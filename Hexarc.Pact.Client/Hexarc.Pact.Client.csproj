@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hexarc.Serialization.Union" Version="1.0.3" />
-    <PackageReference Include="Hexarc.Serialization.Tuple" Version="1.0.0" />
+    <PackageReference Include="Hexarc.Serialization.Union" Version="2.0.0" />
+    <PackageReference Include="Hexarc.Serialization.Tuple" Version="2.0.0" />
   </ItemGroup>
 
   <PropertyGroup>

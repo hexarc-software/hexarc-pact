@@ -13,14 +13,14 @@ public abstract class Animal
 
 public sealed class Cat : Animal
 {
-    public override String Kind { get; } = AnimalKind.Cat;
+    public override String Kind  => AnimalKind.Cat;
 
     public Boolean IsMeowing { get; set; }
 }
 
 public sealed class Dog : Animal
 {
-    public override String Kind { get; } = AnimalKind.Dog;
+    public override String Kind => AnimalKind.Dog;
 
     public Boolean IsBarking { get; set; }
 }

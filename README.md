@@ -6,10 +6,10 @@ Develop your .NET Web API project with Pact to keep a single source of truth for
 
 |Package|Platform|Version|Downloads|
 |-------|--------|-------|---------|
-|`Hexarch.Pact.Protocol`| .NET 5.0+ | [![Version](https://img.shields.io/nuget/v/Hexarc.Pact.Protocol.svg)](https://nuget.org/packages/Hexarc.Pact.Protocol) | [![Downloads](https://img.shields.io/nuget/dt/Hexarc.Pact.Protocol.svg)](https://nuget.org/packages/Hexarc.Pact.Protocol) |
-|`Hexarch.Pact.AspNetCore`| .NET 5.0+ | [![Version](http://img.shields.io/nuget/v/Hexarc.Pact.AspNetCore.svg)](https://nuget.org/packages/Hexarc.Pact.AspNetCore) | [![Downloads](https://img.shields.io/nuget/dt/Hexarc.Pact.AspNetCore.svg)](https://nuget.org/packages/Hexarc.Pact.AspNetCore) |
-|`Hexarch.Pact.Client`| .NET 5.0+ | [![Version](http://img.shields.io/nuget/v/Hexarc.Pact.Client.svg)](https://nuget.org/packages/Hexarc.Pact.Client) | [![Downloads](https://img.shields.io/nuget/dt/Hexarc.Pact.Client.svg)](https://nuget.org/packages/Hexarc.Pact.Client) |
-|`Hexarch.Pact.Tool`| .NET 5.0+ | [![Version](http://img.shields.io/nuget/v/Hexarc.Pact.Tool.svg)](https://nuget.org/packages/Hexarc.Pact.Tool) | [![Downloads](https://img.shields.io/nuget/dt/Hexarc.Pact.Tool.svg)](https://nuget.org/packages/Hexarc.Pact.Tool) |
+|`Hexarch.Pact.Protocol`| .NET 6.0+ | [![Version](https://img.shields.io/nuget/v/Hexarc.Pact.Protocol.svg)](https://nuget.org/packages/Hexarc.Pact.Protocol) | [![Downloads](https://img.shields.io/nuget/dt/Hexarc.Pact.Protocol.svg)](https://nuget.org/packages/Hexarc.Pact.Protocol) |
+|`Hexarch.Pact.AspNetCore`| .NET 6.0+ | [![Version](http://img.shields.io/nuget/v/Hexarc.Pact.AspNetCore.svg)](https://nuget.org/packages/Hexarc.Pact.AspNetCore) | [![Downloads](https://img.shields.io/nuget/dt/Hexarc.Pact.AspNetCore.svg)](https://nuget.org/packages/Hexarc.Pact.AspNetCore) |
+|`Hexarch.Pact.Client`| .NET 6.0+ | [![Version](http://img.shields.io/nuget/v/Hexarc.Pact.Client.svg)](https://nuget.org/packages/Hexarc.Pact.Client) | [![Downloads](https://img.shields.io/nuget/dt/Hexarc.Pact.Client.svg)](https://nuget.org/packages/Hexarc.Pact.Client) |
+|`Hexarch.Pact.Tool`| .NET 6.0+ | [![Version](http://img.shields.io/nuget/v/Hexarc.Pact.Tool.svg)](https://nuget.org/packages/Hexarc.Pact.Tool) | [![Downloads](https://img.shields.io/nuget/dt/Hexarc.Pact.Tool.svg)](https://nuget.org/packages/Hexarc.Pact.Tool) |
 |`@hexarc/pact-tool`| TypeScript | [![Version](http://img.shields.io/npm/v/@hexarc/pact-tool.svg)](https://www.npmjs.org/package/@hexarc/pact-tool) | [![Downloads](http://img.shields.io/npm/dt/@hexarc/pact-tool.svg)](https://www.npmjs.org/package/@hexarc/pact-tool) |
 
 ## What's in Pact?

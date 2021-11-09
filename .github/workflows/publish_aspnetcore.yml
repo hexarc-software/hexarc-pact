@@ -1,0 +1,32 @@
+name: Publish Hexarc.Pact.AspNetCore Package
+on:
+  workflow_dispatch:
+    inputs:
+      git-ref:
+        description: Get Ref (Optional)
+        required: false
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+      - name: Clone Repository (Latest)
+        uses: actions/checkout@v2
+        if: github.event.inputs.git-ref == ''
+      - name: Clone Repository (Custom Ref)
+        uses: actions/checkout@v2
+        if: github.event.inputs.git-ref != ''
+        with:
+          ref: ${{ github.event.inputs.git-ref }}
+      - name: Pack package
+        run: |
+          dotnet pack Hexarc.Pact.AspNetCore/Hexarc.Pact.AspNetCore.csproj --output packages --configuration Release
+      - name: Publish packages
+        run: |
+          dotnet nuget push packages/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate

@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ObjectDumper.NET" Version="3.0.20251.1" />
+    <PackageReference Include="ObjectDumper.NET" Version="3.3.13" />
   </ItemGroup>
 
 </Project>
