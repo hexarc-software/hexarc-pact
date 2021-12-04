@@ -1,6 +1,6 @@
-namespace Hexarc.Pact.Protocol.Api;
-
 using Type = Hexarc.Pact.Protocol.Types.Type;
+
+namespace Hexarc.Pact.Protocol.Api;
 
 /// <summary>
 /// Describes the Hexarc Pact API schema that can by used for any Web API provided by a backend.

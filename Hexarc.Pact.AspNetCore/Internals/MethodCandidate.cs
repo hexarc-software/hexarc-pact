@@ -1,7 +1,7 @@
-namespace Hexarc.Pact.AspNetCore.Internals;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+
+namespace Hexarc.Pact.AspNetCore.Internals;
 
 public sealed class MethodCandidate
 {

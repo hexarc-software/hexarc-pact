@@ -1,6 +1,6 @@
-namespace Hexarc.Pact.AspNetCore.Extensions;
-
 using Type = System.Type;
+
+namespace Hexarc.Pact.AspNetCore.Extensions;
 
 /// <summary>
 /// Extensions for the System.Type class.

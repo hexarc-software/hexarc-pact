@@ -1,7 +1,7 @@
-namespace Hexarc.Pact.AspNetCore.Internals;
-
 using Microsoft.AspNetCore.Mvc;
 using Type = System.Type;
+
+namespace Hexarc.Pact.AspNetCore.Internals;
 
 public sealed class TypeChecker
 {

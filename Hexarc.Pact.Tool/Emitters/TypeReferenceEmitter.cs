@@ -1,10 +1,9 @@
-namespace Hexarc.Pact.Tool.Emitters;
-
 using Hexarc.Pact.Protocol.TypeReferences;
 using Hexarc.Pact.Tool.Internals;
-
 using static Hexarc.Pact.Tool.Syntax.SyntaxFactory;
 using Type = Hexarc.Pact.Protocol.Types.Type;
+
+namespace Hexarc.Pact.Tool.Emitters;
 
 public sealed class TypeReferenceEmitter
 {

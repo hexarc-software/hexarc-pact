@@ -1,6 +1,6 @@
-namespace Hexarc.Pact.Tool.Syntax;
-
 using Hexarc.Pact.Tool.Internals;
+
+namespace Hexarc.Pact.Tool.Syntax;
 
 public static partial class SyntaxFactory
 {

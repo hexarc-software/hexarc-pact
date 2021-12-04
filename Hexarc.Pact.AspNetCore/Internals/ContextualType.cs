@@ -1,6 +1,6 @@
-namespace Hexarc.Pact.AspNetCore.Internals;
-
 using Type = System.Type;
+
+namespace Hexarc.Pact.AspNetCore.Internals;
 
 public sealed class ContextualType
 {

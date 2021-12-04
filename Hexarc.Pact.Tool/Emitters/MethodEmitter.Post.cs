@@ -1,7 +1,7 @@
-namespace Hexarc.Pact.Tool.Emitters;
-
 using Hexarc.Pact.Protocol.Api;
 using static Hexarc.Pact.Tool.Syntax.SyntaxFactory;
+
+namespace Hexarc.Pact.Tool.Emitters;
 
 public sealed partial class MethodEmitter
 {

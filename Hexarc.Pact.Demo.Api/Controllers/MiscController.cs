@@ -1,8 +1,8 @@
-namespace Hexarc.Pact.Demo.Api.Controllers;
-
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+
+namespace Hexarc.Pact.Demo.Api.Controllers;
 
 [ApiController, Route("Misc")]
 public sealed class MiscController : ControllerBase

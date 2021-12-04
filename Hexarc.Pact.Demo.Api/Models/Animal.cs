@@ -1,7 +1,7 @@
-namespace Hexarc.Pact.Demo.Api.Models;
-
 using System;
 using Hexarc.Annotations;
+
+namespace Hexarc.Pact.Demo.Api.Models;
 
 [UnionTag(nameof(Kind))]
 [UnionCase(typeof(Cat), AnimalKind.Cat)]

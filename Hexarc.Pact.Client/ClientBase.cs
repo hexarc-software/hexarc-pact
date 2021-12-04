@@ -1,8 +1,5 @@
 ﻿namespace Hexarc.Pact.Client;
 
-using Hexarc.Serialization.Tuple;
-using Hexarc.Serialization.Union;
-
 public abstract class ClientBase
 {
     public HttpClient HttpClient { get; }

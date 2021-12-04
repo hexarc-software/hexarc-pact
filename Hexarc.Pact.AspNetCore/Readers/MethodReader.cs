@@ -1,7 +1,7 @@
-namespace Hexarc.Pact.AspNetCore.Readers;
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+
+namespace Hexarc.Pact.AspNetCore.Readers;
 
 public sealed class MethodReader
 {

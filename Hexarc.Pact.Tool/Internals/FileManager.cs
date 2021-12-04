@@ -1,6 +1,6 @@
-namespace Hexarc.Pact.Tool.Internals;
-
 using Hexarc.Pact.Tool.Models;
+
+namespace Hexarc.Pact.Tool.Internals;
 
 public sealed class FileManager
 {

@@ -1,12 +1,11 @@
-namespace Hexarc.Pact.Tool.Emitters;
-
 using Hexarc.Annotations;
 using Hexarc.Pact.Protocol.Types;
 using Hexarc.Pact.Protocol.TypeReferences;
 using Hexarc.Pact.Tool.Internals;
 using Hexarc.Pact.Tool.Models;
-
 using static Hexarc.Pact.Tool.Syntax.SyntaxFactory;
+
+namespace Hexarc.Pact.Tool.Emitters;
 
 public sealed class DistinctTypeEmitter
 {

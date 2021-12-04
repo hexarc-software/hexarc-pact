@@ -1,8 +1,8 @@
-namespace Hexarc.Pact.Tool.Emitters;
-
 using Hexarc.Pact.Protocol.Api;
 using Hexarc.Pact.Tool.Internals;
 using Hexarc.Pact.Tool.Models;
+
+namespace Hexarc.Pact.Tool.Emitters;
 
 public sealed class ApiEmitter
 {

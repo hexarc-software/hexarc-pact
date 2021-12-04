@@ -1,6 +1,6 @@
-namespace Hexarc.Pact.AspNetCore.Middlewares;
-
 using Microsoft.AspNetCore.Http;
+
+namespace Hexarc.Pact.AspNetCore.Middlewares;
 
 public sealed class PactSchemaService
 {

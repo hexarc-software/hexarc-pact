@@ -1,7 +1,7 @@
-namespace Hexarc.Pact.Demo.Api.Controllers;
-
 using System;
 using Microsoft.AspNetCore.Mvc;
+
+namespace Hexarc.Pact.Demo.Api.Controllers;
 
 [ApiController, Route("Tuples")]
 public sealed class TuplesController : ControllerBase

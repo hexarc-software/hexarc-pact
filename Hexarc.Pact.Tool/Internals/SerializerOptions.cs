@@ -1,6 +1,6 @@
-namespace Hexarc.Pact.Tool.Internals;
-
 using Hexarc.Serialization.Union;
+
+namespace Hexarc.Pact.Tool.Internals;
 
 public static class SerializerOptions
 {

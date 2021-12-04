@@ -1,7 +1,7 @@
-namespace Hexarc.Pact.Tool;
-
 using Hexarc.Pact.Tool.Emitters;
 using Hexarc.Pact.Tool.Internals;
+
+namespace Hexarc.Pact.Tool;
 
 public static class Program
 {
