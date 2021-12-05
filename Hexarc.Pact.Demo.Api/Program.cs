@@ -1,7 +1,3 @@
-using System;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-
 namespace Hexarc.Pact.Demo.Api;
 
 public class Program

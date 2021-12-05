@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using Hexarc.Pact.Demo.Api.Models;
+﻿using Hexarc.Pact.Demo.Api.Models;
 using Hexarc.Pact.Demo.Client;
 
 var v1 = new Point { X = 0, Y = 0 };

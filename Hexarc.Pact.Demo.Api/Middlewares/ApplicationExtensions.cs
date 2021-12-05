@@ -1,6 +1,3 @@
-using System;
-using Microsoft.AspNetCore.Builder;
-
 namespace Hexarc.Pact.Demo.Api.Middlewares;
 
 public static class ApplicationExtensions

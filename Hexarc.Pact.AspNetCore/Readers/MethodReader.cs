@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using HttpMethod = Hexarc.Pact.Protocol.Api.HttpMethod;
 
 namespace Hexarc.Pact.AspNetCore.Readers;
 

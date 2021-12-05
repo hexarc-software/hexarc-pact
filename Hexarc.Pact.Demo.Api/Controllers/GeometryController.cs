@@ -1,4 +1,3 @@
-using System;
 using Microsoft.AspNetCore.Mvc;
 using Hexarc.Pact.Demo.Api.Models;
 

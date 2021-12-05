@@ -1,4 +1,3 @@
-using System;
 using Hexarc.Annotations;
 
 namespace Hexarc.Pact.Demo.Api.Models;

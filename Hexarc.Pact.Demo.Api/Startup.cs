@@ -1,7 +1,3 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Hexarc.Serialization.Union;
 using Hexarc.Pact.AspNetCore.Middlewares;
 using Hexarc.Pact.Demo.Api.Middlewares;
