@@ -1,4 +1,3 @@
-using Hexarc.Pact.Tool.Extensions;
 using Hexarc.Pact.Tool.Models;
 
 namespace Hexarc.Pact.Tool.Internals;
@@ -21,8 +20,8 @@ public sealed class ClientSettingsReader
 
         return document.RootElement.ValueKind switch
         {
-            JsonValueKind.Array => document.ToObject<ClientSettings[]>(this.JsonSerializerOptions),
-            _ => new[] { document.ToObject<ClientSettings>(this.JsonSerializerOptions)! }
+            JsonValueKind.Array => document.Deserialize<ClientSettings[]>(this.JsonSerializerOptions),
+            _ => new[] { document.Deserialize<ClientSettings>(this.JsonSerializerOptions) ?? throw new NullReferenceException() }
         };
     }
 }
