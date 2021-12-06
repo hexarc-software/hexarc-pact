@@ -11,11 +11,10 @@ public sealed class SchemaReader
     public SchemaReader(JsonSerializerOptions jsonSerializerOptions) =>
         this.JsonSerializerOptions = jsonSerializerOptions;
 
-    public async Task<Schema?> ReadAsync(String schemaUri, String[]? scopes)
-    {
-        return await this.HttpClient.GetFromJsonAsync<Schema>(this.BuildUri(schemaUri, scopes),
+    public async Task<Schema?> ReadAsync(String schemaUri, String[]? scopes) =>
+        await this.HttpClient.GetFromJsonAsync<Schema>(
+            this.BuildUri(schemaUri, scopes),
             this.JsonSerializerOptions);
-    }
 
     private Uri BuildUri(String schemaUri, String[]? scopes) =>
         scopes is null ?

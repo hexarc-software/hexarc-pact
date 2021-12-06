@@ -14,7 +14,7 @@
 
   <PropertyGroup>
     <PackageId>Hexarc.Pact.Tool</PackageId>
-    <Version>2.0.2</Version>
+    <Version>2.0.3</Version>
     <Authors>Max Koverdyaev</Authors>
     <Company>Hexarc Software</Company>
     <PackageTags>CodeGen;Api;WebApi;AspNet;Pact</PackageTags>

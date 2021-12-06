@@ -13,8 +13,7 @@ internal static class TypeExtensions
     /// <param name="type">The type to extract properties.</param>
     /// <returns>The result that contains extracted properties.</returns>
     public static PropertyInfo[] GetPublicInstanceProperties(this Type type) =>
-        type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
-            .ToArray();
+        type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
     /// <summary>
     /// Checks if the type supports converting to a json string enum.
