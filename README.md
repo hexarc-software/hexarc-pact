@@ -156,6 +156,5 @@ Built with JetBrains tools for [Open Source](https://jb.gg/OpenSourceSupport) pr
 
 ![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)
 
-
 ## License
 MIT © [Max Koverdyaev](https://github.com/shadeglare)
