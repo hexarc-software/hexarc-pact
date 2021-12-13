@@ -20,19 +20,19 @@ public class ResearchTests
     [Test]
     public void StringEnum()
     {
-        var m = new M() { Box = Box.Off };
+        var m = new M { Box = Box.Off };
         var n = JsonSerializer.Deserialize<M>(JsonSerializer.Serialize(m));
         Console.WriteLine(ObjectDumper.Dump(n));
     }
 
     [JsonConverter(typeof(JsonStringEnumConverter))]
-    enum Box
+    private enum Box
     {
         On,
         Off
     }
 
-    class M
+    private class M
     {
         // ReSharper disable once UnusedAutoPropertyAccessor.Local
         // ReSharper disable once PropertyCanBeMadeInitOnly.Local
