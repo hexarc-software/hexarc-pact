@@ -21,7 +21,7 @@ Develop your .NET Web API project with Pact to keep a single source of truth for
 * [How to use](#how-to-use)
   * [Expose Pact API schema](#expose-pact-api-schema) (.NET Web API service)
   * [Consume Pact API schema](#consume-pact-api-schema) (.NET client application)
-* [Thanks](#thanks) 
+* [Acknowledgments](#acknowledgments) 
 * [License](#license)
 
 ## Features
@@ -151,7 +151,7 @@ var pong = await client.Misc.Ping("World");
 Console.WriteLine(pong); // Prints "Hello, World" to the output.
 ```
 
-## Thanks
+## Acknowledgments
 Built with JetBrains tools for [Open Source](https://jb.gg/OpenSourceSupport) projects. 
 
 ![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg)
