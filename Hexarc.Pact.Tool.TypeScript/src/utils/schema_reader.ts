@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 import type { Schema } from "../types/protocol/api";
 
 

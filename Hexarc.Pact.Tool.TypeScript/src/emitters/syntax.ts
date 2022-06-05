@@ -11,6 +11,7 @@ export function createNamedImportDeclaration(identifierName: string, modulePath:
       undefined,
       ts.factory.createNamedImports([
         ts.factory.createImportSpecifier(
+          false,
           undefined,
           ts.factory.createIdentifier(identifierName))])),
     ts.factory.createStringLiteral(modulePath));
@@ -37,6 +38,7 @@ export function createNamedExportDeclaration(identifierName: string, modulePath:
     false,
     ts.factory.createNamedExports([
       ts.factory.createExportSpecifier(
+        false,
         undefined,
         ts.factory.createIdentifier(identifierName))]),
     ts.factory.createStringLiteral(modulePath));
