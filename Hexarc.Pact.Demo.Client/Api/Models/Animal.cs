@@ -6,9 +6,9 @@
 
 namespace Hexarc.Pact.Demo.Api.Models
 {
-    [Hexarc.Annotations.UnionTagAttribute(nameof(Kind))]
-    [Hexarc.Annotations.UnionCaseAttribute(typeof(Cat), "Cat")]
-    [Hexarc.Annotations.UnionCaseAttribute(typeof(Dog), "Dog")]
+    [Hexarc.Serialization.Union.UnionTagAttribute(nameof(Kind))]
+    [Hexarc.Serialization.Union.UnionCaseAttribute(typeof(Cat), "Cat")]
+    [Hexarc.Serialization.Union.UnionCaseAttribute(typeof(Dog), "Dog")]
     public abstract class Animal
     {
         public abstract System.String Kind { get; }

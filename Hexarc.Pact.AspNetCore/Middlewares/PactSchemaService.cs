@@ -49,6 +49,6 @@ public sealed class PactSchemaService
 
     private HashSet<String>? ExtractScopes(HttpRequest request) =>
         request.Query.ContainsKey("scope")
-            ? request.Query["scope"].ToHashSet()
+            ? request.Query["scope"].ToHashSet<String>()
             : default;
 }

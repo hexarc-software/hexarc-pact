@@ -12,9 +12,9 @@ namespace Hexarc.Pact.Demo.Api.Controllers
         {
         }
 
-        public async System.Threading.Tasks.Task<(System.Int32 x, System.Int32)> GetTupleOfTwo(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
+        public async System.Threading.Tasks.Task<(System.Int32? x, System.Int32)?> GetTupleOfTwo(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.DoGetRequestWithJsonResponse<(System.Int32 x, System.Int32)>("/GetTupleOfTwo", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            return await this.DoGetRequestWithJsonResponse<(System.Int32? x, System.Int32)?>("/GetTupleOfTwo", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
 
         public async System.Threading.Tasks.Task<(System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32)> GetTupleOfTen(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
@@ -22,9 +22,9 @@ namespace Hexarc.Pact.Demo.Api.Controllers
             return await this.DoGetRequestWithJsonResponse<(System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32, System.Int32)>("/GetTupleOfTen", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
 
-        public async System.Threading.Tasks.Task<(System.Int32, (System.Int32, (System.Int32 X, System.Int32)), System.Int32)> GetTupleWithNesting(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
+        public async System.Threading.Tasks.Task<(System.String?, (System.Int32, (System.Int32 X, System.String?)), System.Int32)> GetTupleWithNesting(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)
         {
-            return await this.DoGetRequestWithJsonResponse<(System.Int32, (System.Int32, (System.Int32 X, System.Int32)), System.Int32)>("/GetTupleWithNesting", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
+            return await this.DoGetRequestWithJsonResponse<(System.String?, (System.Int32, (System.Int32 X, System.String?)), System.Int32)>("/GetTupleWithNesting", System.Array.Empty<Hexarc.Pact.Client.GetMethodParameter>(), headers);
         }
 
         public async System.Threading.Tasks.Task<(System.Int32 X, System.Int32 Y)> GetPoint(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String, System.String>>? headers = default)

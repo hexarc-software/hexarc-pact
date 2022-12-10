@@ -1,4 +1,4 @@
-using Hexarc.Annotations;
+using Hexarc.Serialization.Union;
 
 namespace Hexarc.Pact.Demo.Api.Models;
 

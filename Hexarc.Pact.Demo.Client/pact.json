@@ -1,5 +1,5 @@
 {
-  "schemaUri": "https://hexarc-demo-api.herokuapp.com/pact/schema",
+  "schemaUri": "http://localhost:5000/pact/schema",
   "clientClassName": "DemoClient",
   "clientClassNamespace": "Hexarc.Pact.Demo.Client",
   "outputDirectory": "Api",

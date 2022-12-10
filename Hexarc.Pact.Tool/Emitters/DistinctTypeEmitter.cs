@@ -1,4 +1,4 @@
-using Hexarc.Annotations;
+using Hexarc.Serialization.Union;
 using Hexarc.Pact.Protocol.Types;
 using Hexarc.Pact.Protocol.TypeReferences;
 using Hexarc.Pact.Tool.Internals;
