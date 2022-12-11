@@ -1,5 +1,4 @@
 global using System.Text.Json.Serialization;
-global using System.Buffers;
 global using System.Text.Json;
 global using System.Reflection;
 global using System.Net.Http.Json;

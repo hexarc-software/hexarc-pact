@@ -43,7 +43,7 @@ public sealed class MethodReader
         var contextualType = new ContextualType(this.NullabilityInfoContext.Create(returnType), returnType);
         return returnType switch
         {
-            { } x when this.TypeChecker.IsTaskType(x.ParameterType) =>
+            { } when this.TypeChecker.IsTaskType(returnType.ParameterType) =>
                 (TaskTypeReference) this.TypeReferenceReader.Read(contextualType, namingConvention),
             _ => new TaskTypeReference(default, this.TypeReferenceReader.Read(contextualType, namingConvention))
         };

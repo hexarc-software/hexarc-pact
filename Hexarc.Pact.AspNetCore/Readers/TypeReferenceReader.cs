@@ -20,22 +20,22 @@ public sealed class TypeReferenceReader
 
     private TypeReference ReadInternal(ContextualType contextualType) => contextualType switch
     {
-        var x when x.IsNullable => this.ReadNullableTypeReference(contextualType),
+        _ when contextualType.IsNullable => this.ReadNullableTypeReference(contextualType),
         _ => this.ReadUnwrapped(contextualType)
     };
 
     private TypeReference ReadUnwrapped(ContextualType contextualType) => contextualType switch
     {
-        var x when this.TypeChecker.IsActionResultOfT(x.Type) => this.ReadFromActionResultOfT(x),
-        var x when this.TypeChecker.IsTaskType(x.Type) => this.ReadTaskTypeReference(x),
-        var x when this.TypeChecker.IsTypeParameter(x.Type) => this.ReadTypeParameterReference(x.Type),
-        var x when this.TypeChecker.IsArrayType(x.Type) => this.ReadArrayTypeReference(x),
-        var x when this.TypeChecker.IsArrayLikeType(x.Type) => this.ReadArrayLikeTypeReference(x),
-        var x when this.TypeChecker.IsDictionaryType(x.Type) => this.ReadDictionaryTypeReference(x),
-        var x when this.TypeChecker.IsPrimitiveType(x.Type) => this.ReadPrimitiveTypeReference(x.Type),
-        var x when this.TypeChecker.IsTupleType(x.Type) => this.ReadTupleTypeReference(x),
-        var x when this.TypeChecker.IsDynamicType(x.Type) => this.ReadDynamicTypeReference(x.Type),
-        var x => this.ReadDistinctTypeReference(x)
+        _ when this.TypeChecker.IsActionResultOfT(contextualType.Type) => this.ReadFromActionResultOfT(contextualType),
+        _ when this.TypeChecker.IsTaskType(contextualType.Type) => this.ReadTaskTypeReference(contextualType),
+        _ when this.TypeChecker.IsTypeParameter(contextualType.Type) => this.ReadTypeParameterReference(contextualType.Type),
+        _ when this.TypeChecker.IsArrayType(contextualType.Type) => this.ReadArrayTypeReference(contextualType),
+        _ when this.TypeChecker.IsArrayLikeType(contextualType.Type) => this.ReadArrayLikeTypeReference(contextualType),
+        _ when this.TypeChecker.IsDictionaryType(contextualType.Type) => this.ReadDictionaryTypeReference(contextualType),
+        _ when this.TypeChecker.IsPrimitiveType(contextualType.Type) => this.ReadPrimitiveTypeReference(contextualType.Type),
+        _ when this.TypeChecker.IsTupleType(contextualType.Type) => this.ReadTupleTypeReference(contextualType),
+        _ when this.TypeChecker.IsDynamicType(contextualType.Type) => this.ReadDynamicTypeReference(contextualType.Type),
+        _ => this.ReadDistinctTypeReference(contextualType)
     };
 
     private NullableTypeReference ReadNullableTypeReference(ContextualType contextualType) =>

@@ -35,11 +35,11 @@ public sealed class DistinctTypeReader
     /// <returns>The Hexarc Pact distinct type read from the given .NET system type.</returns>
     public DistinctType Read(System.Type type, NamingConvention? namingConvention) => type switch
     {
-        var x when this.TypeChecker.IsStringEnumType(x) => this.ReadStringEnumType(x),
-        var x when this.TypeChecker.IsEnumType(x) => this.ReadEnumType(x),
-        var x when this.TypeChecker.IsUnionType(x) => this.ReadUnionType(x, namingConvention),
-        var x when this.TypeChecker.IsStructType(x) => this.ReadStructType(x, namingConvention),
-        var x when this.TypeChecker.IsClassType(x) => this.ReadClassType(x, namingConvention),
+        _ when this.TypeChecker.IsStringEnumType(type) => this.ReadStringEnumType(type),
+        _ when this.TypeChecker.IsEnumType(type) => this.ReadEnumType(type),
+        _ when this.TypeChecker.IsUnionType(type) => this.ReadUnionType(type, namingConvention),
+        _ when this.TypeChecker.IsStructType(type) => this.ReadStructType(type, namingConvention),
+        _ when this.TypeChecker.IsClassType(type) => this.ReadClassType(type, namingConvention),
         _ => throw new InvalidOperationException($"Could not read a Hexarc Pact type from {type}")
     };
 
